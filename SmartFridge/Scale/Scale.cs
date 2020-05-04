@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace SmartFridge.Scale
 {
-    public interface IScale 
+    class Scale : IScale
     {
-        ulong getWeightInGrams();
+        public ulong getWeightInGrams()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
