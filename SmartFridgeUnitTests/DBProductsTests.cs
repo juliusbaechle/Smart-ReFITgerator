@@ -4,13 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Data.Common;
+using SmartFridge;
+using Microsoft.Data.Sqlite;
 
 namespace SmartFridgeUnitTests
 {
     [TestClass]
     public class DBProductsTests
     {
-        private static SQLiteConnection testDB;
+        private static DbConnection testDB;
         private static Product product;
         private const string PATH = "URI=file:test.db";
 
@@ -30,6 +33,7 @@ namespace SmartFridgeUnitTests
         [ClassCleanup]
         public static void ClassCleanup()
         {
+            testDB.Close();
             testDB.Dispose();
             File.Delete("URI=file:test.db");
         }
@@ -58,10 +62,6 @@ namespace SmartFridgeUnitTests
         [TestMethod]
         public void SaveProduct_ChangedProduct_UpdatedProduct()
         {
-            string path = "URI=file:test.db";
-            SQLiteConnection testDB = new SQLiteConnection(path);
-            testDB.Open();
-
             DBProducts dbProducts = new DBProducts(testDB);
             dbProducts.Clear();
 

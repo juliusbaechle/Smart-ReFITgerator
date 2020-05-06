@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Common;
 
 namespace SmartFridge {
     static class Program {
@@ -13,8 +14,7 @@ namespace SmartFridge {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-            DB.Setup();
+            Application.Run(new Form1());
         }
     }
 }
