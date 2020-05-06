@@ -4,19 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartFridge.Products
+namespace SmartFridge.ProductNS
 {
-    enum EProductCategory
+    public enum ECategory
     {
-        Other,
-        Fruit,
+        None,
+        Fruit,       
         Vegetable,
         Meat_Fish,
         Dairy_Product,
-        Breakfast
+        Breakfast,
+        Other
     }
 
-    class Product
+    public enum EQuantity
+    {
+        None,
+        Grams,
+        Milliliters,
+        Count
+    }
+
+    public class Product
     {
         public Product()
         {
@@ -24,6 +33,13 @@ namespace SmartFridge.Products
             Barcodes = new List<UInt64>();            
         }
 
+        public bool IsValid()
+        {
+            if (Name == "") return false;
+            if (Category == ECategory.None) return false;
+            if (Quantity == EQuantity.None) return false;
+            return true;
+        }
 
         public string Name {
             get;
@@ -40,7 +56,13 @@ namespace SmartFridge.Products
             internal set;
         }
 
-        public EProductCategory Category {
+        public ECategory Category {
+            get;
+            internal set;
+        }
+
+        public EQuantity Quantity
+        {
             get;
             internal set;
         }
