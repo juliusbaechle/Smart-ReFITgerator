@@ -20,7 +20,5 @@ namespace SmartFridge {
         {
             return new ProductForm();
         }
-
-        private Products m_products;
     }
 }

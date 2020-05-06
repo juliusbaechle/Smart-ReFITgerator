@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,7 +12,7 @@ namespace SmartFridge.ProductNS
 {
     class DBProducts
     {
-        public DBProducts(SQLiteConnection db)
+        public DBProducts(DbConnection db)
         {
             m_db = db;
             CreateTable();
@@ -19,7 +20,7 @@ namespace SmartFridge.ProductNS
 
         public void Save(Product product)
         {
-            SQLiteCommand cmd = new SQLiteCommand(m_db);
+            DbCommand cmd = m_db.CreateCommand();
 
             if (!Contains(product.ID))
             {                
@@ -38,9 +39,9 @@ namespace SmartFridge.ProductNS
 
         public List<Product> LoadAll()
         {
-            SQLiteCommand cmd = new SQLiteCommand(m_db);
+            DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = "SELECT * FROM tblProducts";
-            SQLiteDataReader reader = cmd.ExecuteReader();
+            DbDataReader reader = cmd.ExecuteReader();
 
             List<Product> products = new List<Product>();
             while (reader.Read())
@@ -53,19 +54,21 @@ namespace SmartFridge.ProductNS
                 product.Category    = (ECategory)reader.GetInt16(4);
                 products.Add(product);
             }
+
+            reader.Close();
             return products;
         }
 
         public void Clear()
         {
-            SQLiteCommand cmd = new SQLiteCommand(m_db);
+            DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = "DELETE FROM tblProducts";
             cmd.ExecuteNonQuery();
         }
 
         private bool Contains(Guid productId)
         {
-            SQLiteCommand cmd = new SQLiteCommand(m_db);
+            DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = $"SELECT * FROM tblProducts WHERE Id = '{productId}'";
             bool contained = cmd.ExecuteScalar() != null;
             return contained;
@@ -73,11 +76,11 @@ namespace SmartFridge.ProductNS
 
         private void CreateTable()
         {
-            SQLiteCommand cmd = new SQLiteCommand(m_db);
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id TEXT PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT )";
+            DbCommand cmd = m_db.CreateCommand();
+            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT )";
             cmd.ExecuteNonQuery();
         }
 
-        private SQLiteConnection m_db;
+        private DbConnection m_db;
     }
 }
