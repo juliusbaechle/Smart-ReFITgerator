@@ -39,6 +39,8 @@
     <Reference Include="Microsoft.Data.Sqlite, Version=3.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Sqlite.Core.3.1.3\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.0.3.851, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.bundle_e_sqlite3.2.0.3\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
     </Reference>
@@ -69,6 +71,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,23 +81,37 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="ProductNS\ProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ProductNS\ProductForm.Designer.cs">
+      <DependentUpon>ProductForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Products\DBProducts.cs" />
-    <Compile Include="Products\IProductForm.cs" />
-    <Compile Include="Products\IProductView.cs" />
-    <Compile Include="Products\Product.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ProductNS\DBProducts.cs" />
+    <Compile Include="ProductNS\Product.cs" />
+    <Compile Include="ProductNS\Products.cs" />
+    <Compile Include="ProductNS\ProductElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProductNS\ProductElement.Designer.cs">
+      <DependentUpon>ProductElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmartFridge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scale\IScale.cs" />
     <Compile Include="Scale\Scale.cs" />
+    <EmbeddedResource Include="ProductNS\ProductElement.resx">
+      <DependentUpon>ProductElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductNS\ProductForm.resx">
+      <DependentUpon>ProductForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
