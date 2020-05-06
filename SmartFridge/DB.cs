@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
+using System.Data.Common;
+using MySql.Data.MySqlClient;
 
 namespace SmartFridge
 {
-    public class DB
+    internal class DB
     {
         #if DEBUG
             // Relativ zur Debug.exe
@@ -18,20 +20,25 @@ namespace SmartFridge
             private const string PATH = "URI=file:smartfridge.db";
         #endif
 
-        public static void Setup()
+        public static DbConnection CreateLocalConnection()
         {
-            if (!File.Exists(PATH))
-            {
-                // TODO: Log Error and close application
-            }
-
-            FridgeDB = new SQLiteConnection(PATH);
-            FridgeDB.Open();
+            //Falls Datenbank nicht vorhanden ist, wird eine neue Datenbank erstellt
+            DbConnection conn = new SQLiteConnection(PATH);
+            conn.Open();
+            return conn;
         }
 
-        public static SQLiteConnection FridgeDB {
-            get;
-            private set;
+        public static DbConnection CreateWebConnection()
+        {
+            MySqlConnection conn = new MySqlConnection();
+            conn.ConnectionString =
+                "Server=sql7.freesqldatabase.com; " +
+                "Port=3306; " +
+                "Database=sql7338189; " +
+                "UID=sql7338189; " +
+                "PWD=dx2EuT3yDD;";
+            conn.Open();
+            return conn;
         }
     }
 }
