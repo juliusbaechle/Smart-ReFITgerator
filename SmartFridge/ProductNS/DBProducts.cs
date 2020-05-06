@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SmartFridge.Products
+namespace SmartFridge.ProductNS
 {
     class DBProducts
     {
@@ -51,7 +51,7 @@ namespace SmartFridge.Products
                 product.Name        = reader.GetString(1);
                 product.Durability  = (UInt16)reader.GetInt32(2);
                 product.Energy      = (UInt16)reader.GetInt32(3);
-                product.Category    = (EProductCategory)reader.GetInt16(4);
+                product.Category    = (ECategory)reader.GetInt16(4);
                 products.Add(product);
             }
 

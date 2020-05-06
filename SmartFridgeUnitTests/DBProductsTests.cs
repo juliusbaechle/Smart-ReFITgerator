@@ -1,11 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SmartFridge.Products;
+using SmartFridge.ProductNS;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Data.Common;
-using SmartFridge;
 using Microsoft.Data.Sqlite;
 
 namespace SmartFridgeUnitTests
@@ -25,7 +24,7 @@ namespace SmartFridgeUnitTests
 
             product = new Product();
             product.Name = "Cheddar";
-            product.Category = EProductCategory.Dairy_Product;
+            product.Category = ECategory.Dairy_Product;
             product.Energy = 200;
             product.Durability = 50;
         }
