@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SmartFridge {
-    static class Program {
+    class SmartFridge {
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
@@ -13,7 +13,14 @@ namespace SmartFridge {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            SmartFridge fridge = new SmartFridge();
+            Application.Run(fridge.CreateDesktopView());
+        }
+
+        Form CreateDesktopView()
+        {
+            return new ProductForm();
         }
     }
 }
