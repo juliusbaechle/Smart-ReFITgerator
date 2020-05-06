@@ -1,19 +1,26 @@
-﻿using System;
+﻿using SmartFridge.ProductNS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SmartFridge {
-    static class Program {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
+    class SmartFridge {
         [STAThread]
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            SmartFridge fridge = new SmartFridge();
+            Application.Run(fridge.CreateDesktopView());
         }
+
+        Form CreateDesktopView()
+        {
+            return new ProductForm();
+        }
+
+        private Products m_products;
     }
 }
