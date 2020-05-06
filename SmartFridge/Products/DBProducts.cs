@@ -54,6 +54,8 @@ namespace SmartFridge.Products
                 product.Category    = (EProductCategory)reader.GetInt16(4);
                 products.Add(product);
             }
+
+            reader.Close();
             return products;
         }
 
@@ -75,7 +77,7 @@ namespace SmartFridge.Products
         private void CreateTable()
         {
             DbCommand cmd = m_db.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id TEXT PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT )";
+            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT )";
             cmd.ExecuteNonQuery();
         }
 
