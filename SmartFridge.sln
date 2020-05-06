@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFridge", "SmartFridge\SmartFridge.csproj", "{A88965CB-226D-4A11-B8F6-DB2C2F7644D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFridgeUnitTests", "SmartFridgeUnitTests\SmartFridgeUnitTests.csproj", "{13706A43-3263-413C-A9C1-280960CB5B61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFridgeUnitTests", "SmartFridgeUnitTests\SmartFridgeUnitTests.csproj", "{13706A43-3263-413C-A9C1-280960CB5B61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFridgeWPF", "SmartFridgeWPF\SmartFridgeWPF.csproj", "{EC101A7E-6AA2-4A28-8009-13A13046FA94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{13706A43-3263-413C-A9C1-280960CB5B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13706A43-3263-413C-A9C1-280960CB5B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13706A43-3263-413C-A9C1-280960CB5B61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC101A7E-6AA2-4A28-8009-13A13046FA94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC101A7E-6AA2-4A28-8009-13A13046FA94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC101A7E-6AA2-4A28-8009-13A13046FA94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC101A7E-6AA2-4A28-8009-13A13046FA94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
