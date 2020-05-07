@@ -81,8 +81,14 @@
     <Compile Include="ProductNS\DBProducts.cs" />
     <Compile Include="ProductNS\Product.cs" />
     <Compile Include="ProductNS\Products.cs" />
+    <Compile Include="ProductNS\ProductForm.xaml.cs">
+      <DependentUpon>ProductForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Scale\IScale.cs" />
     <Compile Include="Scale\Scale.cs" />
+    <Compile Include="UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,6 +102,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProductNS\ProductForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
