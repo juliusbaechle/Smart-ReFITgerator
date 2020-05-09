@@ -5,8 +5,88 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartFridgeWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="Separator Brush">
+            <GradientStop Color="#FF3E3E42"/>
+            <GradientStop Color="#FF808080" Offset="0.1"/>
+            <GradientStop Color="#FFA0A0A0" Offset="0.5"/>
+            <GradientStop Color="#FF808080" Offset="0.9"/>
+            <GradientStop Color="#FF3E3E42" Offset="1.0"/>
+        </LinearGradientBrush>
         
-    </Grid>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#00000000"/>
+            <Setter Property="BorderBrush" Value="#FF959595"/>
+            <Setter Property="Foreground" Value="#FFC3C3C3"/>
+            <Setter Property="BorderThickness" Value="4"/>
+            <Setter Property="Width" Value="220"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="FontSize" Value="35"/>
+            <Setter Property="Margin" Value="10,10,0,10"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <UniformGrid Background="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                            <Border x:Name="Border1" CornerRadius="20" BorderThickness="4" BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                            </Border>
+                        </UniformGrid>
+
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF3E3E42" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="#FF3E3E42">
+        <DockPanel DockPanel.Dock="Top" Background="#FF2D2D30">
+            <Rectangle DockPanel.Dock="Bottom" Height="7" Fill="{StaticResource Separator Brush}"/>
+            
+            <DockPanel DockPanel.Dock="Left" Margin="0">
+                <Button Name="btnHome" Width="100" BorderBrush="{x:Null}" Foreground="{x:Null}" >
+                    <Image Height="80" Width="80" Source="home.png" OpacityMask="Black" />
+                </Button>
+                <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Right">
+                <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
+                <Button Name="btnClose" Width="100" BorderBrush="{x:Null}" Foreground="{x:Null}" >
+                    <Image Height="80" Width="80" Source="close.png"/>
+                </Button>
+            </DockPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Name="btnProducts">Produkte</Button>
+                <Button Name="btnContent">Inhalt</Button>
+                <Button Name="btnNutrition">Ernährung</Button>
+                <Button Name="btnMessages">Nachrichten</Button>
+                <Button Name="btnShopping">Einkauf</Button>
+            </StackPanel>
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Bottom" Background="#FF2D2D30">
+            <Rectangle DockPanel.Dock="Top" Height="7" Fill="{StaticResource Separator Brush}"/>
+            <UniformGrid Rows="1">
+                <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: XX °C</TextBlock>
+                <TextBlock Name="txtConnection" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Verbunden / Offline</TextBlock>
+                <TextBlock Name="txtHumidity" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Feuchtigkeit: XX %</TextBlock>
+            </UniformGrid>
+        </DockPanel>
+
+        <ContentControl Name="Content"/>
+    </DockPanel>
 </Window>

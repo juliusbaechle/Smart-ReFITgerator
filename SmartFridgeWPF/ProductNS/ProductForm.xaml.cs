@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace SmartFridgeWPF.ProductNS
 {
-    public partial class ProductForm : Window
+    public partial class ProductForm : Frame
     {
         public delegate void ProductHandler (Product product);
         public event ProductHandler Finished;
@@ -36,8 +36,6 @@ namespace SmartFridgeWPF.ProductNS
         {
             var product = DataContext as Product;
             if (product == null || !product.IsValid()) return;
-
-            Close();
             Finished?.Invoke(product);
         }
     }
