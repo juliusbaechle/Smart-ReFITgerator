@@ -8,9 +8,17 @@
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#00000000"/>
-            <Setter Property="BorderBrush" Value="#FF959595"/>
-            <Setter Property="Foreground" Value="#FFC3C3C3"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RadialGradientBrush RadiusX="0.7">
+                        <GradientStop Color="{StaticResource Background}" Offset="0"/>
+                        <GradientStop Color="{StaticResource BackgroundDark}" Offset="1"/>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+            
+            <Setter Property="BorderBrush" Value="{StaticResource Brush_BackgroundLight}"/>
+            <Setter Property="Foreground" Value="{StaticResource Brush_Foreground}"/>
             <Setter Property="BorderThickness" Value="4"/>
             <Setter Property="Width" Value="220"/>
             <Setter Property="Height" Value="100"/>
@@ -29,12 +37,20 @@
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Foreground" Value="{StaticResource Brush_ForegroundLight}" />
                             </Trigger>
 
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FF3E3E42" />
-                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <RadialGradientBrush RadiusX="0.8">
+                                            <GradientStop Color="{StaticResource BackgroundLight}" Offset="0"/>
+                                            <GradientStop Color="{StaticResource Background}" Offset="1"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter Property="Foreground" Value="{StaticResource Brush_ForegroundLight}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -43,9 +59,9 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel Background="{StaticResource Background}">
-        <DockPanel DockPanel.Dock="Top" Background="{StaticResource BackgroundDark}">
-            <Rectangle DockPanel.Dock="Bottom" Height="7" Fill="{StaticResource Separator Brush}"/>
+    <DockPanel Background="{StaticResource Brush_Background}">
+        <DockPanel DockPanel.Dock="Top" Background="{StaticResource Brush_BackgroundDark}">
+            <Rectangle DockPanel.Dock="Bottom" Height="7" Fill="{StaticResource Brush_Separator}"/>
 
             <DockPanel DockPanel.Dock="Left" Margin="0">
                 <Button Name="btnHome" Width="100" BorderBrush="{x:Null}" Foreground="{x:Null}" >
@@ -70,8 +86,8 @@
             </StackPanel>
         </DockPanel>
 
-        <DockPanel DockPanel.Dock="Bottom" Background="{StaticResource BackgroundDark}">
-            <Rectangle DockPanel.Dock="Top" Height="7" Fill="{StaticResource Separator Brush}"/>
+        <DockPanel DockPanel.Dock="Bottom" Background="{StaticResource Brush_BackgroundDark}">
+            <Rectangle DockPanel.Dock="Top" Height="7" Fill="{StaticResource Brush_Separator}"/>
             <UniformGrid Rows="1">
                 <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: XX °C</TextBlock>
                 <TextBlock Name="txtConnection" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Verbunden / Offline</TextBlock>
