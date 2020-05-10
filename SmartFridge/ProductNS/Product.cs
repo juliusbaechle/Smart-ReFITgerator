@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SmartFridge.ProductNS
 {
     public enum ECategory
     {
-        None,
-        Fruit,       
-        Vegetable,
-        Meat_Fish,
+        None = -1,
+        Drinks,
+        Vegetable_Fruit,
+        Cereal_Product,
         Dairy_Product,
-        Breakfast,
-        Other
+        Meat_Fish_Eggs,
+        Fat_Oil,
+        Confectionery
     }
 
     public enum EQuantity
@@ -25,12 +27,13 @@ namespace SmartFridge.ProductNS
         Count
     }
 
-    public class Product
+    public class Product : DependencyObject
     {
         public Product()
         {
             ID = Guid.NewGuid();
-            Barcodes = new List<UInt64>();            
+            Barcodes = new List<UInt64>();
+            Category = ECategory.None;
         }
 
         public bool IsValid()
@@ -41,40 +44,12 @@ namespace SmartFridge.ProductNS
             return true;
         }
 
-        public string Name {
-            get;
-            internal set;
-        }
-
-        public UInt16 Energy {
-            get;
-            internal set;
-        }
-
-        public UInt16 Durability {
-            get;
-            internal set;
-        }
-
-        public ECategory Category {
-            get;
-            internal set;
-        }
-
-        public EQuantity Quantity
-        {
-            get;
-            internal set;
-        }
-
-        internal Guid ID {
-            get;
-            set;
-        }
-
-        internal List<UInt64> Barcodes {
-            get;
-            set;
-        }
+        public string Name { set; get; }
+        public UInt16 Energy { set; get; }
+        public UInt16 Durability { set; get; }
+        public ECategory Category { set; get; }
+        public EQuantity Quantity { set; get; }
+        internal Guid ID { set; get; }
+        internal List<UInt64> Barcodes { set; get; }
     }
 }

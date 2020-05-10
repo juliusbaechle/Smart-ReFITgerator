@@ -42,8 +42,6 @@ namespace SmartFridgeWPF
             btnMessages.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Messages); };
             btnShopping.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Shopping); };
             btnClose.Click      += (object sender, RoutedEventArgs e) => { Close(); };
-
-            SetContent(new ProductForm());
         }
 
         public void SetConnectionInfo(string text)
@@ -61,9 +59,9 @@ namespace SmartFridgeWPF
             txtHumidity.Text = "Humidity: " + percent + "%";
         }
 
-        public void SetContent(ContentControl page)
+        public void SetContent(Page page)
         {
-            Content = page;
+            ContentFrame.Content = page;
         }
     }
 }

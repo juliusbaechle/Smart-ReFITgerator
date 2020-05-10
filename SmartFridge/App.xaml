@@ -1,9 +1,9 @@
-﻿<Application x:Class="SmartFridgeWPF.App"
+﻿<Application x:Class="SmartFridge.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SmartFridgeWPF"
+             xmlns:local="clr-namespace:SmartFridge"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="DarkMode.xaml"/>
     </Application.Resources>
 </Application>

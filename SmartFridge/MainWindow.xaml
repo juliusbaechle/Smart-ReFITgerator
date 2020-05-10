@@ -7,14 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     <Window.Resources>
-        <LinearGradientBrush x:Key="Separator Brush">
-            <GradientStop Color="#FF3E3E42"/>
-            <GradientStop Color="#FF808080" Offset="0.1"/>
-            <GradientStop Color="#FFA0A0A0" Offset="0.5"/>
-            <GradientStop Color="#FF808080" Offset="0.9"/>
-            <GradientStop Color="#FF3E3E42" Offset="1.0"/>
-        </LinearGradientBrush>
-        
         <Style TargetType="Button">
             <Setter Property="Background" Value="#00000000"/>
             <Setter Property="BorderBrush" Value="#FF959595"/>
@@ -51,10 +43,10 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel Background="#FF3E3E42">
-        <DockPanel DockPanel.Dock="Top" Background="#FF2D2D30">
+    <DockPanel Background="{StaticResource Background}">
+        <DockPanel DockPanel.Dock="Top" Background="{StaticResource BackgroundDark}">
             <Rectangle DockPanel.Dock="Bottom" Height="7" Fill="{StaticResource Separator Brush}"/>
-            
+
             <DockPanel DockPanel.Dock="Left" Margin="0">
                 <Button Name="btnHome" Width="100" BorderBrush="{x:Null}" Foreground="{x:Null}" >
                     <Image Height="80" Width="80" Source="home.png" OpacityMask="Black" />
@@ -78,7 +70,7 @@
             </StackPanel>
         </DockPanel>
 
-        <DockPanel DockPanel.Dock="Bottom" Background="#FF2D2D30">
+        <DockPanel DockPanel.Dock="Bottom" Background="{StaticResource BackgroundDark}">
             <Rectangle DockPanel.Dock="Top" Height="7" Fill="{StaticResource Separator Brush}"/>
             <UniformGrid Rows="1">
                 <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: XX °C</TextBlock>
@@ -87,6 +79,6 @@
             </UniformGrid>
         </DockPanel>
 
-        <ContentControl Name="Content"/>
+        <Frame Name="ContentFrame"/>
     </DockPanel>
 </Window>

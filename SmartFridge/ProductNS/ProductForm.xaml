@@ -12,10 +12,10 @@
     </Page.DataContext>
     
     <Grid>
-        <Label Content="Produkt" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="28" Width="135"/>
+        <Label Foreground="White" Content="Produkt" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="28" Width="135"/>
         <TextBox HorizontalAlignment="Left" Margin="150,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.571,4.625" Height="23" Width="219" Foreground="Black" Background="#FFE2E2E2" Text="{Binding Name, Mode=TwoWay}" />
-        <Label Content="Energie" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Height="28" Width="135" RenderTransformOrigin="0.395,-0.083"/>
-        <Label Content="Haltbarkeit" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Height="28" Width="135" RenderTransformOrigin="0.395,-0.083"/>
+        <Label Foreground="White" Content="Energie" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Height="28" Width="135" RenderTransformOrigin="0.395,-0.083"/>
+        <Label Foreground="White" Content="Haltbarkeit" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Height="28" Width="135" RenderTransformOrigin="0.395,-0.083"/>
         <Image HorizontalAlignment="Left" Height="216" Margin="549,10,0,0" VerticalAlignment="Top" Width="233"/>
         <Button Content="Bestätige" HorizontalAlignment="Left" Margin="256,374,0,0" VerticalAlignment="Top" Width="275" RenderTransformOrigin="-1.827,-0.8" Height="35" Click="Button_Click"/>
     </Grid>

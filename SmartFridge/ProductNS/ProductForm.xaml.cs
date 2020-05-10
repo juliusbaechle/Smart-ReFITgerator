@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace SmartFridgeWPF.ProductNS
 {
-    public partial class ProductForm : Frame
+    public partial class ProductForm : Page
     {
         public delegate void ProductHandler (Product product);
         public event ProductHandler Finished;
