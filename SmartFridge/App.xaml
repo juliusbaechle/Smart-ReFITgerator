@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:SmartFridge"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="DarkMode.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Selen.Wpf.SystemStyles;component/Styles.xaml"/>
+                <ResourceDictionary Source="CustomControls/DarkMode.xaml"/>
+                <ResourceDictionary Source="CustomControls/Slider.xaml"/>
+                <ResourceDictionary Source="CustomControls/ImageButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

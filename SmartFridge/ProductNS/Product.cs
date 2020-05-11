@@ -9,7 +9,6 @@ namespace SmartFridge.ProductNS
 {
     public enum ECategory
     {
-        None = -1,
         Drinks,
         Vegetable_Fruit,
         Cereal_Product,
@@ -21,26 +20,23 @@ namespace SmartFridge.ProductNS
 
     public enum EQuantity
     {
-        None,
         Grams,
         Milliliters,
         Count
     }
 
-    public class Product : DependencyObject
+    public class Product
     {
         public Product()
         {
             ID = Guid.NewGuid();
             Barcodes = new List<UInt64>();
-            Category = ECategory.None;
+            Category = ECategory.Drinks;
         }
 
         public bool IsValid()
         {
             if (Name == "") return false;
-            if (Category == ECategory.None) return false;
-            if (Quantity == EQuantity.None) return false;
             return true;
         }
 
@@ -51,5 +47,26 @@ namespace SmartFridge.ProductNS
         public EQuantity Quantity { set; get; }
         internal Guid ID { set; get; }
         internal List<UInt64> Barcodes { set; get; }
+
+
+
+        public static Dictionary<ECategory, string> CategoryCaptions { get; } =
+            new Dictionary<ECategory, string>()
+            {
+                {ECategory.Drinks,          "Getränk" },
+                {ECategory.Vegetable_Fruit, "Obst & Gemüse" },
+                {ECategory.Cereal_Product,  "Getreideprodukt" },
+                {ECategory.Dairy_Product,   "Milchprodukt" },
+                {ECategory.Meat_Fish_Eggs,  "Fleisch & Fisch & Eier" },
+                {ECategory.Fat_Oil,         "Fett & Öl" },
+                {ECategory.Confectionery,   "Genussmittel" }
+            };
+
+        public static Dictionary<EQuantity, string> QuantityCaptions { get; } =
+            new Dictionary<EQuantity, string>() {
+                {EQuantity.Grams,       "Gramm" },
+                {EQuantity.Milliliters, "Milliliter" },
+                {EQuantity.Count,       "Anzahl" }
+            };
     }
 }

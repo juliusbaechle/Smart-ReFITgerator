@@ -59,12 +59,33 @@
     <Reference Include="K4os.Hash.xxHash, Version=1.0.6.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.0.1\lib\net40\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.0.1\lib\net40\MahApps.Metro.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.20.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.20\lib\net48\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Selen.Wpf.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc472ed4b6daaa58, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selen.Wpf.1.0.0\lib\net45\Selen.Wpf.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Selen.Wpf.GenericAppTree, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc472ed4b6daaa58, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selen.Wpf.1.0.0\lib\net45\Selen.Wpf.GenericAppTree.dll</HintPath>
+    </Reference>
+    <Reference Include="Selen.Wpf.GenericAppTree.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc472ed4b6daaa58, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selen.Wpf.1.0.0\lib\net45\Selen.Wpf.GenericAppTree.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Selen.Wpf.SystemStyles, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc472ed4b6daaa58, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selen.Wpf.1.0.0\lib\net45\Selen.Wpf.SystemStyles.dll</HintPath>
     </Reference>
     <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.0.2.669, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.bundle_e_sqlite3.2.0.2\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
@@ -104,6 +125,9 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.0.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -138,7 +162,11 @@
     <Compile Include="ProductNS\Products.cs" />
     <Compile Include="Scale\IScale.cs" />
     <Compile Include="Scale\Scale.cs" />
-    <Page Include="DarkMode.xaml">
+    <Page Include="CustomControls\ImageButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\DarkMode.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -158,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CustomControls\Slider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -176,6 +208,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

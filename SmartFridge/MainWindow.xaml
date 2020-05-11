@@ -7,12 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
 
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource StandardButton}">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="FontSize" Value="35"/>
+            <Setter Property="Margin" Value="10, 10, 0, 10"/>
+        </Style>
+    </Window.Resources>
+    
     <DockPanel Background="{StaticResource Brush_Background}">
         <DockPanel DockPanel.Dock="Top" Background="{StaticResource Brush_BackgroundDark}">
             <Rectangle DockPanel.Dock="Bottom" Height="7" Fill="{StaticResource Brush_Separator}"/>
 
             <DockPanel DockPanel.Dock="Left" Margin="0">
-                <Button Name="btnHome" Width="100" BorderBrush="{x:Null}" Foreground="{x:Null}" >
+                <Button Style="{StaticResource RoundedButton}" Name="btnHome" Width="100" BorderBrush="{x:Null}">
                     <Image Height="80" Width="80" Source="home.png" OpacityMask="Black" />
                 </Button>
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
@@ -20,7 +28,7 @@
 
             <DockPanel DockPanel.Dock="Right">
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
-                <Button Name="btnClose" Width="100" BorderBrush="{x:Null}" Foreground="{x:Null}" >
+                <Button Style="{StaticResource RoundedButton}" Name="btnClose" Width="100" BorderBrush="{x:Null}">
                     <Image Height="80" Width="80" Source="close.png"/>
                 </Button>
             </DockPanel>
