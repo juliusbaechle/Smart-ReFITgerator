@@ -4,19 +4,63 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartFridgeWPF.ProductNS"
-        xmlns:ProductNS="clr-namespace:SmartFridge.ProductNS" x:Class="SmartFridgeWPF.ProductNS.ProductForm"
+        xmlns:ProductNS="clr-namespace:SmartFridge.ProductNS" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="SmartFridgeWPF.ProductNS.ProductForm"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        Height="893" Width="1920">
+
+    <Page.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{StaticResource Brush_Foreground}"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Margin" Value="10,10,0,10"/>
+            <Setter Property="FontSize" Value="35"/>
+        </Style>
+    </Page.Resources>
+
     <Page.DataContext>
         <ProductNS:Product/>
     </Page.DataContext>
-    
-    <Grid>
-        <Label Foreground="White" Content="Produkt" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="28" Width="135"/>
-        <TextBox HorizontalAlignment="Left" Margin="150,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.571,4.625" Height="23" Width="219" Foreground="Black" Background="#FFE2E2E2" Text="{Binding Name, Mode=TwoWay}" />
-        <Label Foreground="White" Content="Energie" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Height="28" Width="135" RenderTransformOrigin="0.395,-0.083"/>
-        <Label Foreground="White" Content="Haltbarkeit" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Height="28" Width="135" RenderTransformOrigin="0.395,-0.083"/>
-        <Image HorizontalAlignment="Left" Height="216" Margin="549,10,0,0" VerticalAlignment="Top" Width="233"/>
-        <Button Content="Bestätige" HorizontalAlignment="Left" Margin="256,374,0,0" VerticalAlignment="Top" Width="275" RenderTransformOrigin="-1.827,-0.8" Height="35" Click="Button_Click"/>
-    </Grid>
+
+    <DockPanel LastChildFill="False">
+        <Button Margin ="0, 0, 0, 50" DockPanel.Dock="Bottom" Content="Bestätige" Width="500" Height="70" Click="Button_Click"/>
+
+        <StackPanel DockPanel.Dock="Left" Margin="50, 50, 0, 50">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Name"/>
+                <TextBox Margin="0,10,0,10" Width="500" FontSize="35" Background="{StaticResource Brush_BackgroundLight}" Foreground="{StaticResource Brush_Foreground}"/>
+            </StackPanel>
+
+            <DockPanel>
+                <Label Content="Energie" Grid.Column="0"/>
+
+                <UniformGrid Rows="2">
+                    <Slider Grid.Row="0" x:Name="SliderEnergy" Minimum="10" Maximum="2000" Interval="10" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderEnergy, StringFormat=\{0:#\} KCal}"  IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
+                </UniformGrid>
+            </DockPanel>
+
+            <DockPanel>
+                <Label Content="Haltbarkeit" Grid.Column="0"/>
+
+                <UniformGrid Rows="2">
+                    <Slider Grid.Row="0" x:Name="SliderDuration" Minimum="1" Maximum="100" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderDuration, StringFormat=\{0:#\} Tage}" IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
+                </UniformGrid>
+            </DockPanel>
+
+            <DockPanel>
+                <Label Content="Kategorie"/>
+                <ComboBox Margin="0,10,0,10" Background="{StaticResource Brush_BackgroundLight}" HorizontalAlignment="Stretch"/>
+            </DockPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Right">
+            <Border Margin ="0, 50, 50, 0" VerticalAlignment="Top" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" Height="600" Width="600">
+                <Image x:Name="ProductImage"/>
+            </Border>
+        </StackPanel>
+    </DockPanel>
 </Page>

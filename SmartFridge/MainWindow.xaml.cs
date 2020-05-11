@@ -42,6 +42,8 @@ namespace SmartFridgeWPF
             btnMessages.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Messages); };
             btnShopping.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Shopping); };
             btnClose.Click      += (object sender, RoutedEventArgs e) => { Close(); };
+
+            SetContent(new ProductForm());
         }
 
         public void SetConnectionInfo(string text)
