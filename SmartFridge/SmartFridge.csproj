@@ -37,6 +37,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SmartFridge.DependencyRoot</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
@@ -148,16 +151,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
     <Compile Include="DB.cs" />
+    <Compile Include="DependencyRoot.cs" />
+    <Compile Include="Mediator.cs" />
     <Compile Include="ProductNS\DBProducts.cs" />
     <Compile Include="ProductNS\Product.cs" />
+    <Compile Include="ProductNS\ProductElement.xaml.cs">
+      <DependentUpon>ProductElement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProductNS\ProductForm.xaml.cs">
       <DependentUpon>ProductForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProductNS\ProductOverview.xaml.cs">
+      <DependentUpon>ProductOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProductNS\Products.cs" />
     <Compile Include="Scale\IScale.cs" />
@@ -174,19 +181,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProductNS\ProductElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProductNS\ProductForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomControls\Slider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProductNS\ProductOverview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -220,10 +235,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="home.png" />
+    <Resource Include="icons\add.png" />
+    <Resource Include="icons\close.png" />
+    <Resource Include="icons\delete.png" />
+    <Resource Include="icons\edit.png" />
+    <Resource Include="icons\home.png" />
+    <Resource Include="icons\select.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
