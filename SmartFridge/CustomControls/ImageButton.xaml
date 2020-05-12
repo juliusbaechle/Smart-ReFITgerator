@@ -38,7 +38,7 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background">
                                 <Setter.Value>
-                                    <RadialGradientBrush RadiusX="0.8">
+                                    <RadialGradientBrush RadiusX="0.5">
                                         <GradientStop Color="{StaticResource BackgroundLight}" Offset="0"/>
                                         <GradientStop Color="{StaticResource Background}" Offset="0.7"/>
                                         <GradientStop Color="{StaticResource BackgroundDark}" Offset="1"/>
