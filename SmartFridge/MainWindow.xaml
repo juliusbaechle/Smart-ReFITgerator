@@ -21,7 +21,7 @@
 
             <DockPanel DockPanel.Dock="Left" Margin="0">
                 <Button Style="{StaticResource RoundedButton}" Name="btnHome" Width="100" BorderBrush="{x:Null}">
-                    <Image Height="80" Width="80" Source="home.png" OpacityMask="Black" />
+                    <Image Height="80" Width="80" Source="icons/home.png" OpacityMask="Black" />
                 </Button>
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
             </DockPanel>
@@ -29,7 +29,7 @@
             <DockPanel DockPanel.Dock="Right">
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
                 <Button Style="{StaticResource RoundedButton}" Name="btnClose" Width="100" BorderBrush="{x:Null}">
-                    <Image Height="80" Width="80" Source="close.png"/>
+                    <Image Height="80" Width="80" Source="icons/close.png"/>
                 </Button>
             </DockPanel>
 
@@ -51,6 +51,6 @@
             </UniformGrid>
         </DockPanel>
 
-        <Frame Name="ContentFrame"/>
+        <Frame Name="ContentFrame" NavigationUIVisibility="Hidden"/>
     </DockPanel>
 </Window>

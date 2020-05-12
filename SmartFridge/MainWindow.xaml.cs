@@ -1,4 +1,6 @@
-﻿using SmartFridgeWPF.ProductNS;
+﻿using SmartFridge;
+using SmartFridge.ProductNS;
+using SmartFridgeWPF.ProductNS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +18,27 @@ using System.Windows.Shapes;
 
 namespace SmartFridgeWPF
 {
-    public enum EPage
-    {
-        Home,
-        Products,
-        Content,
-        Nutrition,
-        Messages,
-        Shopping
-    }
-
     public partial class MainWindow : Window
     {
         public delegate void PageHandler(EPage page);
-        public event PageHandler Open;
+        public event PageHandler OpenPage;
 
-        public MainWindow()
+        public MainWindow(ResourceDictionary resources)
         {
+            Resources = resources;
             InitializeComponent();
-            
-            btnHome.Click       += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Home); };
-            btnProducts.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Products); };
-            btnContent.Click    += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Content); };
-            btnNutrition.Click  += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Nutrition); };
-            btnMessages.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Messages); };
-            btnShopping.Click   += (object sender, RoutedEventArgs e) => { Open?.Invoke(EPage.Shopping); };
-            btnClose.Click      += (object sender, RoutedEventArgs e) => { Close(); };
+            ConnectButtons();
+        }
 
-            SetContent(new ProductForm());
+        private void ConnectButtons()
+        {
+            btnHome.Click += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Home); };
+            btnProducts.Click += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Products); };
+            btnContent.Click += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Content); };
+            btnNutrition.Click += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Nutrition); };
+            btnMessages.Click += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Messages); };
+            btnShopping.Click += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Shopping); };
+            btnClose.Click += (object sender, RoutedEventArgs e) => { Close(); };
         }
 
         public void SetConnectionInfo(string text)
@@ -63,6 +58,7 @@ namespace SmartFridgeWPF
 
         public void SetContent(Page page)
         {
+            ContentFrame.NavigationService.RemoveBackEntry();
             ContentFrame.Content = page;
         }
     }
