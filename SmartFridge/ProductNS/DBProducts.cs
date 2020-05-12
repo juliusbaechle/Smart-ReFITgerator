@@ -65,6 +65,13 @@ namespace SmartFridge.ProductNS
             cmd.ExecuteNonQuery();
         }
 
+        public void Delete(Product product)
+        {
+            DbCommand cmd = m_db.CreateCommand();
+            cmd.CommandText = $"DELETE FROM tblProducts WHERE Id='{product.ID}'";
+            cmd.ExecuteNonQuery();
+        }
+
         private bool Contains(Guid productId)
         {
             DbCommand cmd = m_db.CreateCommand();
