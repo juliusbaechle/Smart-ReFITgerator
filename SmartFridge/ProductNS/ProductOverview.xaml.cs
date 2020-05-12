@@ -20,46 +20,40 @@ namespace SmartFridge.ProductNS
 
     public partial class ProductOverview : Page
     {
-        public event Action AddProduct;
-        public event ProductHandler EditProduct;
-        public event ProductHandler DeleteProduct;
-        public event ProductHandler SelectedProduct;
+        public event Action Add;
+        public event ProductHandler Edit;
+        public event ProductHandler Delete;
+        public event ProductHandler Selected;
 
         public ProductOverview()
         {
             InitializeComponent();
         }
 
-        public ProductOverview(Products products)
-        {
-            InitializeComponent();
-            listBoxProducts.ItemsSource = products.List;
-        }
-
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddProduct?.Invoke();
+            Add?.Invoke();
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             var product = listBoxProducts.SelectedItem as Product;
             if (product == null) return;
-            EditProduct?.Invoke(product);
+            Edit?.Invoke(product);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             var product = listBoxProducts.SelectedItem as Product;
             if (product == null) return;
-            DeleteProduct?.Invoke(product);
+            Delete?.Invoke(product);
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             var product = listBoxProducts.SelectedItem as Product;
             if (product == null) return;
-            SelectedProduct?.Invoke(product);
+            Selected?.Invoke(product);
         }
     }
 }

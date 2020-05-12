@@ -21,7 +21,8 @@ namespace SmartFridge
         Content,
         Nutrition,
         Messages,
-        Shopping
+        Shopping,
+        ProductForm
     }
 
     class Mediator
@@ -37,18 +38,42 @@ namespace SmartFridge
         public void ShowPage(EPage page) {
             switch (page)
             {
-                case EPage.Home:
-                    m_window.SetContent(new Page());
+                case EPage.Products: 
+                    ShowProductOverview(); 
                     break;
-                case EPage.Products:
-                    m_window.SetContent(new ProductOverview(m_products));
+
+                case EPage.ProductForm: 
+                    ShowProductForm(null); 
                     break;
-                case EPage.Content:
-                    var productForm = new ProductForm();
-                    productForm.Finished += m_products.AddOrEdit;
-                    m_window.SetContent(productForm);
-                    break;
+
+                default: 
+                    ShowEmptyPage(); 
+                    break;                    
             }
+        }
+
+        private void ShowEmptyPage()
+        {
+            m_window.SetContent(new Page());
+        }
+
+        private void ShowProductOverview()
+        {
+            var productOverview = new ProductOverview { DataContext = m_products };
+            productOverview.Edit += ShowProductForm;
+            productOverview.Delete += m_products.Delete;
+            productOverview.Selected += m_products.Selected;
+            productOverview.Add += () => { ShowPage(EPage.ProductForm); };
+            m_window.SetContent(productOverview);
+        }
+
+        private void ShowProductForm(Product product)
+        {
+            var productForm = new ProductForm();
+            if (product != null) productForm.DataContext = product;
+            productForm.Finished += m_products.AddOrEdit;
+            productForm.Finished += (Product p) => { ShowPage(EPage.Products); };
+            m_window.SetContent(productForm);
         }
 
         MainWindow m_window;
