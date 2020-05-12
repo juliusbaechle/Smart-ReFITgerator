@@ -13,20 +13,20 @@ namespace SmartFridge.ProductNS
         internal Products(DBProducts db)
         {
             m_db = db;
-            m_products = m_db.LoadAll();
+            List = m_db.LoadAll();
         }
-
+         
         public void AddOrEdit(Product product)
         {
-            if (m_products.Contains(product))
+            if (!List.Contains(product))
             {
-                m_products.Add(product);
+                List.Add(product);
             }
 
             m_db.Save(product);
         }
 
         private DBProducts m_db;
-        private List<Product> m_products;
+        public List<Product> List { get; private set; }
     }
 }

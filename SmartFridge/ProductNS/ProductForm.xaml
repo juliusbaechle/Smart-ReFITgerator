@@ -30,15 +30,15 @@
         <StackPanel DockPanel.Dock="Left" Margin="50, 50, 0, 50">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Name"/>
-                <TextBox Margin="0,10,0,10" Width="500" FontSize="35"/>
+                <TextBox Text="{Binding Name, Mode=OneWayToSource}" Margin="0,10,0,10" Width="500" FontSize="35"/>
             </StackPanel>
 
             <DockPanel>
                 <Label Content="Energie" Grid.Column="0"/>
 
                 <UniformGrid Rows="2">
-                    <Slider Grid.Row="0" x:Name="SliderEnergy" Minimum="10" Maximum="2000" Interval="10" VerticalAlignment="Bottom"/>
-                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderEnergy, StringFormat=\{0:#\} KCal}"  IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
+                    <Slider Value="{Binding Energy, Mode=OneWayToSource}" Grid.Row="0" x:Name="SliderEnergy" Minimum="10" Maximum="2000" Interval="10" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderEnergy, StringFormat={}{0:#} KCal, Mode=TwoWay}"  IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
                 </UniformGrid>
             </DockPanel>
 
@@ -46,20 +46,20 @@
                 <Label Content="Haltbarkeit" Grid.Column="0"/>
 
                 <UniformGrid Rows="2">
-                    <Slider Grid.Row="0" x:Name="SliderDuration" Minimum="1" Maximum="100" VerticalAlignment="Bottom"/>
-                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderDuration, StringFormat=\{0:#\} Tage}" IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
+                    <Slider Value="{Binding Durability, Mode=OneWayToSource}" Grid.Row="0" x:Name="SliderDuration" Minimum="1" Maximum="100" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderDuration, StringFormat={}{0:0} Tage, Mode=TwoWay}" IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
                 </UniformGrid>
             </DockPanel>
 
             <DockPanel>
                 <Label Content="Kategorie"/>
-                <ComboBox ItemsSource="{Binding Path=CategoryCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=Category, Mode=TwoWay}"  
+                <ComboBox ItemsSource="{Binding Path=CategoryCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=Category, Mode=OneWayToSource}"  
                           FontSize="25" Margin="0,10,0,10" Background="{StaticResource Brush_BackgroundLight}" HorizontalAlignment="Stretch"/>
             </DockPanel>
 
             <DockPanel>
-                <Label Content="Mengenangaben"/>
-                <ComboBox ItemsSource="{Binding Path=QuantityCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=Quantity, Mode=TwoWay}"
+                <Label Content="Mengenangabe"/>
+                <ComboBox ItemsSource="{Binding Path=QuantityCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=Quantity, Mode=OneWayToSource}"
                           FontSize="25" Margin="0,10,0,10" Background="{StaticResource Brush_BackgroundLight}" HorizontalAlignment="Stretch"/>
             </DockPanel>
         </StackPanel>
