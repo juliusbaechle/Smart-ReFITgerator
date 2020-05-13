@@ -27,7 +27,7 @@ namespace SmartFridgeUnitTests
             product.Category = ECategory.Dairy_Product;
             product.Energy = 200;
             product.Durability = 50;
-            product.ImageId = "ABCDEFGH";
+            product.ImageId = "ABCDEFGH.png";
         }
 
         [ClassCleanup]
@@ -35,7 +35,7 @@ namespace SmartFridgeUnitTests
         {
             testDB.Close();
             testDB.Dispose();
-            File.Delete("URI=file:test.db");
+            File.Delete("test.db");
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace SmartFridgeUnitTests
             Assert.AreEqual(product.Durability, loadedProduct.Durability);
             Assert.AreEqual(product.Energy,     loadedProduct.Energy);
             Assert.AreEqual(product.Category,   loadedProduct.Category);
-            Assert.AreEqual(product.ImageId,    loadedProduct.ImageId);
+            Assert.AreEqual(product.ImageId,  loadedProduct.ImageId);
         }
 
         [TestMethod]

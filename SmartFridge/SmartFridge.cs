@@ -29,9 +29,8 @@ namespace SmartFridge
             var mainWindow = new MainWindow(app.Resources);
 
             var db = DB.CreateLocalConnection();
-            ImageRepository = new LocalImageRepository();
-
-            var products = new Products(new DBProducts(db));            
+            var imageRepo = new LocalImageRepository();
+            var products = new Products(new DBProducts(db), imageRepo);            
             // var contents = new Contents(new DBContents(db));
             // ...
             
@@ -40,7 +39,5 @@ namespace SmartFridge
 
             app.Run(mainWindow);
         }
-
-        public static IImageRepository ImageRepository { get; private set; }
     }
 }

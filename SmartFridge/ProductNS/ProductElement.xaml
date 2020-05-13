@@ -20,8 +20,8 @@
     </UserControl.Resources>
     
     <DockPanel>
-        <Border BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="3" Margin="5" Width="140" Height="140" HorizontalAlignment="Left">
-            <Image/>
+        <Border BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="3" Margin="5" Width="210" Height="140" HorizontalAlignment="Left">
+            <Image Source="{Binding Image}"/>
         </Border>
 
         <TextBox Text="{Binding Name}" Margin="20,0,20,0" Height="60" FontSize="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="400"/>

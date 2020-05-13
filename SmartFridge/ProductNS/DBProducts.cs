@@ -24,12 +24,12 @@ namespace SmartFridge.ProductNS
             if (!Contains(product.ID))
             {                
                 cmd.CommandText = $"INSERT INTO tblProducts (Id, Name, Durability, Energy, Category, ImagePath) " +
-                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, '{product.ImagePath}')";    
+                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, '{product.ImageId}')";    
             }
             else
             {
                 cmd.CommandText = $"UPDATE tblProducts SET " +
-                    $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, ImagePath = '{product.ImagePath}' " +
+                    $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, ImagePath = '{product.ImageId}' " +
                     $"WHERE Id = '{product.ID}'";
             }
 
@@ -51,7 +51,7 @@ namespace SmartFridge.ProductNS
                 product.Durability  = (UInt16)reader.GetInt32(2);
                 product.Energy      = (UInt16)reader.GetInt32(3);
                 product.Category    = (ECategory)reader.GetInt16(4);
-                product.ImagePath   = reader.GetString(5);
+                product.ImageId   = reader.GetString(5);
                 products.Add(product);
             }
 
@@ -84,7 +84,7 @@ namespace SmartFridge.ProductNS
         private void CreateTable()
         {
             DbCommand cmd = m_db.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImagePath VARCHAR(20) )";
+            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImagePath VARCHAR(200) )";
             cmd.ExecuteNonQuery();
         }
 

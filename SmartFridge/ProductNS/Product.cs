@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,8 +31,10 @@ namespace SmartFridge.ProductNS
         Count
     }
 
-    public class Product
+    public class Product : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Product()
         {
             ID = Guid.NewGuid();
@@ -51,16 +55,16 @@ namespace SmartFridge.ProductNS
         public EQuantity Quantity { set; get; }
         internal Guid ID { set; get; }
         internal List<UInt64> Barcodes { set; get; }
-        internal string ImagePath { set; get; } = "";
-
-        public void SetImage(string localPath)
-        {
-            var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
-            if (!ImageExtensions.Contains(Path.GetExtension(localPath).ToUpperInvariant())) return;
-            BitmapImage bitmapImg = new BitmapImage(new Uri(localPath));
-            if(File.Exists(ImagePath)) File.Delete(ImagePath);
-            ImagePath = SmartFridge.ImageRepository.Save(bitmapImg);
+        
+        public BitmapImage Image { 
+            set {
+                m_image = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Image"));
+            } 
+            get { return m_image; }
         }
+        public string ImageId { get; set; }
+        private BitmapImage m_image = null;    
 
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =

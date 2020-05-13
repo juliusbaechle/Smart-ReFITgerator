@@ -71,15 +71,13 @@ namespace SmartFridge
 
         private void ShowProductForm(Product product)
         {
-            var productForm = new ProductForm();
+            var productForm = new ProductForm(product);
             m_window.SetContent(productForm);
-            if (product != null)
-                productForm.DataContext = product;
 
             productForm.Finished += (Product) => { 
                 m_products.AddOrEdit(Product); 
                 ShowPage(EPage.Products); 
-            };          
+            };
         }
 
         MainWindow m_window;

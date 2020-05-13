@@ -7,5 +7,7 @@ namespace SmartFridge.ProductNS
     public interface IImageRepository
     {
         string Save(BitmapImage image);
+        BitmapImage Load(string path);
+        void Delete(string path);
     }
 }
