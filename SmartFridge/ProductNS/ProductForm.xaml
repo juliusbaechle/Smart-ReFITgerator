@@ -67,7 +67,7 @@
 
         <StackPanel DockPanel.Dock="Right">
             <Border AllowDrop="True" Drop="Image_Drop"  Background="#00000000" Margin ="0, 50, 50, 0" VerticalAlignment="Top" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" Height="600" Width="600">
-                <Image Source="{Binding Image}" TargetUpdated="Update"/>
+                <Image Name="ImageFrame" Source="{Binding ImagePath}"/>
             </Border>
         </StackPanel>
     </DockPanel>

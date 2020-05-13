@@ -51,28 +51,15 @@ namespace SmartFridge.ProductNS
         public EQuantity Quantity { set; get; }
         internal Guid ID { set; get; }
         internal List<UInt64> Barcodes { set; get; }
+        internal string ImagePath { set; get; } = "";
 
-
-        public BitmapImage Image { get; set; } = new BitmapImage();
-        internal string ImageId {
-            get { return imageId; }            
-            set { 
-                imageId = value; 
-                Image = SmartFridge.ImageRepository.Load(imageId); 
-            } 
-        }
-        private string imageId;
-
-        public void SetImage(string path)
+        public void SetImage(string localPath)
         {
             var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
-            if (!ImageExtensions.Contains(Path.GetExtension(path).ToUpperInvariant())) return;
-
-            BitmapImage bitmapImg = new BitmapImage(new Uri(path));
-            Image = bitmapImg;
-
-            SmartFridge.ImageRepository.Delete(ImageId);
-            imageId = SmartFridge.ImageRepository.Save(bitmapImg);
+            if (!ImageExtensions.Contains(Path.GetExtension(localPath).ToUpperInvariant())) return;
+            BitmapImage bitmapImg = new BitmapImage(new Uri(localPath));
+            if(File.Exists(ImagePath)) File.Delete(ImagePath);
+            ImagePath = SmartFridge.ImageRepository.Save(bitmapImg);
         }
 
 

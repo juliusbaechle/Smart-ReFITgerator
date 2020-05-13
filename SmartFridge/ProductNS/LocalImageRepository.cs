@@ -18,47 +18,28 @@ namespace SmartFridge.ProductNS
             #endif
         }
 
-        public void Delete(string id)
+        public string Save(BitmapImage image)
         {
-            if (File.Exists(GetPath(id)))
-            {
-                File.Delete(GetPath(id));
-            }
-        }
-
-        public BitmapImage Load(string id)
-        {
-            if(!File.Exists(GetPath(id)))
-                return new BitmapImage();
-
-            Uri uri = new Uri(GetPath(id), UriKind.Relative);
-            BitmapImage img = new BitmapImage(uri);
-            return img;
-        }
-
-        public string Save(BitmapImage bitmap)
-        {
-            string id;
+            string path;
             do {
-                id = RandomString(8);
-            } while (File.Exists(GetPath(id)));
+                path = CreatePath(RandomString(8));
+            } while (File.Exists(path));
 
             PngBitmapEncoder encoder = new PngBitmapEncoder();
-            string path = GetPath(id);
-            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            encoder.Frames.Add(BitmapFrame.Create(image));
             using (var filestream = new FileStream(path, FileMode.Create))
                 encoder.Save(filestream);
 
-            return id;
+            return path;
         }
 
 
-        private string GetPath(string id)
+        private string CreatePath(string id)
         {
             return PATH + "/" + id + ".png";
         }
         
-        public static string RandomString(int length)
+        private static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)

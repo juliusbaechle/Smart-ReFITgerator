@@ -17,7 +17,6 @@ namespace SmartFridgeWPF.ProductNS
         public ProductForm()
         {           
             InitializeComponent();
-            (DataContext as Product).Image.Changed += Update;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -35,11 +34,6 @@ namespace SmartFridgeWPF.ProductNS
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 product.SetImage(files[0]);
             }
-        }
-
-        private void Update(object sender, EventArgs e)
-        {
-
         }
     }
 }
