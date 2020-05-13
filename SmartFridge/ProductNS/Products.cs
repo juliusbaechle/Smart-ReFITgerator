@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace SmartFridge.ProductNS
             m_db.Delete(product);
         }
 
-        private DBProducts m_db;
+        private readonly DBProducts m_db;
         public BindingList<Product> List { get; internal set; }
     }
 }

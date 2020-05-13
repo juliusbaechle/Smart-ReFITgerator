@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
 {
@@ -48,6 +52,28 @@ namespace SmartFridge.ProductNS
         internal Guid ID { set; get; }
         internal List<UInt64> Barcodes { set; get; }
 
+
+        public BitmapImage Image { get; set; } = new BitmapImage();
+        internal string ImageId {
+            get { return imageId; }            
+            set { 
+                imageId = value; 
+                Image = SmartFridge.ImageRepository.Load(imageId); 
+            } 
+        }
+        private string imageId;
+
+        public void SetImage(string path)
+        {
+            var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+            if (!ImageExtensions.Contains(Path.GetExtension(path).ToUpperInvariant())) return;
+
+            BitmapImage bitmapImg = new BitmapImage(new Uri(path));
+            Image = bitmapImg;
+
+            SmartFridge.ImageRepository.Delete(ImageId);
+            imageId = SmartFridge.ImageRepository.Save(bitmapImg);
+        }
 
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =

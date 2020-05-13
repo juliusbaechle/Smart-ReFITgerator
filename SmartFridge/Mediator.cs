@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.IO;
 
 namespace SmartFridge
 {
@@ -59,7 +60,8 @@ namespace SmartFridge
 
         private void ShowProductOverview()
         {
-            var productOverview = new ProductOverview { DataContext = m_products };
+            var productOverview = new ProductOverview();
+            productOverview.DataContext = m_products;
             productOverview.Edit += ShowProductForm;
             productOverview.Delete += m_products.Delete;
             productOverview.Selected += m_products.Selected;
@@ -70,10 +72,14 @@ namespace SmartFridge
         private void ShowProductForm(Product product)
         {
             var productForm = new ProductForm();
-            if (product != null) productForm.DataContext = product;
-            productForm.Finished += m_products.AddOrEdit;
-            productForm.Finished += (Product p) => { ShowPage(EPage.Products); };
             m_window.SetContent(productForm);
+            if (product != null)
+                productForm.DataContext = product;
+
+            productForm.Finished += (Product) => { 
+                m_products.AddOrEdit(Product); 
+                ShowPage(EPage.Products); 
+            };          
         }
 
         MainWindow m_window;

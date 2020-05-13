@@ -33,7 +33,7 @@
             </DockPanel>            
         </DockPanel>
 
-        <ListBox Margin="20, 20, 20, 20" Name="listBoxProducts" ItemsSource="{Binding List}" Background="{StaticResource Brush_BackgroundDark}" SelectedItem="{Binding CurrentProduct, Mode=TwoWay}">
+        <ListBox Margin="20, 20, 20, 20" Name="listBoxProducts" ItemsSource="{Binding List}" Background="{StaticResource Brush_BackgroundDark}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <local:ProductElement DataContext="{Binding}"/>

@@ -1,35 +1,23 @@
 ﻿using SmartFridge.ProductNS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+using System.Collections.Generic;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System;
+using System.Windows.Data;
 
 namespace SmartFridgeWPF.ProductNS
 {
     public partial class ProductForm : Page
     {
         public delegate void ProductHandler (Product product);
-        public event ProductHandler Finished;
+        public event Action<Product> Finished;
 
         public ProductForm()
-        {
-            DataContext = new Product();
-            InitializeComponent();            
-        } 
-
-        public ProductForm(Product product)
-        {
-            DataContext = product;
-            InitializeComponent();            
+        {           
+            InitializeComponent();
+            (DataContext as Product).Image.Changed += Update;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -37,6 +25,21 @@ namespace SmartFridgeWPF.ProductNS
             var product = DataContext as Product;
             if (product == null || !product.IsValid()) return;
             Finished?.Invoke(product);
+        }
+
+        private void Image_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                Product product = DataContext as Product;
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                product.SetImage(files[0]);
+            }
+        }
+
+        private void Update(object sender, EventArgs e)
+        {
+
         }
     }
 }
