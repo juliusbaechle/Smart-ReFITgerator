@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SmartFridge.ProductNS
 {
     public enum ECategory
     {
-        None,
-        Fruit,       
-        Vegetable,
-        Meat_Fish,
+        Drinks,
+        Vegetable_Fruit,
+        Cereal_Product,
         Dairy_Product,
-        Breakfast,
-        Other
+        Meat_Fish_Eggs,
+        Fat_Oil,
+        Confectionery
     }
 
     public enum EQuantity
     {
-        None,
         Grams,
         Milliliters,
         Count
@@ -30,51 +30,43 @@ namespace SmartFridge.ProductNS
         public Product()
         {
             ID = Guid.NewGuid();
-            Barcodes = new List<UInt64>();            
+            Barcodes = new List<UInt64>();
+            Category = ECategory.Drinks;
         }
 
         public bool IsValid()
         {
             if (Name == "") return false;
-            if (Category == ECategory.None) return false;
-            if (Quantity == EQuantity.None) return false;
             return true;
         }
 
-        public string Name {
-            get;
-            internal set;
-        }
+        public string Name { set; get; }
+        public UInt16 Energy { set; get; }
+        public UInt16 Durability { set; get; }
+        public ECategory Category { set; get; }
+        public EQuantity Quantity { set; get; }
+        internal Guid ID { set; get; }
+        internal List<UInt64> Barcodes { set; get; }
 
-        public UInt16 Energy {
-            get;
-            internal set;
-        }
 
-        public UInt16 Durability {
-            get;
-            internal set;
-        }
 
-        public ECategory Category {
-            get;
-            internal set;
-        }
+        public static Dictionary<ECategory, string> CategoryCaptions { get; } =
+            new Dictionary<ECategory, string>()
+            {
+                {ECategory.Drinks,          "Getränk" },
+                {ECategory.Vegetable_Fruit, "Obst & Gemüse" },
+                {ECategory.Cereal_Product,  "Getreideprodukt" },
+                {ECategory.Dairy_Product,   "Milchprodukt" },
+                {ECategory.Meat_Fish_Eggs,  "Fleisch & Fisch & Eier" },
+                {ECategory.Fat_Oil,         "Fett & Öl" },
+                {ECategory.Confectionery,   "Genussmittel" }
+            };
 
-        public EQuantity Quantity
-        {
-            get;
-            internal set;
-        }
-
-        internal Guid ID {
-            get;
-            set;
-        }
-
-        internal List<UInt64> Barcodes {
-            get;
-            set;
-        }
+        public static Dictionary<EQuantity, string> QuantityCaptions { get; } =
+            new Dictionary<EQuantity, string>() {
+                {EQuantity.Grams,       "Gramm" },
+                {EQuantity.Milliliters, "Milliliter" },
+                {EQuantity.Count,       "Anzahl" }
+            };
     }
 }

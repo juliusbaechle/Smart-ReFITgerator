@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,25 +9,31 @@ namespace SmartFridge.ProductNS
 {
     public class Products
     {
-        public Action Changed;
+        public ProductHandler Selected;
 
         internal Products(DBProducts db)
         {
             m_db = db;
-            m_products = m_db.LoadAll();
+            List = new BindingList<Product>(m_db.LoadAll());
         }
-
+         
         public void AddOrEdit(Product product)
         {
-            if (m_products.Contains(product))
+            if (!List.Contains(product))
             {
-                m_products.Add(product);
+                List.Add(product);
             }
 
             m_db.Save(product);
         }
 
+        public void Delete(Product product)
+        {
+            List.Remove(product);
+            m_db.Delete(product);
+        }
+
         private DBProducts m_db;
-        private List<Product> m_products;
+        public BindingList<Product> List { get; internal set; }
     }
 }

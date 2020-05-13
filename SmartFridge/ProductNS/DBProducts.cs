@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SmartFridge.ProductNS
 {
@@ -63,6 +62,13 @@ namespace SmartFridge.ProductNS
         {
             DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = "DELETE FROM tblProducts";
+            cmd.ExecuteNonQuery();
+        }
+
+        public void Delete(Product product)
+        {
+            DbCommand cmd = m_db.CreateCommand();
+            cmd.CommandText = $"DELETE FROM tblProducts WHERE Id='{product.ID}'";
             cmd.ExecuteNonQuery();
         }
 

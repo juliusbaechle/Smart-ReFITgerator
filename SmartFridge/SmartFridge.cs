@@ -1,26 +1,42 @@
-﻿using System;
+﻿using SmartFridge.ProductNS;
+using SmartFridgeWPF;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows;
 
-namespace SmartFridge {
-    class SmartFridge {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
-        [STAThread]
-        static void Main() {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+namespace SmartFridge
+{
+    // Hier werden alle Objekte, Datenverbindungen, ... erzeugt
+    // und im Rahmen der DependencyInjection übergeben
 
-            SmartFridge fridge = new SmartFridge();
-            Application.Run(fridge.CreateDesktopView());
+    class SmartFridge
+    {   
+        [System.STAThreadAttribute()]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
+        public static void Main()
+        {
+            SmartFridge.Setup();
         }
 
-        Form CreateDesktopView()
+        private static void Setup()
         {
-            return new ProductForm();
+            Application app = Application.LoadComponent(new Uri("App.xaml", UriKind.Relative)) as Application;
+            var mainWindow = new MainWindow(app.Resources);
+
+            var db = DB.CreateLocalConnection();
+            var products = new Products(new DBProducts(db));
+            // var contents = new Contents(new DBContents(db));
+            // ...
+            
+            var mediator = new Mediator(mainWindow, products);
+            mediator.ShowPage(EPage.Home);    
+
+            app.Run(mainWindow);
         }
     }
 }
