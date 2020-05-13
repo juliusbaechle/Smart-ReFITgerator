@@ -27,6 +27,7 @@ namespace SmartFridgeUnitTests
             product.Category = ECategory.Dairy_Product;
             product.Energy = 200;
             product.Durability = 50;
+            product.ImageId = "ABCDEFGH";
         }
 
         [ClassCleanup]
@@ -56,6 +57,7 @@ namespace SmartFridgeUnitTests
             Assert.AreEqual(product.Durability, loadedProduct.Durability);
             Assert.AreEqual(product.Energy,     loadedProduct.Energy);
             Assert.AreEqual(product.Category,   loadedProduct.Category);
+            Assert.AreEqual(product.ImageId,    loadedProduct.ImageId);
         }
 
         [TestMethod]
@@ -73,7 +75,7 @@ namespace SmartFridgeUnitTests
             Assert.AreEqual(products.Count, 1);
 
             Product loadedProduct = products[0];
-            Assert.AreEqual(product.Energy, loadedProduct.Energy);
+            Assert.AreEqual(product.Name, loadedProduct.Name);
         }
     }
 }
