@@ -75,8 +75,7 @@
         </StackPanel>
 
         <Border Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
-            <Border AllowDrop="True" Drop="Image_Drop"  Background="#00000000" Margin ="0, 50, 50, 0" VerticalAlignment="Top" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" Height="700" Width="700">
-                <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/>
+            <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/> 
         </Border>
 
         <Button Click="Confirm_Clicked" Grid.Row="1" Grid.ColumnSpan="2" FontSize="30" Margin ="20" DockPanel.Dock="Bottom" Content="Bestätige" MaxWidth="500"/>
