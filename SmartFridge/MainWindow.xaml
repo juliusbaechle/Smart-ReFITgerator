@@ -23,9 +23,9 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="120*"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="800*"/>
-            <RowDefinition Height="60*"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0" Background="{StaticResource Brush_BackgroundDark}" LastChildFill="True">
@@ -33,7 +33,7 @@
 
             <DockPanel DockPanel.Dock="Left" Margin="0">
                 <Button Style="{StaticResource RoundedButton}" Name="btnHome" Width="100" BorderBrush="{x:Null}">
-                    <Image Height="80" Width="80" Source="icons/home.png" OpacityMask="Black" />
+                    <Image Source="icons/home.png" OpacityMask="Black" />
                 </Button>
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
             </DockPanel>
@@ -41,7 +41,7 @@
             <DockPanel DockPanel.Dock="Right">
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
                 <Button Style="{StaticResource RoundedButton}" Name="btnClose" Width="100" BorderBrush="{x:Null}">
-                    <Image Height="80" Width="80" Source="icons/close.png"/>
+                    <Image Source="icons/close.png"/>
                 </Button>
             </DockPanel>
 

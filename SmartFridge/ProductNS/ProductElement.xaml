@@ -36,9 +36,7 @@
             <Image Height="140"/>
         </Border>
 
-        <UniformGrid Grid.Column="1" HorizontalAlignment="Stretch">
-            <TextBox Text="{Binding Name}" Height="60" FontSize="35"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
-        </UniformGrid>
+        <TextBox Grid.Column="1" Text="{Binding Name}" Height="60" FontSize="35"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 
         <UniformGrid Grid.Column="2" Rows="2" Columns="2" HorizontalAlignment="Stretch" >
             <TextBox Text="{Binding Energy,     StringFormat=Energie: {0:0} KCal}"/>            
