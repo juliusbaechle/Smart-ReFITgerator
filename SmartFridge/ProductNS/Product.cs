@@ -39,7 +39,7 @@ namespace SmartFridge.ProductNS
 
         public bool IsValid()
         {
-            if (Name == "") return false;
+            if (Name == "" || Name == null) return false;
             return true;
         }
 

@@ -7,7 +7,8 @@
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" 
         x:Class="SmartFridgeWPF.ProductNS.ProductForm"
         mc:Ignorable="d"
-        Height="893" Width="1920">
+        d:DesignHeight="893" 
+        d:DesignWidth="1920">
 
     <Page.Resources>
         <Style TargetType="{x:Type Label}">
@@ -25,14 +26,22 @@
         <ProductNS:Product/>
     </Page.DataContext>
 
-    <DockPanel LastChildFill="False">
-        <Button FontSize="30" Margin ="0, 0, 0, 50" DockPanel.Dock="Bottom" Content="Bestätige" Width="500" Height="70" Click="Button_Click"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel DockPanel.Dock="Left" Margin="50, 50, 0, 50">
-            <StackPanel Orientation="Horizontal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" DockPanel.Dock="Left" Margin="50, 50, 0, 50">
+            <DockPanel>
                 <Label Content="Name"/>
-                <TextBox Text="{Binding Name, Mode=TwoWay}" Margin="0,10,0,10" Width="500" FontSize="35"/>
-            </StackPanel>
+                <TextBox Text="{Binding Name, Mode=TwoWay}" Margin="0,10,0,10" FontSize="35"/>
+            </DockPanel>
 
             <DockPanel>
                 <Label Content="Energie" Grid.Column="0"/>
@@ -65,10 +74,11 @@
             </DockPanel>
         </StackPanel>
 
-        <StackPanel DockPanel.Dock="Right">
+        <Border Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
             <Border AllowDrop="True" Drop="Image_Drop"  Background="#00000000" Margin ="0, 50, 50, 0" VerticalAlignment="Top" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" Height="700" Width="700">
                 <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/>
-            </Border>
-        </StackPanel>
-    </DockPanel>
+        </Border>
+
+        <Button Click="Confirm_Clicked" Grid.Row="1" Grid.ColumnSpan="2" FontSize="30" Margin ="20" DockPanel.Dock="Bottom" Content="Bestätige" MaxWidth="500"/>
+    </Grid>
 </Page>
