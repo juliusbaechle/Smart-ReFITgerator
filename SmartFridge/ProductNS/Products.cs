@@ -17,18 +17,12 @@ namespace SmartFridge.ProductNS
         internal Products(DBProducts db, IImageRepository imageRepository)
         {
             m_db = db;
-            m_imageRepository = imageRepository;
 
             List = new BindingList<Product>(m_db.LoadAll());
-            foreach (Product product in List) 
-                product.Image = m_imageRepository.Load(product.ImageId);
-        }
-
-        public void SetImage(Product product, string path)
-        {
-            Uri uri = new Uri(path, UriKind.Absolute);
-            BitmapImage bitmapImage = new BitmapImage(uri);
-            product.Image = bitmapImage;
+            foreach (Product product in List) {
+                product.Image.SetRepository(imageRepository);
+                product.Image.Load();
+            }
         }
          
         public void AddOrEdit(Product product)
@@ -36,9 +30,7 @@ namespace SmartFridge.ProductNS
             if (!List.Contains(product))
                 List.Add(product);
 
-            string newId = m_imageRepository.Save(product.Image);
-            m_imageRepository.Delete(product.ImageId);
-            product.ImageId = newId;
+            product.Image.Save();
             m_db.Save(product);
         }
 
@@ -46,11 +38,10 @@ namespace SmartFridge.ProductNS
         {
             List.Remove(product);
             m_db.Delete(product);
-            m_imageRepository.Delete(product.ImageId);
+            product.Image.Delete();
         }
 
         private readonly DBProducts m_db;
-        private readonly IImageRepository m_imageRepository;
         public BindingList<Product> List { get; internal set; }
     }
 }

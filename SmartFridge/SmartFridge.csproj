@@ -155,6 +155,7 @@
     <Compile Include="DB.cs" />
     <Compile Include="ProductNS\IImageRepository.cs" />
     <Compile Include="ProductNS\LocalImageRepository.cs" />
+    <Compile Include="ProductNS\Image.cs" />
     <Compile Include="SmartFridge.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="ProductNS\DBProducts.cs" />

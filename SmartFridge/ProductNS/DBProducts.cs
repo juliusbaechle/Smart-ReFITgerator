@@ -24,12 +24,12 @@ namespace SmartFridge.ProductNS
             if (!Contains(product.ID))
             {                
                 cmd.CommandText = $"INSERT INTO tblProducts (Id, Name, Durability, Energy, Category, ImageId) " +
-                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, '{product.ImageId}')";    
+                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, '{product.Image.ID}')";    
             }
             else
             {
                 cmd.CommandText = $"UPDATE tblProducts SET " +
-                    $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, ImageId = '{product.ImageId}' " +
+                    $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, ImageId = '{product.Image.ID}' " +
                     $"WHERE Id = '{product.ID}'";
             }
 
@@ -51,7 +51,7 @@ namespace SmartFridge.ProductNS
                 product.Durability  = (UInt16)reader.GetInt32(2);
                 product.Energy      = (UInt16)reader.GetInt32(3);
                 product.Category    = (ECategory)reader.GetInt16(4);
-                product.ImageId   = reader.GetString(5);
+                product.Image.ID    = reader.GetString(5);
                 products.Add(product);
             }
 

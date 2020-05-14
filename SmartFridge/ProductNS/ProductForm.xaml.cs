@@ -35,14 +35,7 @@ namespace SmartFridgeWPF.ProductNS
             {
                 Product product = DataContext as Product;
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                string path = files[0];
-
-                var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
-                if (!ImageExtensions.Contains(Path.GetExtension(path).ToUpperInvariant())) return;
-
-                var uri = new Uri(path, UriKind.Absolute);
-                var bitmapImage = new BitmapImage(uri);
-                product.Image = bitmapImage;
+                product.Image.Set(files[0]);
             }
         }
     }

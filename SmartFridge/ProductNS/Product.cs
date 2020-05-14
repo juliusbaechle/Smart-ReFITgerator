@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -31,15 +27,14 @@ namespace SmartFridge.ProductNS
         Count
     }
 
-    public class Product : INotifyPropertyChanged
+    public class Product
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public Product()
         {
             ID = Guid.NewGuid();
             Barcodes = new List<UInt64>();
             Category = ECategory.Drinks;
+            Image = new Image();
         }
 
         public bool IsValid()
@@ -54,18 +49,8 @@ namespace SmartFridge.ProductNS
         public ECategory Category { set; get; }
         public EQuantity Quantity { set; get; }
         internal Guid ID { set; get; }
-        internal List<UInt64> Barcodes { set; get; }
-        
-        public BitmapImage Image { 
-            set {
-                m_image = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Image"));
-            } 
-            get { return m_image; }
-        }
-        public string ImageId { get; set; }
-        private BitmapImage m_image = null;    
-
+        internal List<UInt64> Barcodes { set; get; }        
+        public Image Image { set; get; }
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =
             new Dictionary<ECategory, string>()
