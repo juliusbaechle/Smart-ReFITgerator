@@ -8,6 +8,8 @@ using System;
 using System.Windows.Data;
 using System.Globalization;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using System.ComponentModel;
 
 namespace SmartFridgeWPF.ProductNS
 {
@@ -28,6 +30,16 @@ namespace SmartFridgeWPF.ProductNS
             var product = DataContext as Product;
             if (product == null) return;
             Finished?.Invoke(product);
+        }
+
+        private void SearchFile_Clicked(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Bilder (*.BMP;*.JPG;*.GIF,*.PNG,*.TIFF)|*.BMP;*.JPG;*.GIF;*.PNG;*.TIFF";
+            dialog.ShowDialog();
+
+            Product product = DataContext as Product;
+            product.Image.Set(dialog.FileName);
         }
 
         private void Image_Drop(object sender, DragEventArgs e)

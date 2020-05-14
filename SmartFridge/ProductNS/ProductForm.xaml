@@ -72,12 +72,14 @@
                 <ComboBox ItemsSource="{Binding QuantityCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Quantity, Mode=TwoWay}"
                           FontSize="25" Margin="0,10,0,10" Background="{StaticResource Brush_BackgroundLight}" HorizontalAlignment="Stretch"/>
             </DockPanel>
+
+            <Button Click="SearchFile_Clicked" Content="Bild auswählen ..." FontSize="25" Height="60" Width="400" Margin="30" VerticalAlignment="Bottom"/>
         </StackPanel>
 
         <Border AllowDrop="True" Drop="Image_Drop" Background="Transparent" Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
             <Grid>
-                <TextBox Text="Drop Image" FontSize="40" Background="{StaticResource Brush_Background}" Foreground="{StaticResource Brush_Foreground}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False"/>
-                <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/>                
+                <TextBox Text="-- Bild droppen --" FontSize="40" Background="{StaticResource Brush_BackgroundDark}" Foreground="{StaticResource Brush_Foreground}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False"/>
+                <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/>        
             </Grid>            
         </Border>
 
