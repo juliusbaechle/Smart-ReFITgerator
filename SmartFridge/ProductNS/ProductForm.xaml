@@ -74,8 +74,11 @@
             </DockPanel>
         </StackPanel>
 
-        <Border Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
-            <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/> 
+        <Border AllowDrop="True" Drop="Image_Drop" Background="Transparent" Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
+            <Grid>
+                <TextBox Text="Drop Image" FontSize="40" Background="{StaticResource Brush_Background}" Foreground="{StaticResource Brush_Foreground}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False"/>
+                <Image Name="ImageFrame" Source="{Binding Image.Bitmap}"/>                
+            </Grid>            
         </Border>
 
         <Button Click="Confirm_Clicked" Grid.Row="1" Grid.ColumnSpan="2" FontSize="30" Margin ="20" DockPanel.Dock="Bottom" Content="Bestätige" MaxWidth="500"/>
