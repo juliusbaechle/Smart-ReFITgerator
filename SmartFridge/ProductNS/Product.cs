@@ -32,9 +32,19 @@ namespace SmartFridge.ProductNS
         public Product()
         {
             ID = Guid.NewGuid();
-            Barcodes = new List<UInt64>();
             Category = ECategory.Drinks;
-            Image = new Image();
+            Image = new ProductImage();
+        }
+
+        public Product(Product copy)
+        {
+            Name        = copy.Name;
+            Energy      = copy.Energy;
+            Durability  = copy.Durability;
+            Category    = copy.Category;
+            Quantity    = copy.Quantity;
+            ID          = copy.ID;
+            Image       = new ProductImage(copy.Image);
         }
 
         public bool IsValid()
@@ -48,9 +58,8 @@ namespace SmartFridge.ProductNS
         public UInt16 Durability { set; get; }
         public ECategory Category { set; get; }
         public EQuantity Quantity { set; get; }
-        internal Guid ID { set; get; }
-        internal List<UInt64> Barcodes { set; get; }        
-        public Image Image { set; get; }
+        internal Guid ID { set; get; }   
+        public ProductImage Image { set; get; }
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =
             new Dictionary<ECategory, string>()

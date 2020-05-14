@@ -19,7 +19,8 @@ namespace SmartFridgeWPF.ProductNS
         public ProductForm(Product product) 
         {
             InitializeComponent();
-            if(product != null) DataContext = product;
+            if(product != null)
+                DataContext = new Product(product);
         }
 
         private void Confirm_Clicked(object sender, RoutedEventArgs e)

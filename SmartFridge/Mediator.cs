@@ -44,7 +44,7 @@ namespace SmartFridge
                     break;
 
                 case EPage.ProductForm: 
-                    ShowProductForm(null); 
+                    ShowProductForm(new Product()); 
                     break;
 
                 default: 
@@ -74,7 +74,7 @@ namespace SmartFridge
             var productForm = new ProductForm(product);
             m_window.SetContent(productForm);
 
-            productForm.Finished += (Product) => { 
+            productForm.Finished += (Product) => {
                 m_products.AddOrEdit(Product); 
                 ShowPage(EPage.Products); 
             };
