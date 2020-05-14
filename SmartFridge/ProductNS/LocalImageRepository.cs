@@ -19,10 +19,15 @@ namespace SmartFridge.ProductNS
             #endif
         }
 
-        public BitmapImage Load(string id)
+        public bool Contains(string id)
+        {
+            return File.Exists(CreatePath(id));
+        }
+
+        public BitmapSource Load(string id)
         {
             string path = CreatePath(id);
-            if(id == "" || id == null || !File.Exists(path))
+            if(!File.Exists(path))
                 return new BitmapImage();
             
             BitmapImage img = new BitmapImage();
@@ -41,8 +46,10 @@ namespace SmartFridge.ProductNS
                 File.Delete(path);
         }
 
-        public string Save(BitmapImage image)
+        public string Save(BitmapSource image)
         {
+            if (image == null) return "";
+
             string id;
             string path;
             do {
@@ -50,9 +57,10 @@ namespace SmartFridge.ProductNS
                 path = CreatePath(id);
             } while (File.Exists(path));
 
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(image.UriSource));
-            using (var filestream = new FileStream(path, FileMode.Create))
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(image));
+
+            using (var filestream = new FileStream(CreatePath(id), FileMode.Create))
                 encoder.Save(filestream);
 
             return id;
