@@ -19,6 +19,8 @@ namespace SmartFridge.ProductNS
          
         public void AddOrEdit(Product product)
         {
+            if (!product.IsValid()) return;
+
             if (!List.Contains(product))
             {
                 List.Add(product);

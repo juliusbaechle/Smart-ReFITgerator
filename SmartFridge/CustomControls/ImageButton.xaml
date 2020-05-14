@@ -2,6 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SmartFridge">
 
+    <Style TargetType="Border" x:Key="SquareBorder">
+        <Setter Property="MinHeight" Value="{Binding  ActualWidth, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="MinWidth"  Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
+    </Style>
+
     <Style TargetType="Button" x:Key="RoundedButton">
         <Setter Property="Background">
             <Setter.Value>

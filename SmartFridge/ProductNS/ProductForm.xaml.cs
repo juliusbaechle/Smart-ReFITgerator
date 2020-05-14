@@ -32,10 +32,10 @@ namespace SmartFridgeWPF.ProductNS
             InitializeComponent();            
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Confirm_Clicked(object sender, RoutedEventArgs e)
         {
             var product = DataContext as Product;
-            if (product == null || !product.IsValid()) return;
+            if (product == null) return;
             Finished?.Invoke(product);
         }
     }
