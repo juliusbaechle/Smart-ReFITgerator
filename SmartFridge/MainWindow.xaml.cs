@@ -41,21 +41,6 @@ namespace SmartFridgeWPF
             btnClose.Click += (object sender, RoutedEventArgs e) => { Close(); };
         }
 
-        public void SetConnectionInfo(string text)
-        {
-            txtConnection.Text = text;
-        }
-
-        public void SetTemperatureInfo(int degrees)
-        {
-            txtTemperature.Text = "Temperature: " + degrees + "°C";
-        }
-
-        public void SetHumidityInfo(int percent)
-        {
-            txtHumidity.Text = "Humidity: " + percent + "%";
-        }
-
         public void SetContent(Page page)
         {
             ContentFrame.NavigationService.RemoveBackEntry();

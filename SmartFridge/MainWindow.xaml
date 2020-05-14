@@ -8,7 +8,8 @@
         Title="MainWindow" 
         d:DesignHeight="1080" 
         d:DesignWidth="1920" 
-        WindowState="Maximized">
+        WindowState="Maximized" WindowStyle="None"
+        >
 
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource StandardButton}">
@@ -59,9 +60,9 @@
         <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" Background="{StaticResource Brush_BackgroundDark}">
             <Rectangle DockPanel.Dock="Top" Height="7" Fill="{StaticResource Brush_Separator}"/>
             <UniformGrid Rows="1">
-                <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: XX °C</TextBlock>
+                <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: 09 °C</TextBlock>
                 <TextBlock Name="txtConnection" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Verbunden / Offline</TextBlock>
-                <TextBlock Name="txtHumidity" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Feuchtigkeit: XX %</TextBlock>
+                <TextBlock Name="txtHumidity" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Feuchtigkeit: 67 %</TextBlock>
             </UniformGrid>
         </DockPanel>
     </Grid>
