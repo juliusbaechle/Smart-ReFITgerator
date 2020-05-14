@@ -6,6 +6,9 @@
 # Unit-Tests
 SmartFridgeUnitTests/
 
+# Product-Images
+images/
+
 # User-specific files
 *.rsuser
 *.suo
