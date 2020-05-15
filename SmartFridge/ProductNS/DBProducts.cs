@@ -84,7 +84,7 @@ namespace SmartFridge.ProductNS
         private void CreateTable()
         {
             DbCommand cmd = m_db.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImageId VARCHAR(20) )";
+            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImageId VARCHAR(50) )";
             cmd.ExecuteNonQuery();
         }
 

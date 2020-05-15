@@ -14,7 +14,7 @@ namespace SmartFridge.ProductNS
     {
         public ProductHandler Selected;
 
-        internal Products(DBProducts db, IImageRepository imageRepository)
+        internal Products(DBProducts db, ImageRepository imageRepository)
         {
             m_db = db;
             m_imageRepository = imageRepository;
@@ -62,6 +62,6 @@ namespace SmartFridge.ProductNS
 
         private readonly DBProducts m_db;
         public BindingList<Product> List { get; internal set; }
-        IImageRepository m_imageRepository;
+        ImageRepository m_imageRepository;
     }
 }
