@@ -1,11 +1,6 @@
 ﻿using SmartFridge.ProductNS;
 using SmartFridgeWPF;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SmartFridge
@@ -16,7 +11,6 @@ namespace SmartFridge
     class SmartFridge
     {   
         [System.STAThreadAttribute()]
-        [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         public static void Main()
         {
@@ -29,7 +23,7 @@ namespace SmartFridge
             var mainWindow = new MainWindow(app.Resources);
 
             var db = DB.CreateLocalConnection();
-            var imageRepo = new LocalImageRepository();
+            var imageRepo = new CachedImageRepository(new LocalImageRepository(), new RemoteImageRepository());
             var products = new Products(new DBProducts(db), imageRepo);            
             // var contents = new Contents(new DBContents(db));
             // ...
