@@ -9,6 +9,17 @@ namespace SmartFridge.ProductNS
         {
             m_cache = cache;
             m_remote = remote;
+
+            m_cache.DownloadCompleted += 
+                (BitmapSource image, string id) => { 
+                    DownloadCompleted?.Invoke(image, id); 
+                };
+
+            m_remote.DownloadCompleted += 
+                (BitmapSource image, string id) => { 
+                    m_cache.Save(image, id);  
+                    DownloadCompleted?.Invoke(image, id); 
+                };
         }
 
         public override bool Contains(string id)
@@ -33,6 +44,17 @@ namespace SmartFridge.ProductNS
             BitmapSource image = m_remote.Load(id);
             m_cache.Save(image);
             return image;
+        }
+
+        public override void LoadAsync(string id)
+        {
+            if(m_cache.Contains(id)) {
+                m_cache.LoadAsync(id);
+            }
+            else
+            {
+                m_remote.LoadAsync(id);
+            }
         }
 
         internal override void Save(BitmapSource image, string id)

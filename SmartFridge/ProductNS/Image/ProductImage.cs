@@ -25,7 +25,13 @@ namespace SmartFridge.ProductNS
 
         public void Load(ImageRepository imageRepository)
         {
-            Bitmap = imageRepository.Load(ID);
+            imageRepository.DownloadCompleted +=
+                (BitmapSource image, string id) => {
+                    Bitmap = image;
+                    imageRepository.DownloadCompleted = null;
+                };
+
+            imageRepository.LoadAsync(ID);
         }
 
         public void Save(ImageRepository imageRepository)

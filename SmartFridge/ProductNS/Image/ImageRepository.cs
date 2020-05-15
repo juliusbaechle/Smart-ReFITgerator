@@ -5,6 +5,8 @@ namespace SmartFridge.ProductNS
 {
     public abstract class ImageRepository
     {
+        public Action<BitmapSource, string> DownloadCompleted;
+
         public string Save(BitmapSource image)
         {
             if (image == null) return "";
@@ -16,6 +18,8 @@ namespace SmartFridge.ProductNS
         internal abstract void Save(BitmapSource image, string id);
 
         public abstract BitmapSource Load(string id);
+        public abstract void LoadAsync(string id);
+
         public abstract void Delete(string id);
         public abstract bool Contains(string id);
 

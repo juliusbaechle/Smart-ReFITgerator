@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
@@ -31,13 +32,18 @@ namespace SmartFridge.ProductNS
 
         public override void Delete(string id)
         {
-            if (!Contains(id)) return;
-
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(id));
-            request.Credentials = m_credentials;
-            request.Method = WebRequestMethods.Ftp.DeleteFile;
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-            response.Close();
+            Thread thread = new Thread(() => {
+                try
+                {
+                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(id));
+                    request.Credentials = m_credentials;
+                    request.Method = WebRequestMethods.Ftp.DeleteFile;
+                    FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                    response.Close();
+                }
+                catch { } //Datei nicht gefunden
+            });
+            thread.Start();
         }
 
         public override BitmapSource Load(string id)
@@ -45,20 +51,27 @@ namespace SmartFridge.ProductNS
             try
             {
                 byte[] data = m_ftpClient.DownloadData(new Uri(CreateAddress(id)));
-                var stream = new MemoryStream(data);
-
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = stream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                bitmap.Freeze();
-                return bitmap;
+                return Convert(data);
             }
             catch
             {
                 return null;
             }
+        }
+
+        public override void LoadAsync(string id)
+        {
+            m_ftpClient.DownloadDataAsync(new Uri(CreateAddress(id)));
+            m_ftpClient.DownloadDataCompleted +=
+                (object sender, DownloadDataCompletedEventArgs e) =>
+                {
+                    try
+                    {
+                        byte[] data = e.Result;
+                        DownloadCompleted?.Invoke(Convert(data), id);
+                    }
+                    catch { } //Datei nicht gefunden / nicht verbunden
+                };
         }
 
         internal override void Save(BitmapSource image, string id)
@@ -68,15 +81,24 @@ namespace SmartFridge.ProductNS
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(image));
 
-                using (var ms = new MemoryStream())
-                {
-                    encoder.Save(ms);
-                    m_ftpClient.UploadDataAsync(new Uri(CreateAddress(id)), ms.ToArray());
-                }
+                var ms = new MemoryStream();
+                encoder.Save(ms);
+                m_ftpClient.UploadDataAsync(new Uri(CreateAddress(id)), ms.ToArray());
+                ms.Dispose();
             }
-            catch
-            {
-            }
+            catch { } //Nicht verbunden
+        }
+
+        private BitmapSource Convert(byte[] data)
+        {
+            var stream = new MemoryStream(data);
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = stream;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
         }
 
         private string CreateAddress(string id)

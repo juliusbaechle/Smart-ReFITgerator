@@ -30,6 +30,11 @@ namespace SmartFridge.ProductNS
             return img;
         }
 
+        public override void LoadAsync(string id)
+        {
+            DownloadCompleted?.Invoke(Load(id), id);
+        }
+
         public override void Delete(string id)
         {
             if (Contains(id))
