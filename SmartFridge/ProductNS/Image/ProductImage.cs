@@ -23,23 +23,19 @@ namespace SmartFridge.ProductNS
             ID = copy.ID;
         }
 
-        public void Load(IImageRepository imageRepository)
+        public void Load(ImageRepository imageRepository)
         {
-            if (imageRepository.Contains(ID))
-            {
-                Bitmap = imageRepository.Load(ID);
-            }
-            else Bitmap = null;
+            Bitmap = imageRepository.Load(ID);
         }
 
-        public void Save(IImageRepository imageRepository)
+        public void Save(ImageRepository imageRepository)
         {
             string newId = imageRepository.Save(Bitmap);
             imageRepository.Delete(ID);
             ID = newId;
         }
 
-        public void Delete(IImageRepository imageRepository)
+        public void Delete(ImageRepository imageRepository)
         {
             imageRepository.Delete(ID);
         }
