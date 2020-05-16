@@ -23,29 +23,6 @@ namespace SmartFridge.ProductNS
             ID = copy.ID;
         }
 
-        public void Load(ImageRepository imageRepository)
-        {
-            imageRepository.DownloadCompleted +=
-                (BitmapSource image, string id) => {
-                    Bitmap = image;
-                    imageRepository.DownloadCompleted = null;
-                };
-
-            imageRepository.LoadAsync(ID);
-        }
-
-        public void Save(ImageRepository imageRepository)
-        {
-            string newId = imageRepository.Save(Bitmap);
-            imageRepository.Delete(ID);
-            ID = newId;
-        }
-
-        public void Delete(ImageRepository imageRepository)
-        {
-            imageRepository.Delete(ID);
-        }
-
         public void Set(string path)
         {
             var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
@@ -83,7 +60,7 @@ namespace SmartFridge.ProductNS
 
         public BitmapSource Bitmap
         {
-            private set
+            internal set
             {
                 if(m_bitmap != value) {
                     m_bitmap = value;

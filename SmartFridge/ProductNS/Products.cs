@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
 {
@@ -21,17 +14,23 @@ namespace SmartFridge.ProductNS
 
             List = new BindingList<Product>(m_db.LoadAll());
             foreach (Product product in List) {
-                product.Image.Load(m_imageRepository);
+                m_imageRepository.LoadAsync(product.Image);
             }
         }
          
         public void AddOrEdit(Product newProduct)
         {
             if (!newProduct.IsValid()) return;
-            
-            Delete(newProduct.ID);
+
+            Product oldProduct = Find(newProduct.ID);
+            if (oldProduct != null)
+            {
+                List.Remove(oldProduct);
+                m_imageRepository.Delete(oldProduct.Image);
+            }
+
             List.Add(newProduct);
-            newProduct.Image.Save(m_imageRepository);
+            m_imageRepository.Save(newProduct.Image);
             m_db.Save(newProduct);
         }
 
@@ -39,25 +38,18 @@ namespace SmartFridge.ProductNS
         {
             List.Remove(product);
             m_db.Delete(product);
-            product.Image.Delete(m_imageRepository);
+            m_imageRepository.Delete(product.Image);
         }
 
-        private void Delete(Guid id)
+        public Product Find(Guid id)
         {
             Product oldProduct = null;
             foreach (Product product in List)
             {
                 if (product.ID == id)
-                {
                     oldProduct = product;
-                }
             }
-
-            if (oldProduct != null)
-            {
-                List.Remove(oldProduct);
-                oldProduct.Image.Delete(m_imageRepository);
-            }
+            return oldProduct;
         }
 
         private readonly DBProducts m_db;

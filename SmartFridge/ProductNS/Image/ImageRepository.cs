@@ -5,25 +5,12 @@ namespace SmartFridge.ProductNS
 {
     public abstract class ImageRepository
     {
-        public Action<BitmapSource, string> DownloadCompleted;
+        public abstract void Save(ProductImage image);
+        public abstract void LoadAsync(ProductImage image);
+        public abstract void Delete(ProductImage image);
+        public abstract bool Contains(ProductImage image);
 
-        public string Save(BitmapSource image)
-        {
-            if (image == null) return "";
-
-            string id = CreateId();
-            Save(image, id);
-            return id;
-        }
-        internal abstract void Save(BitmapSource image, string id);
-
-        public abstract BitmapSource Load(string id);
-        public abstract void LoadAsync(string id);
-
-        public abstract void Delete(string id);
-        public abstract bool Contains(string id);
-
-        private string CreateId()
+        protected string CreateId()
         {
             Guid guid = Guid.NewGuid();
             string id = guid.ToString("N");

@@ -13,40 +13,43 @@ namespace SmartFridge.ProductNS
             #endif
         }
 
-        public override bool Contains(string id)
+        public override bool Contains(ProductImage image)
         {
-            return File.Exists(CreatePath(id));
+            return File.Exists(CreatePath(image.ID));
         }
 
-        public override BitmapSource Load(string id)
+        private void Load(ProductImage image)
         {
-            if (!Contains(id)) return null;
+            if (!Contains(image)) return;
             
             BitmapImage img = new BitmapImage();
             img.BeginInit();
             img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(CreatePath(id), UriKind.Relative);
+            img.UriSource = new Uri(CreatePath(image.ID), UriKind.Relative);
             img.EndInit();
-            return img;
+            image.Bitmap = img;
         }
 
-        public override void LoadAsync(string id)
+        public override void LoadAsync(ProductImage image)
         {
-            DownloadCompleted?.Invoke(Load(id), id);
+            Load(image);
         }
 
-        public override void Delete(string id)
+        public override void Delete(ProductImage image)
         {
-            if (Contains(id))
-                File.Delete(CreatePath(id));
+            if (Contains(image))
+                File.Delete(CreatePath(image.ID));
         }
 
-        internal override void Save(BitmapSource image, string id)
+        public override void Save(ProductImage image)
         {
+            if (image.Bitmap == null) return;
+
+            image.ID = CreateId();
             PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(image));
+            encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
 
-            using (var filestream = new FileStream(CreatePath(id), FileMode.Create))
+            using (var filestream = new FileStream(CreatePath(image.ID), FileMode.Create))
                 encoder.Save(filestream);
         }
 

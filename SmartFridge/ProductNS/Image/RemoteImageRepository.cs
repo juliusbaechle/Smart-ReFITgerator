@@ -8,14 +8,16 @@ namespace SmartFridge.ProductNS
 {
     class RemoteImageRepository : ImageRepository
     {
+        internal Action<ProductImage> DownloadCompleted;
+
         ~RemoteImageRepository()
         {
             m_ftpClient.Dispose();
         }
 
-        public override bool Contains(string id)
+        public override bool Contains(ProductImage image)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(id));
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
             request.Credentials = m_credentials;
             request.Method = WebRequestMethods.Ftp.GetFileSize;
 
@@ -30,12 +32,12 @@ namespace SmartFridge.ProductNS
             }
         }
 
-        public override void Delete(string id)
+        public override void Delete(ProductImage image)
         {
             Thread thread = new Thread(() => {
                 try
                 {
-                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(id));
+                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
                     request.Credentials = m_credentials;
                     request.Method = WebRequestMethods.Ftp.DeleteFile;
                     FtpWebResponse response = (FtpWebResponse)request.GetResponse();
@@ -46,44 +48,42 @@ namespace SmartFridge.ProductNS
             thread.Start();
         }
 
-        public override BitmapSource Load(string id)
+        private void Load(ProductImage image)
         {
             try
             {
-                byte[] data = m_ftpClient.DownloadData(new Uri(CreateAddress(id)));
-                return Convert(data);
+                byte[] data = m_ftpClient.DownloadData(new Uri(CreateAddress(image.ID)));
+                image.Bitmap = Convert(data);
             }
-            catch
-            {
-                return null;
-            }
+            catch { }
         }
 
-        public override void LoadAsync(string id)
+        public override void LoadAsync(ProductImage image)
         {
-            m_ftpClient.DownloadDataAsync(new Uri(CreateAddress(id)));
+            m_ftpClient.DownloadDataAsync(new Uri(CreateAddress(image.ID)));
             m_ftpClient.DownloadDataCompleted +=
                 (object sender, DownloadDataCompletedEventArgs e) =>
                 {
                     try
                     {
                         byte[] data = e.Result;
-                        DownloadCompleted?.Invoke(Convert(data), id);
+                        image.Bitmap = Convert(data);
+                        DownloadCompleted?.Invoke(image);
                     }
                     catch { } //Datei nicht gefunden / nicht verbunden
                 };
         }
 
-        internal override void Save(BitmapSource image, string id)
+        public override void Save(ProductImage image)
         {
             try
             {
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(image));
+                encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
 
                 var ms = new MemoryStream();
                 encoder.Save(ms);
-                m_ftpClient.UploadDataAsync(new Uri(CreateAddress(id)), ms.ToArray());
+                m_ftpClient.UploadDataAsync(new Uri(CreateAddress(image.ID)), ms.ToArray());
                 ms.Dispose();
             }
             catch { } //Nicht verbunden

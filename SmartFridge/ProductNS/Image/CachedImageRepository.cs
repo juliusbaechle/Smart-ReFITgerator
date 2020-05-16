@@ -5,65 +5,50 @@ namespace SmartFridge.ProductNS
 {
     class CachedImageRepository : ImageRepository
     {
-        public CachedImageRepository(ImageRepository cache, ImageRepository remote)
+        public CachedImageRepository(LocalImageRepository cache, RemoteImageRepository remote)
         {
             m_cache = cache;
             m_remote = remote;
 
-            m_cache.DownloadCompleted += 
-                (BitmapSource image, string id) => { 
-                    DownloadCompleted?.Invoke(image, id); 
-                };
-
-            m_remote.DownloadCompleted += 
-                (BitmapSource image, string id) => { 
-                    m_cache.Save(image, id);  
-                    DownloadCompleted?.Invoke(image, id); 
+            remote.DownloadCompleted += 
+                (ProductImage image) => { 
+                    m_cache.Save(image);  
                 };
         }
 
-        public override bool Contains(string id)
+        public override bool Contains(ProductImage image)
         {
-            if (m_cache.Contains(id))  return true;
-            if (m_remote.Contains(id)) return true;
+            if (m_cache.Contains(image))  return true;
+            if (m_remote.Contains(image)) return true;
             return false;
         }
 
-        public override void Delete(string id)
+        public override void Delete(ProductImage image)
         {
-            m_cache.Delete(id);
-            m_remote.Delete(id);
+            m_cache.Delete(image);
+            m_remote.Delete(image);
         }
 
-        public override BitmapSource Load(string id)
+        public override void LoadAsync(ProductImage image)
         {
-            if (m_cache.Contains(id)) {
-                return m_cache.Load(id);
-            }
-            
-            BitmapSource image = m_remote.Load(id);
-            m_cache.Save(image);
-            return image;
-        }
-
-        public override void LoadAsync(string id)
-        {
-            if(m_cache.Contains(id)) {
-                m_cache.LoadAsync(id);
+            if (m_cache.Contains(image)) {
+                m_cache.LoadAsync(image);
             }
             else
             {
-                m_remote.LoadAsync(id);
+                m_remote.LoadAsync(image);
             }
         }
 
-        internal override void Save(BitmapSource image, string id)
+        public override void Save(ProductImage image)
         {
-            m_cache.Save(image, id);
-            m_remote.Save(image, id);
+            if (image.Bitmap == null) return;
+
+            m_cache.Save(image);
+            m_remote.Save(image);
         }
 
-        ImageRepository m_cache;
-        ImageRepository m_remote;
+        LocalImageRepository m_cache;
+        RemoteImageRepository m_remote;
     }
 }
