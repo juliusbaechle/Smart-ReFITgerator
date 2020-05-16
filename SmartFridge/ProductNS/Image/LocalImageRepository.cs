@@ -41,7 +41,7 @@ namespace SmartFridge.ProductNS
                 File.Delete(CreatePath(image.ID));
         }
 
-        public override void Save(ProductImage image)
+        internal override void SaveFixedID(ProductImage image)
         {
             if (image.Bitmap == null) return;
 

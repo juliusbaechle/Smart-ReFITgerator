@@ -40,12 +40,12 @@ namespace SmartFridge.ProductNS
             }
         }
 
-        public override void Save(ProductImage image)
+        internal override void SaveFixedID(ProductImage image)
         {
             if (image.Bitmap == null) return;
 
-            m_cache.Save(image);
-            m_remote.Save(image);
+            m_cache.SaveFixedID(image);
+            m_remote.SaveFixedID(image);
         }
 
         LocalImageRepository m_cache;
