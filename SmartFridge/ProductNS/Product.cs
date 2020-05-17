@@ -29,14 +29,14 @@ namespace SmartFridge.ProductNS
 
     public class Product
     {
-        public Product()
+        internal Product()
         {
             ID = Guid.NewGuid();
             Category = ECategory.Drinks;
             Image = new ProductImage();
         }
 
-        public Product(Product copy)
+        internal Product(Product copy)
         {
             Name        = copy.Name;
             Energy      = copy.Energy;
@@ -47,7 +47,7 @@ namespace SmartFridge.ProductNS
             Image       = new ProductImage(copy.Image);
         }
 
-        public bool IsValid()
+        internal bool IsValid()
         {
             if (Name == "" || Name == null) return false;
             return true;
@@ -59,7 +59,7 @@ namespace SmartFridge.ProductNS
         public ECategory Category { set; get; }
         public EQuantity Quantity { set; get; }
         internal Guid ID { set; get; }   
-        public ProductImage Image { set; get; }
+        public ProductImage Image { internal set; get; }
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =
             new Dictionary<ECategory, string>()

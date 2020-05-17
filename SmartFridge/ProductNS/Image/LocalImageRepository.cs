@@ -6,33 +6,21 @@ namespace SmartFridge.ProductNS
 {
     class LocalImageRepository : ImageRepository
     {
-        public LocalImageRepository()
-        {
-            #if DEBUG
-            #else
-            #endif
-        }
-
         public override bool Contains(ProductImage image)
         {
             return File.Exists(CreatePath(image.ID));
         }
 
-        private void Load(ProductImage image)
+        public override void LoadAsync(ProductImage image)
         {
             if (!Contains(image)) return;
-            
+
             BitmapImage img = new BitmapImage();
             img.BeginInit();
             img.CacheOption = BitmapCacheOption.OnLoad;
             img.UriSource = new Uri(CreatePath(image.ID), UriKind.Relative);
             img.EndInit();
             image.Bitmap = img;
-        }
-
-        public override void LoadAsync(ProductImage image)
-        {
-            Load(image);
         }
 
         public override void Delete(ProductImage image)

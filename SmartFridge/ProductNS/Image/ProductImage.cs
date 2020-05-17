@@ -13,9 +13,9 @@ namespace SmartFridge.ProductNS
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ProductImage() { }
+        internal ProductImage() { }
 
-        public ProductImage(ProductImage copy)
+        internal ProductImage(ProductImage copy)
         {
             if(copy.Bitmap != null) {
                 Bitmap = copy.Bitmap.Clone();
@@ -23,7 +23,7 @@ namespace SmartFridge.ProductNS
             ID = copy.ID;
         }
 
-        public void Set(string path)
+        internal void Set(string path)
         {
             var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
             if (!ImageExtensions.Contains(Path.GetExtension(path).ToUpperInvariant())) return;

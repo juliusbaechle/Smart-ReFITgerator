@@ -11,13 +11,13 @@ namespace SmartFridge.ProductNS
 {
     class DBProducts
     {
-        public DBProducts(DbConnection db)
+        internal DBProducts(DbConnection db)
         {
             m_db = db;
             CreateTable();
         }
 
-        public void Save(Product product)
+        internal void Save(Product product)
         {
             DbCommand cmd = m_db.CreateCommand();
 
@@ -36,7 +36,7 @@ namespace SmartFridge.ProductNS
             cmd.ExecuteNonQuery();
         }
 
-        public List<Product> LoadAll()
+        internal List<Product> LoadAll()
         {
             DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = "SELECT * FROM tblProducts";
@@ -59,14 +59,14 @@ namespace SmartFridge.ProductNS
             return products;
         }
 
-        public void Clear()
+        internal void Clear()
         {
             DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = "DELETE FROM tblProducts";
             cmd.ExecuteNonQuery();
         }
 
-        public void Delete(Product product)
+        internal void Delete(Product product)
         {
             DbCommand cmd = m_db.CreateCommand();
             cmd.CommandText = $"DELETE FROM tblProducts WHERE Id='{product.ID}'";

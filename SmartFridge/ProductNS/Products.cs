@@ -18,7 +18,7 @@ namespace SmartFridge.ProductNS
             }
         }
          
-        public void AddOrEdit(Product newProduct)
+        internal void AddOrEdit(Product newProduct)
         {
             if (!newProduct.IsValid()) return;
 
@@ -34,7 +34,7 @@ namespace SmartFridge.ProductNS
             m_db.Save(newProduct);
         }
 
-        public void Delete(Product product)
+        internal void Delete(Product product)
         {
             List.Remove(product);
             m_db.Delete(product);
@@ -52,8 +52,8 @@ namespace SmartFridge.ProductNS
             return oldProduct;
         }
 
+        public BindingList<Product> List { get; private set; }
         private readonly DBProducts m_db;
-        public BindingList<Product> List { get; internal set; }
         ImageRepository m_imageRepository;
     }
 }
