@@ -25,6 +25,7 @@ namespace SmartFridge.ProductNS
 
         internal void Set(string path)
         {
+            ID = CreateId();
             var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
             if (!ImageExtensions.Contains(Path.GetExtension(path).ToUpperInvariant())) return;
 
@@ -53,6 +54,13 @@ namespace SmartFridge.ProductNS
             double factor = 500.0 / image.PixelWidth;
             ScaleTransform scale = new ScaleTransform(factor, factor);
             return new TransformedBitmap(image, scale);
+        }
+
+        protected string CreateId()
+        {
+            Guid guid = Guid.NewGuid();
+            string id = guid.ToString("N");
+            return id.ToUpper();
         }
 
 

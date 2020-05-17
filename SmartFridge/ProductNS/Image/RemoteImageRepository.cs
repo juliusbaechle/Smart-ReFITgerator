@@ -5,6 +5,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
@@ -30,45 +31,39 @@ namespace SmartFridge.ProductNS
             }
         }
 
-        public override void Delete(ProductImage image)
+        public override async Task DeleteAsync(ProductImage image)
         {
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
             request.Credentials = m_credentials;
             request.Method = WebRequestMethods.Ftp.DeleteFile;
-            request.GetResponseAsync();
+            await request.GetResponseAsync();
         }
 
-        public override void LoadAsync(ProductImage image)
+        public override async Task LoadAsync(ProductImage image)
         {
-            var client = new WebClient { Credentials = m_credentials };
-            client.DownloadDataAsync(new Uri(CreateAddress(image.ID)));
-
-            client.DownloadDataCompleted +=
-                (object sender, DownloadDataCompletedEventArgs e) =>
+            await Task.Run(() => {
+                using (var client = new WebClient { Credentials = m_credentials })
                 {
-                    try
-                    {
-                        byte[] data = e.Result;
-                        image.Bitmap = Convert(data);
-                        DownloadCompleted?.Invoke(image);
-                        client.Dispose();
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Was not able to download image");
-                    }
-                };
+                    byte[] data = client.DownloadData(new Uri(CreateAddress(image.ID)));
+                    image.Bitmap = Convert(data);
+                }
+            });
         }
 
-        internal override void SaveFixedID(ProductImage image)
+        internal override async Task SaveAsync(ProductImage image)
         {
+            if (image.Bitmap == null) return;
+            
             using (var ms = new MemoryStream())
             using (var client = new WebClient { Credentials = m_credentials })
             {
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
                 encoder.Save(ms);
-                client.UploadDataAsync(new Uri(CreateAddress(image.ID)), ms.ToArray());
+                
+                await Task.Run(() => { 
+                    client.UploadData(new Uri(CreateAddress(image.ID)), ms.ToArray()); 
+                });
             }
         }
 

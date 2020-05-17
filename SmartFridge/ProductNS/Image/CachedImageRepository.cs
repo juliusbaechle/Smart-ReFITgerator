@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
@@ -9,11 +11,6 @@ namespace SmartFridge.ProductNS
         {
             m_cache = cache;
             m_remote = remote;
-
-            remote.DownloadCompleted += 
-                (ProductImage image) => { 
-                    m_cache.Save(image);  
-                };
         }
 
         public override bool Contains(ProductImage image)
@@ -23,29 +20,28 @@ namespace SmartFridge.ProductNS
             return false;
         }
 
-        public override void Delete(ProductImage image)
+        public override async Task DeleteAsync(ProductImage image)
         {
-            m_cache.Delete(image);
-            m_remote.Delete(image);
+            await m_cache.DeleteAsync(image);
+            await m_remote.DeleteAsync(image);
         }
 
-        public override void LoadAsync(ProductImage image)
+        public override async Task LoadAsync(ProductImage image)
         {
             if (m_cache.Contains(image)) {
-                m_cache.LoadAsync(image);
+                await m_cache.LoadAsync(image);
             }
             else
             {
-                m_remote.LoadAsync(image);
+                await m_remote.LoadAsync(image);
+                await m_cache.SaveAsync(image);
             }
         }
 
-        internal override void SaveFixedID(ProductImage image)
+        internal override async Task SaveAsync(ProductImage image)
         {
-            if (image.Bitmap == null) return;
-
-            m_cache.SaveFixedID(image);
-            m_remote.SaveFixedID(image);
+            await m_cache.SaveAsync(image);
+            await m_remote.SaveAsync(image);
         }
 
         LocalImageRepository m_cache;

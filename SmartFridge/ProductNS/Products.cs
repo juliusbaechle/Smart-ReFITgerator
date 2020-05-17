@@ -26,11 +26,11 @@ namespace SmartFridge.ProductNS
             if (oldProduct != null)
             {
                 List.Remove(oldProduct);
-                m_imageRepository.Delete(oldProduct.Image);
+                m_imageRepository.DeleteAsync(oldProduct.Image);
             }
 
             List.Add(newProduct);
-            m_imageRepository.Save(newProduct.Image);
+            m_imageRepository.SaveAsync(newProduct.Image);
             m_db.Save(newProduct);
         }
 
@@ -38,7 +38,7 @@ namespace SmartFridge.ProductNS
         {
             List.Remove(product);
             m_db.Delete(product);
-            m_imageRepository.Delete(product.Image);
+            m_imageRepository.DeleteAsync(product.Image);
         }
 
         public Product Find(Guid id)
