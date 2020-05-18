@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -45,6 +46,19 @@ namespace SmartFridge.ProductNS
             Quantity    = copy.Quantity;
             ID          = copy.ID;
             Image       = new ProductImage(copy.Image);
+        }
+
+        internal bool ValueEqual(Product product)
+        {
+            if (null        == product)             return false;
+            if (ID          != product.ID)          return false;
+            if (Name        != product.Name)        return false;
+            if (Energy      != product.Energy)      return false;
+            if (Durability  != product.Durability)  return false;
+            if (Category    != product.Category)    return false;
+            if (Quantity    != product.Quantity)    return false;
+            if (Image.ID    != product.Image.ID)    return false;
+            return true;            
         }
 
         internal bool IsValid()
