@@ -44,8 +44,15 @@ namespace SmartFridge.ProductNS
             await Task.Run(() => {
                 using (var client = new WebClient { Credentials = m_credentials })
                 {
-                    byte[] data = client.DownloadData(new Uri(CreateAddress(image.ID)));
-                    image.Bitmap = Convert(data);
+                    try
+                    {
+                        byte[] data = client.DownloadData(new Uri(CreateAddress(image.ID)));
+                        image.Bitmap = Convert(data);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Not able to download: " + image.ID);
+                    }
                 }
             });
         }
