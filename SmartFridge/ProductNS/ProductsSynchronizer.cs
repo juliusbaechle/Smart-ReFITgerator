@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Windows.Threading;
+using System.Windows;
+using System.Timers;
 
 namespace SmartFridge.ProductNS
 {
     internal class ProductsSynchronizer
     {
-        private readonly DispatcherTimer m_timer;
+        private readonly Timer m_timer;
         private readonly Products m_products;
         private readonly DbConnection m_local;
         private readonly DbConnection m_remote;
+
+        private const double INTERVAL = 5000;
 
         internal ProductsSynchronizer(Products products, DbConnection local, DbConnection remote)
         {
@@ -19,9 +22,9 @@ namespace SmartFridge.ProductNS
             m_local = local;
             m_remote = remote;
 
-            m_timer = new DispatcherTimer();
-            m_timer.Interval = new TimeSpan(0, 0, 10);
-            m_timer.Tick += (object o, EventArgs e) => { Synchronize(); };
+            m_timer = new Timer();
+            m_timer.Interval = INTERVAL;
+            m_timer.Elapsed += (object o, ElapsedEventArgs e) => { Synchronize(); };
             m_timer.Start();
         }
 
@@ -32,28 +35,39 @@ namespace SmartFridge.ProductNS
             var remoteProducts = remoteDb.LoadAll();
             
             CopyToLocalDb(remoteProducts);
+            Console.WriteLine(System.DateTime.Now.Second + ", " + System.DateTime.Now.Millisecond);
+
             SynchronizeProducts(remoteProducts);
             Console.WriteLine(System.DateTime.Now.Second + ", " + System.DateTime.Now.Millisecond + System.Environment.NewLine);
         }
 
-        private void CopyToLocalDb(List<Product> products)
+        private void CopyToLocalDb(List<Product> remoteProducts)
         {
             var localDb = new DBProducts(m_local);
-            localDb.Clear();
-            products.ForEach(localDb.Save);
+            var localProducts = localDb.LoadAll();
+            
+            var deletedProducts = localProducts.Except(remoteProducts, new IdEqual());
+            foreach (Product product in deletedProducts)
+                localDb.Delete(product);
+
+            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(localProducts.Find(current => current.ID == remote.ID)));
+            foreach (Product product in changedOrCreatedProducts)
+                localDb.Save(product);
         }
 
         private void SynchronizeProducts(List<Product> remoteProducts)
         {
             var currentProducts = new List<Product>(m_products.List);
-
             var deletedProducts = currentProducts.Except(remoteProducts, new IdEqual());
-            foreach (Product product in deletedProducts) 
-                m_products.Delete(product);
+            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));            
 
-            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
-            foreach (Product product in changedOrCreatedProducts) 
-                m_products.AddOrEdit(product);
+            Application.Current.Dispatcher.Invoke(() => {
+                foreach (Product product in deletedProducts)
+                    m_products.Delete(product);
+
+                foreach (Product product in changedOrCreatedProducts)
+                    m_products.AddOrEdit(product);
+            });
         }
 
         class IdEqual : IEqualityComparer<Product>
