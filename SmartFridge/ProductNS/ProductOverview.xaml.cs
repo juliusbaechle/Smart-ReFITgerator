@@ -25,6 +25,7 @@ namespace SmartFridge.ProductNS
         public event ProductHandler Delete;
         public event ProductHandler Selected;
 
+
         public ProductOverview()
         {
             InitializeComponent();
@@ -54,6 +55,42 @@ namespace SmartFridge.ProductNS
             var product = listBoxProducts.SelectedItem as Product;
             if (product == null) return;
             Selected?.Invoke(product);
+        }
+
+
+        private void btnVegetable_Fuit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnCereal_Products_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDairyProducts_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnMeat_Fish_Eggs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnFats_Oils_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnConfectionery_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDrinks_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

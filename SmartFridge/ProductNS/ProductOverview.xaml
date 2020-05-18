@@ -35,7 +35,38 @@
             </DockPanel>
 
             <DockPanel>
-                <Label Content="Filter" FontSize="40" Foreground="{StaticResource Brush_Foreground}" Background="{StaticResource Brush_BackgroundDark}"/>
+                <Button Click="btnVegetable_Fuit_Click" Style="{StaticResource RoundedButton}" Name="btnVegetable_Fuit" Width="460" Height="80" Margin="0,0,0,600" BorderBrush="{x:Null}">
+                    <!--<Image Height="80" Width="80" Source="../icons/select.png" OpacityMask="Black" />-->
+                    <TextBlock Foreground="White" > Obst und Gemüse </TextBlock>
+                </Button>
+
+                <Button Click="btnDrinks_Click" Style="{StaticResource RoundedButton}" Name="btnDrinks" Width="460" Height="80" Margin="-460,0,0,420" BorderBrush="{x:Null}">
+                    <TextBlock Foreground="White" > Getränke</TextBlock>
+                </Button>
+                
+                <Button Click="btnCereal_Products_Click" Style="{StaticResource RoundedButton}" Name="btnCerealProducts" Width="460" Height="80" Margin="-460,0,0,240" BorderBrush="{x:Null}">
+                    <TextBlock Foreground="White" > Getreideprodukte</TextBlock>
+                </Button>
+
+                <Button Click="btnDairyProducts_Click" Style="{StaticResource RoundedButton}" Name="btnDairyProducts" Width="460" Height="80" Margin="-460,0,0,60" BorderBrush="{x:Null}">
+                    <TextBlock Foreground="White" > Milchprodukte</TextBlock>
+                </Button>
+
+                <Button Click="btnMeat_Fish_Eggs_Click" Style="{StaticResource RoundedButton}" Name="btnMeat_Fish_Eggs" Width="460" Height="80" Margin="-460,0,0,-120" BorderBrush="{x:Null}">
+                    <TextBlock Foreground="White" > Fleisch/Fisch/Eier</TextBlock>
+                </Button>
+
+                <Button Click="btnFats_Oils_Click" Style="{StaticResource RoundedButton}" Name="btnFats_Oils" Width="460" Height="80" Margin="-460,0,0,-300" BorderBrush="{x:Null}">
+                    <TextBlock Foreground="White" > Fette und Öle</TextBlock>
+                </Button>
+
+                <Button Click="btnConfectionery_Click" Style="{StaticResource RoundedButton}" Name="btnConfectionery" Width="460" Height="80" Margin="-460,0,0,-480" BorderBrush="{x:Null}">
+                    <TextBlock Foreground="White" > Genussmittel</TextBlock>
+                </Button>
+                <!--<Button Click="btnVegetables_Click" Style="{StaticResource RoundedButton}" Name="btnVegetables" Width="460" Height="80" Margin="0,0,0,600" BorderBrush="{x:Null}">
+                    <Image Height="80" Width="80" Source="../icons/select.png" OpacityMask="Black" />
+                </Button>-->
+                <!--<Label Content="Filter" FontSize="40" Foreground="{StaticResource Brush_Foreground}" Background="{StaticResource Brush_BackgroundDark}"/>-->
             </DockPanel>
         </DockPanel>
 
