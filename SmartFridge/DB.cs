@@ -7,6 +7,8 @@ using System.Data.SQLite;
 using System.IO;
 using System.Data.Common;
 using MySql.Data.MySqlClient;
+using SmartFridge.ProductNS;
+using System.Windows;
 
 namespace SmartFridge
 {
@@ -20,10 +22,10 @@ namespace SmartFridge
             private const string PATH = "URI=file:smartfridge.db";
         #endif
 
-        public static DbConnection CreateLocalConnection()
+        public static DbConnection CreateLocalConnection(string path = PATH)
         {
             //Falls Datenbank nicht vorhanden ist, wird eine neue Datenbank erstellt
-            DbConnection conn = new SQLiteConnection(PATH);
+            DbConnection conn = new SQLiteConnection(path);
             conn.Open();
             return conn;
         }
