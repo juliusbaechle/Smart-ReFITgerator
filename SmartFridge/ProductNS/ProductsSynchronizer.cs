@@ -40,6 +40,9 @@ namespace SmartFridge.ProductNS
             var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
 
             Application.Current.Dispatcher.Invoke(() => {
+                // Products emitted in den Methoden AddOrEdit und Delete Signale, 
+                // diese kommen jedoch bereits aus der Remotedatenbank und müssen 
+                // deshalb nicht hochgeladen werden
                 DisconnectSignals();
 
                 foreach (Product product in deletedProducts)
@@ -50,6 +53,7 @@ namespace SmartFridge.ProductNS
                     m_products.AddOrEdit(product);
 
                     Task.Run(() => {
+                        // Bilder herunterladen und lokal abspeichern
                         m_remote.ImageRepository.LoadAsync(product.Image).Wait();
                         m_local.ImageRepository.SaveAsync(product.Image);
                     });
