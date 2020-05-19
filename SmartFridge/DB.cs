@@ -30,15 +30,15 @@ namespace SmartFridge
             return conn;
         }
 
-        public static DbConnection CreateWebConnection()
+        public static DbConnection CreateRemoteConnection()
         {
             MySqlConnection conn = new MySqlConnection();
             conn.ConnectionString =
-                "Server=sql7.freesqldatabase.com; " +
-                "Port=3306; " +
-                "Database=sql7338189; " +
-                "UID=sql7338189; " +
-                "PWD=dx2EuT3yDD;";
+                "Server=ec2-3-125-104-251.eu-central-1.compute.amazonaws.com; " +
+                "Port=3306; " + 
+                "Database=smartfridge; " +
+                "Password=smartfridge; " +
+                "User=ec2-user; ";
             conn.Open();
             return conn;
         }
