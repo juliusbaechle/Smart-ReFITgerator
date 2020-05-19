@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartFridge.ProductNS
 {
     class DBProducts
     {
-        internal DBProducts(DbConnection db)
+        internal DBProducts(DbConnection db, ImageRepository imageRepository)
         {
-            m_db = db;
+            DbConnection = db;
+            ImageRepository = imageRepository;
+
             CreateTable();
         }
 
         internal void Save(Product product)
         {
-            DbCommand cmd = m_db.CreateCommand();
+            DbCommand cmd = DbConnection.CreateCommand();
 
             if (!Contains(product.ID))
             {                
@@ -34,11 +32,13 @@ namespace SmartFridge.ProductNS
             }
 
             cmd.ExecuteNonQuery();
+
+            ImageRepository.SaveAsync(product.Image);       
         }
 
         internal List<Product> LoadAll()
         {
-            DbCommand cmd = m_db.CreateCommand();
+            DbCommand cmd = DbConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM tblProducts";
             DbDataReader reader = cmd.ExecuteReader();
 
@@ -46,36 +46,40 @@ namespace SmartFridge.ProductNS
             while (reader.Read())
             {
                 Product product     = new Product();
-                product.ID          = reader.GetGuid(0);
+                product.ID          = reader.GetString(0);
                 product.Name        = reader.GetString(1);
                 product.Durability  = (UInt16)reader.GetInt32(2);
                 product.Energy      = (UInt16)reader.GetInt32(3);
                 product.Category    = (ECategory)reader.GetInt16(4);
                 product.Image.ID    = reader.GetString(5);
+                ImageRepository.LoadAsync(product.Image);
                 products.Add(product);
             }
 
             reader.Close();
+
             return products;
         }
 
         internal void Clear()
         {
-            DbCommand cmd = m_db.CreateCommand();
+            DbCommand cmd = DbConnection.CreateCommand();
             cmd.CommandText = "DELETE FROM tblProducts";
             cmd.ExecuteNonQuery();
         }
 
         internal void Delete(Product product)
         {
-            DbCommand cmd = m_db.CreateCommand();
+            DbCommand cmd = DbConnection.CreateCommand();
             cmd.CommandText = $"DELETE FROM tblProducts WHERE Id='{product.ID}'";
             cmd.ExecuteNonQuery();
+
+            ImageRepository.DeleteAsync(product.Image);
         }
 
-        private bool Contains(Guid productId)
+        private bool Contains(string productId)
         {
-            DbCommand cmd = m_db.CreateCommand();
+            DbCommand cmd = DbConnection.CreateCommand();
             cmd.CommandText = $"SELECT * FROM tblProducts WHERE Id = '{productId}'";
             bool contained = cmd.ExecuteScalar() != null;
             return contained;
@@ -83,11 +87,12 @@ namespace SmartFridge.ProductNS
 
         private void CreateTable()
         {
-            DbCommand cmd = m_db.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(200) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImageId VARCHAR(50) )";
+            DbCommand cmd = DbConnection.CreateCommand();
+            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(50) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImageId VARCHAR(50) )";
             cmd.ExecuteNonQuery();
         }
 
-        private DbConnection m_db;
+        private DbConnection DbConnection { get; set; }
+        internal ImageRepository ImageRepository { get; private set; }
     }
 }

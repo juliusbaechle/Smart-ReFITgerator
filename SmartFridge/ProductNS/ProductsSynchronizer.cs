@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Windows;
 using System.Timers;
+using System.Threading.Tasks;
 
 namespace SmartFridge.ProductNS
 {
@@ -11,16 +12,19 @@ namespace SmartFridge.ProductNS
     {
         private readonly Timer m_timer;
         private readonly Products m_products;
-        private readonly DbConnection m_local;
-        private readonly DbConnection m_remote;
+        private readonly DBProducts m_local;
+        private readonly DBProducts m_remote;
+
+        private bool m_connected = true;
 
         private const double INTERVAL = 5000;
 
-        internal ProductsSynchronizer(Products products, DbConnection local, DbConnection remote)
+        internal ProductsSynchronizer(Products products, DBProducts local, DBProducts remote)
         {
-            m_products = products;
             m_local = local;
             m_remote = remote;
+            m_products = products;
+            ConnectSignals();
 
             m_timer = new Timer();
             m_timer.Interval = INTERVAL;
@@ -30,44 +34,53 @@ namespace SmartFridge.ProductNS
 
         private void Synchronize()
         {
-            Console.WriteLine(System.DateTime.Now.Second + ", " + System.DateTime.Now.Millisecond);
-            var remoteDb = new DBProducts(m_remote);
-            var remoteProducts = remoteDb.LoadAll();
-            
-            CopyToLocalDb(remoteProducts);
-            Console.WriteLine(System.DateTime.Now.Second + ", " + System.DateTime.Now.Millisecond);
-
-            SynchronizeProducts(remoteProducts);
-            Console.WriteLine(System.DateTime.Now.Second + ", " + System.DateTime.Now.Millisecond + System.Environment.NewLine);
-        }
-
-        private void CopyToLocalDb(List<Product> remoteProducts)
-        {
-            var localDb = new DBProducts(m_local);
-            var localProducts = localDb.LoadAll();
-            
-            var deletedProducts = localProducts.Except(remoteProducts, new IdEqual());
-            foreach (Product product in deletedProducts)
-                localDb.Delete(product);
-
-            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(localProducts.Find(current => current.ID == remote.ID)));
-            foreach (Product product in changedOrCreatedProducts)
-                localDb.Save(product);
-        }
-
-        private void SynchronizeProducts(List<Product> remoteProducts)
-        {
+            var remoteProducts = m_remote.LoadAll();
             var currentProducts = new List<Product>(m_products.List);
             var deletedProducts = currentProducts.Except(remoteProducts, new IdEqual());
-            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));            
+            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
 
             Application.Current.Dispatcher.Invoke(() => {
+                DisconnectSignals();
+
                 foreach (Product product in deletedProducts)
                     m_products.Delete(product);
 
                 foreach (Product product in changedOrCreatedProducts)
+                {
                     m_products.AddOrEdit(product);
+
+                    Task.Run(() => {
+                        m_remote.ImageRepository.LoadAsync(product.Image).Wait();
+                        m_local.ImageRepository.SaveAsync(product.Image);
+                    });
+                }
+
+                ConnectSignals();
             });
+        }
+
+        private void Save(Product product)
+        {
+            if (m_connected)
+                m_remote.Save(product);
+        }
+
+        private void Delete(Product product)
+        {
+            if(m_connected)
+                m_remote.Delete(product);
+        }
+
+        private void ConnectSignals()
+        {
+            m_products.Added += Save;
+            m_products.Deleted += Delete;
+        }
+
+        private void DisconnectSignals()
+        {
+            m_products.Added -= Save;
+            m_products.Deleted -= Delete;
         }
 
         class IdEqual : IEqualityComparer<Product>

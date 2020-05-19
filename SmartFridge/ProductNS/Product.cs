@@ -32,7 +32,7 @@ namespace SmartFridge.ProductNS
     {
         internal Product()
         {
-            ID = Guid.NewGuid();
+            ID = Guid.NewGuid().ToString("N").ToUpper();
             Category = ECategory.Drinks;
             Image = new ProductImage();
         }
@@ -50,7 +50,7 @@ namespace SmartFridge.ProductNS
 
         internal bool ValueEqual(Product product)
         {
-            if (null        == product)             return false;
+            if (product == null) return false;
             if (ID          != product.ID)          return false;
             if (Name        != product.Name)        return false;
             if (Energy      != product.Energy)      return false;
@@ -72,7 +72,7 @@ namespace SmartFridge.ProductNS
         public UInt16 Durability { set; get; }
         public ECategory Category { set; get; }
         public EQuantity Quantity { set; get; }
-        internal Guid ID { set; get; }   
+        internal string ID { set; get; }   
         public ProductImage Image { internal set; get; }
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =

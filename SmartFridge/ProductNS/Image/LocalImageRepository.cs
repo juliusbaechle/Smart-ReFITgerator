@@ -10,6 +10,9 @@ namespace SmartFridge.ProductNS
         public LocalImageRepository(string path = DEFAULT_PATH)
         {
             m_path = path;
+
+            if (!Directory.Exists(m_path))
+                Directory.CreateDirectory(path);
         }
 
         public override bool Contains(ProductImage image)

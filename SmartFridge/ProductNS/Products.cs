@@ -5,48 +5,47 @@ namespace SmartFridge.ProductNS
 {
     public class Products
     {
-        public ProductHandler Selected;
+        public Action<Product> Selected;
+        public Action<Product> Deleted;
+        public Action<Product> Added;
 
-        internal Products(DBProducts db, ImageRepository imageRepository)
+        internal Products(DBProducts db)
         {
             m_db = db;
-            m_imageRepository = imageRepository;
-
             List = new BindingList<Product>(m_db.LoadAll());
-            foreach (Product product in List) {
-                m_imageRepository.LoadAsync(product.Image);
-            }
         }
          
         internal void AddOrEdit(Product newProduct)
         {
             if (!newProduct.IsValid()) return;
 
-            Product oldProduct = Find(newProduct.ID);
-            if (oldProduct != null)
-            {
-                List.Remove(oldProduct);
-                m_imageRepository.DeleteAsync(oldProduct.Image);
-            }
+            var oldProduct = Get(newProduct.ID);
+            if (oldProduct != null) 
+                Delete(oldProduct);
 
-            List.Add(newProduct);
-            m_imageRepository.SaveAsync(newProduct.Image);
-            m_db.Save(newProduct);
+            Add(newProduct);
         }
 
         internal void Delete(Product product)
         {
             List.Remove(product);
             m_db.Delete(product);
-            m_imageRepository.DeleteAsync(product.Image);
+            Deleted?.Invoke(product);
         }
 
-        public Product Find(Guid id)
+        internal void Add(Product product)
+        {
+            List.Add(product);
+            m_db.Save(product);
+            Added?.Invoke(product);
+        }
+
+        public Product Get(string productId)
         {
             Product oldProduct = null;
             foreach (Product product in List)
             {
-                if (product.ID == id)
+                if (product.ID == productId)
                     oldProduct = product;
             }
             return oldProduct;
@@ -54,6 +53,5 @@ namespace SmartFridge.ProductNS
 
         public BindingList<Product> List { get; private set; }
         private readonly DBProducts m_db;
-        ImageRepository m_imageRepository;
     }
 }

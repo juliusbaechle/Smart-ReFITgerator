@@ -16,14 +16,12 @@ using System.Windows.Shapes;
 
 namespace SmartFridge.ProductNS
 {
-    public delegate void ProductHandler(Product product);
-
     public partial class ProductOverview : Page
     {
         public event Action Add;
-        public event ProductHandler Edit;
-        public event ProductHandler Delete;
-        public event ProductHandler Selected;
+        public event Action<Product> Edit;
+        public event Action<Product> Delete;
+        public event Action<Product> Selected;
 
         public ProductOverview()
         {
