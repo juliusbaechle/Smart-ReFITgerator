@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -12,7 +13,11 @@ namespace SmartFridge.ProductNS
             DbConnection = db;
             ImageRepository = imageRepository;
 
-            CreateTable();
+            if(db.State == ConnectionState.Open) {
+                CreateTable();
+            } else {
+                db.StateChange += (object sender, StateChangeEventArgs e) => { if (e.CurrentState == ConnectionState.Open) CreateTable(); };
+            }
         }
 
         internal void Save(Product product)
@@ -57,7 +62,6 @@ namespace SmartFridge.ProductNS
             }
 
             reader.Close();
-
             return products;
         }
 
@@ -92,7 +96,7 @@ namespace SmartFridge.ProductNS
             cmd.ExecuteNonQuery();
         }
 
-        private DbConnection DbConnection { get; set; }
+        internal DbConnection DbConnection { get; private set; }
         internal ImageRepository ImageRepository { get; private set; }
     }
 }

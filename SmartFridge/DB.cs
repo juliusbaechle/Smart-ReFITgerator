@@ -39,7 +39,7 @@ namespace SmartFridge
                 "Database=smartfridge; " +
                 "Password=smartfridge; " +
                 "User=ec2-user; ";
-            conn.Open();
+            conn.OpenAsync();
             return conn;
         }
     }

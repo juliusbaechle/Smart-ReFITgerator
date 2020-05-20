@@ -23,8 +23,8 @@ namespace SmartFridge
             var mainWindow = new MainWindow(app.Resources);
 
             var localDbProducts = new DBProducts(DB.CreateLocalConnection(), new LocalImageRepository());
+            var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection(), new RemoteImageRepository());
             var products = new Products(localDbProducts);
-            var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection(), new RemoteImageRepository());            
             new ProductsSynchronizer(products, localDbProducts, remoteDbProducts);
 
             // var content = new Contents(new DBContents(db));
