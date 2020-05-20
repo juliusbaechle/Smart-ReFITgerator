@@ -1,11 +1,6 @@
 ﻿using SmartFridge.ProductNS;
 using SmartFridgeWPF;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SmartFridge
@@ -16,7 +11,6 @@ namespace SmartFridge
     class SmartFridge
     {   
         [System.STAThreadAttribute()]
-        [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         public static void Main()
         {
@@ -28,15 +22,17 @@ namespace SmartFridge
             Application app = Application.LoadComponent(new Uri("App.xaml", UriKind.Relative)) as Application;
             var mainWindow = new MainWindow(app.Resources);
 
-            var db = DB.CreateLocalConnection();
-            var imageRepo = new LocalImageRepository();
-            var products = new Products(new DBProducts(db), imageRepo);            
-            // var contents = new Contents(new DBContents(db));
-            // ...
-            
-            var mediator = new Mediator(mainWindow, products);
-            mediator.ShowPage(EPage.Home);    
+            var localDbProducts = new DBProducts(DB.CreateLocalConnection(), new LocalImageRepository());
+            var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection(), new RemoteImageRepository());
+            var products = new Products(localDbProducts);
+            new ProductsSynchronizer(products, localDbProducts, remoteDbProducts);
 
+            // var content = new Contents(new DBContents(db));
+            // ...
+
+            var mediator = new Mediator(mainWindow, products);
+            mediator.ShowPage(EPage.Home);
+            
             app.Run(mainWindow);
         }
     }

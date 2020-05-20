@@ -13,9 +13,9 @@ namespace SmartFridge.ProductNS
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ProductImage() { }
+        internal ProductImage() { }
 
-        public ProductImage(ProductImage copy)
+        internal ProductImage(ProductImage copy)
         {
             if(copy.Bitmap != null) {
                 Bitmap = copy.Bitmap.Clone();
@@ -23,29 +23,9 @@ namespace SmartFridge.ProductNS
             ID = copy.ID;
         }
 
-        public void Load(IImageRepository imageRepository)
+        internal void Set(string path)
         {
-            if (imageRepository.Contains(ID))
-            {
-                Bitmap = imageRepository.Load(ID);
-            }
-            else Bitmap = null;
-        }
-
-        public void Save(IImageRepository imageRepository)
-        {
-            string newId = imageRepository.Save(Bitmap);
-            imageRepository.Delete(ID);
-            ID = newId;
-        }
-
-        public void Delete(IImageRepository imageRepository)
-        {
-            imageRepository.Delete(ID);
-        }
-
-        public void Set(string path)
-        {
+            ID = CreateId();
             var ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
             if (!ImageExtensions.Contains(Path.GetExtension(path).ToUpperInvariant())) return;
 
@@ -76,12 +56,19 @@ namespace SmartFridge.ProductNS
             return new TransformedBitmap(image, scale);
         }
 
+        protected string CreateId()
+        {
+            Guid guid = Guid.NewGuid();
+            string id = guid.ToString("N");
+            return id.ToUpper();
+        }
+
 
         internal string ID { get; set; }
 
         public BitmapSource Bitmap
         {
-            private set
+            internal set
             {
                 if(m_bitmap != value) {
                     m_bitmap = value;
