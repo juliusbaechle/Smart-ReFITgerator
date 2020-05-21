@@ -17,35 +17,34 @@
 
         <DockPanel Grid.Column="1" Margin="20, 0, 20, 20" DockPanel.Dock="Right" MinWidth="400" LastChildFill="True">
             <DockPanel DockPanel.Dock="Top" Margin="0, 20, 0, 20">
-                <Button Click="btnAdd_Click" Style="{StaticResource RoundedButton}" Name="btnAdd" Width="100" Height="100" Margin="0, 0, 20, 0" BorderBrush="{x:Null}">
+                <Button Click="btnAdd_Click" Name="btnAdd" Width="100" Height="100" Margin="0, 0, 20, 0">
                     <Image Height="80" Width="80" Source="../icons/add.png"/>
                 </Button>
 
-                <Button Click="btnEdit_Click" Style="{StaticResource RoundedButton}" Name="btnEdit" Width="100" Height="100" Margin="0, 0, 20, 0" BorderBrush="{x:Null}">
+                <Button Click="btnEdit_Click" Name="btnEdit" Width="100" Height="100" Margin="0, 0, 20, 0">
                     <Image Height="80" Width="80" Source="../icons/edit.png" OpacityMask="Black" />
                 </Button>
 
-                <Button Click="btnDelete_Click" Style="{StaticResource RoundedButton}" Name="btnDelete" Width="100" Height="100" Margin="0, 0, 20, 0" BorderBrush="{x:Null}">
+                <Button Click="btnDelete_Click" Name="btnDelete" Width="100" Height="100" Margin="0, 0, 20, 0">
                     <Image Height="80" Width="80" Source="../icons/delete.png" OpacityMask="Black" />
                 </Button>
 
-                <Button Click="btnSelect_Click" Style="{StaticResource RoundedButton}" Name="btnSelect" Width="100" Height="100" Margin="0" BorderBrush="{x:Null}">
+                <Button Click="btnSelect_Click" Name="btnSelect" Width="100" Height="100" Margin="0">
                     <Image Height="80" Width="80" Source="../icons/select.png" OpacityMask="Black" />
                 </Button>
             </DockPanel>
 
             <UniformGrid Columns="1">
-                <Button Click="btnAll_Click"             Content="Alle"               FontSize="35" Margin="0, 0, 0, 20"/>
-                <Button Click="btnVegetable_Fuit_Click"  Content="Obst und Gemüse"    FontSize="35" Margin="0, 0, 0, 20"/>
-                <Button Click="btnDrinks_Click"          Content="Getränke"           FontSize="35" Margin="0, 0, 0, 20"/>
-                <Button Click="btnCereal_Products_Click" Content="Getreideprodukte"   FontSize="35" Margin="0, 0, 0, 20"/>
-                <Button Click="btnDairy_Products_Click"  Content="Milchprodukte"      FontSize="35" Margin="0, 0, 0, 20"/>
-                <Button Click="btnMeat_Fish_Eggs_Click"  Content="Fleisch/Fisch/Eier" FontSize="35" Margin="0, 0, 0, 20"/>
-                <Button Click="btnConfectionery_Click"   Content="Genussmittel"       FontSize="35" Margin="0, 0, 0,  0"/>
+                <Button Name="btnAll"             Content="Alle"               FontSize="35" Margin="0,  0, 0, 10"/>
+                <Button Name="btnVegetable_Fuit"  Content="Obst und Gemüse"    FontSize="35" Margin="0, 10, 0, 10"/>
+                <Button Name="btnDrinks"          Content="Getränke"           FontSize="35" Margin="0, 10, 0, 10"/>
+                <Button Name="btnDairy_Products"  Content="Milchprodukte"      FontSize="35" Margin="0, 10, 0, 10"/>
+                <Button Name="btnMeat_Fish_Eggs"  Content="Fleisch/Fisch/Eier" FontSize="35" Margin="0, 10, 0, 10"/>
+                <Button Name="btnOther"           Content="Anderes"            FontSize="35" Margin="0, 10, 0,  0"/>
             </UniformGrid>
         </DockPanel>
 
-        <ListBox Grid.Column="0" Margin="20, 20, 0, 20" Name="listBoxProducts" ItemsSource="{Binding DataView}" Background="{StaticResource Brush_BackgroundDark}">
+        <ListBox Grid.Column="0" Margin="20, 20, 0, 20" Name="listBoxProducts" Background="{StaticResource Brush_BackgroundDark}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <local:ProductElement DataContext="{Binding}"/>
