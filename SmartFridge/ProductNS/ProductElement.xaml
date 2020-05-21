@@ -22,8 +22,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="200*"/>
-            <ColumnDefinition Width="200*"/>
+            <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="100*"/>
             <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
 
@@ -38,11 +38,9 @@
 
         <TextBox Grid.Column="1" Text="{Binding Name}" Height="60" FontSize="35"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 
-        <UniformGrid Grid.Column="2" Rows="2" Columns="2" HorizontalAlignment="Stretch" >
-            <TextBox Text="{Binding Energy,     StringFormat=Energie: {0:0} KCal}"/>            
-            <TextBox Text="{Binding Category,   StringFormat=Kategorie: {0:C}}"/>           <!-- TODO: Does not work for enums -->            
+        <UniformGrid Grid.Column="2" Rows="2" Columns="1" HorizontalAlignment="Stretch" >
+            <TextBox Text="{Binding Energy,     StringFormat=Energie: {0:0} KCal}"/>                      
             <TextBox Text="{Binding Durability, StringFormat=Haltbarkeit: {0:0} Tage}"/>            
-            <TextBox Text="{Binding Category,   StringFormat=Mengenangabe: {0:C}}"/>        <!-- TODO: Does not work for enums -->
         </UniformGrid>
     </Grid>
 </UserControl>
