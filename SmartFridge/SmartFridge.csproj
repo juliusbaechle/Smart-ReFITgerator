@@ -155,6 +155,7 @@
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="ProductNS\IImageRepository.cs" />
+    <Compile Include="ProductNS\Item.cs" />
     <Compile Include="ProductNS\LocalImageRepository.cs" />
     <Compile Include="ProductNS\ProductImage.cs" />
     <Compile Include="SmartFridge.cs" />

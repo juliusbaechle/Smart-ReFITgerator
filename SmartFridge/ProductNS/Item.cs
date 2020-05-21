@@ -8,6 +8,11 @@ namespace SmartFridge.ProductNS
 {
     class Item
     {
+        public Item()
+        {
+            ID = Guid.NewGuid().ToString("N").ToUpper();
+            Product = null;
+        }
         internal string ID { get; set; }
 
         private string ProductID { get; set; }
@@ -16,8 +21,8 @@ namespace SmartFridge.ProductNS
 
         public UInt32 Amount { get; set; }
 
-        public Product Product { get; set; }
+        public Product Product { get; internal set; } 
 
-        public Item() { }
+        
     }
 }
