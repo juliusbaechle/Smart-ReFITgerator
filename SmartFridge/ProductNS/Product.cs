@@ -26,7 +26,7 @@ namespace SmartFridge.ProductNS
         {
             ID = Guid.NewGuid().ToString("N").ToUpper();
             Category = ECategory.Drinks;
-            Image = new ProductImage();
+            Image = new Image();
         }
 
         internal Product(Product copy)
@@ -37,7 +37,7 @@ namespace SmartFridge.ProductNS
             Category    = copy.Category;
             Quantity    = copy.Quantity;
             ID          = copy.ID;
-            Image       = new ProductImage(copy.Image);
+            Image       = new Image(copy.Image);
         }
 
         internal bool ValueEqual(Product product)
@@ -65,7 +65,7 @@ namespace SmartFridge.ProductNS
         public ECategory Category { set; get; }
         public EQuantity Quantity { set; get; }
         internal string ID { set; get; }   
-        public ProductImage Image { internal set; get; }
+        public Image Image { internal set; get; }
 
         public static Dictionary<ECategory, string> CategoryCaptions { get; } =
             new Dictionary<ECategory, string>()

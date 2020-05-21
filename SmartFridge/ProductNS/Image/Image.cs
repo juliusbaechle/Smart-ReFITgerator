@@ -9,13 +9,13 @@ using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
 {
-    public class ProductImage : INotifyPropertyChanged
+    public class Image : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal ProductImage() { }
+        internal Image() { }
 
-        internal ProductImage(ProductImage copy)
+        internal Image(Image copy)
         {
             if(copy.Bitmap != null) {
                 Bitmap = copy.Bitmap.Clone();

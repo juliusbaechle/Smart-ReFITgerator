@@ -12,9 +12,9 @@ namespace SmartFridge.ProductNS
 {
     class RemoteImageRepository : ImageRepository
     {
-        internal Action<ProductImage> DownloadCompleted;
+        internal Action<Image> DownloadCompleted;
 
-        public override bool Contains(ProductImage image)
+        public override bool Contains(Image image)
         {
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
             request.Credentials = m_credentials;
@@ -31,7 +31,7 @@ namespace SmartFridge.ProductNS
             }
         }
 
-        public override async Task DeleteAsync(ProductImage image)
+        public override async Task DeleteAsync(Image image)
         {
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
             request.Credentials = m_credentials;
@@ -39,7 +39,7 @@ namespace SmartFridge.ProductNS
             await request.GetResponseAsync();
         }
 
-        public override async Task LoadAsync(ProductImage image)
+        public override async Task LoadAsync(Image image)
         {
             await Task.Run(() => {
                 using (var client = new WebClient { Credentials = m_credentials })
@@ -57,7 +57,7 @@ namespace SmartFridge.ProductNS
             });
         }
 
-        internal override async Task SaveAsync(ProductImage image)
+        internal override async Task SaveAsync(Image image)
         {
             if (image.Bitmap == null) return;
             
