@@ -1,6 +1,8 @@
 ﻿using SmartFridgeWPF;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Equin.ApplicationFramework;
 
 namespace SmartFridge.ProductNS
 {
@@ -25,10 +28,19 @@ namespace SmartFridge.ProductNS
         public event ProductHandler Delete;
         public event ProductHandler Selected;
 
+        private BindingListView<Product> ProductList;
+        private ECategory m_category;
+        private bool m_filterActive = false;
 
-        public ProductOverview()
+        public ProductOverview(Products products)
         {
             InitializeComponent();
+
+            ProductList = new BindingListView<Product>(products.List);
+            listBoxProducts.ItemsSource = ProductList;
+            ProductList.ApplyFilter(Filter);
+
+            ConnectButtons();
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -38,59 +50,65 @@ namespace SmartFridge.ProductNS
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var product = listBoxProducts.SelectedItem as Product;
-            if (product == null) return;
-            Edit?.Invoke(product);
+            if (CurrentItem() == null) return;
+            ProductList.RemoveFilter();
+            Edit?.Invoke(CurrentItem());
+            ProductList.ApplyFilter(Filter);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var product = listBoxProducts.SelectedItem as Product;
-            if (product == null) return;
-            Delete?.Invoke(product);
+            if (CurrentItem() == null) return;
+            ProductList.RemoveFilter();
+            Delete?.Invoke(CurrentItem());
+            ProductList.ApplyFilter(Filter);
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            var product = listBoxProducts.SelectedItem as Product;
-            if (product == null) return;
-            Selected?.Invoke(product);
+            if (CurrentItem() == null) return;
+            Selected?.Invoke(CurrentItem());
+        }
+
+        private Product CurrentItem()
+        {
+            int index = listBoxProducts.SelectedIndex;
+            var product = ProductList.ElementAt(index);
+            return product;
         }
 
 
-        private void btnVegetable_Fuit_Click(object sender, RoutedEventArgs e)
+        private void ConnectButtons()
         {
-
+            btnAll.Click             += (object sender, RoutedEventArgs e) => { DeactivateFilter();                   };
+            btnVegetable_Fuit.Click  += (object sender, RoutedEventArgs e) => { SetFilter(ECategory.Vegetable_Fruit); };
+            btnDairy_Products.Click  += (object sender, RoutedEventArgs e) => { SetFilter(ECategory.Dairy_Product);   };
+            btnMeat_Fish_Eggs.Click  += (object sender, RoutedEventArgs e) => { SetFilter(ECategory.Meat_Fish_Eggs);  };
+            btnDrinks.Click          += (object sender, RoutedEventArgs e) => { SetFilter(ECategory.Drinks);          };
+            btnOther.Click           += (object sender, RoutedEventArgs e) => { SetFilter(ECategory.Other);           };
         }
 
-        private void btnCereal_Products_Click(object sender, RoutedEventArgs e)
+        private void SetFilter(ECategory category)
         {
-
+            m_category = category;
+            m_filterActive = true;
+            ProductList.Refresh();
         }
 
-        private void btnDairyProducts_Click(object sender, RoutedEventArgs e)
+        private void DeactivateFilter()
         {
-
+            m_filterActive = false;
+            ProductList.Refresh();
         }
 
-        private void btnMeat_Fish_Eggs_Click(object sender, RoutedEventArgs e)
+        private bool Filter(object o)
         {
+            if (!m_filterActive) return true;
 
-        }
+            var product = o as Product;
+            if (product == null) return true;
 
-        private void btnFats_Oils_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnConfectionery_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnDrinks_Click(object sender, RoutedEventArgs e)
-        {
-
+            return product.Category == m_category;
         }
     }
 }
