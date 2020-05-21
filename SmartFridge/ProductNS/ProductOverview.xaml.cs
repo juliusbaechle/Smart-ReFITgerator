@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +14,8 @@ namespace SmartFridge.ProductNS
         public event Action<Product> Delete;
         public event Action<Product> Selected;
 
-        private BindingListView<Product> ProductList;
+        private BindingList<Product> ProductList;
+        private Products m_products;
         private ECategory m_category;
         private bool m_filterActive = false;
 
@@ -21,10 +23,13 @@ namespace SmartFridge.ProductNS
         {
             InitializeComponent();
 
-            ProductList = new BindingListView<Product>(products.List);
+            m_products = products;
+            ProductList = new BindingList<Product>();
             listBoxProducts.ItemsSource = ProductList;
-            ProductList.ApplyFilter(Filter);
 
+            products.List.ListChanged += (object o, ListChangedEventArgs e) => { Refresh(); };
+
+            Refresh();
             ConnectButtons();
         }
 
@@ -36,17 +41,13 @@ namespace SmartFridge.ProductNS
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentItem() == null) return;
-            ProductList.RemoveFilter();
             Edit?.Invoke(CurrentItem());
-            ProductList.ApplyFilter(Filter);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentItem() == null) return;
-            ProductList.RemoveFilter();
             Delete?.Invoke(CurrentItem());
-            ProductList.ApplyFilter(Filter);
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
@@ -77,23 +78,31 @@ namespace SmartFridge.ProductNS
         {
             m_category = category;
             m_filterActive = true;
-            ProductList.Refresh();
+            Refresh();
         }
 
         private void DeactivateFilter()
         {
             m_filterActive = false;
-            ProductList.Refresh();
+            Refresh();
         }
 
-        private bool Filter(object o)
+        private bool Filter(Product product)
         {
             if (!m_filterActive) return true;
-
-            var product = o as Product;
-            if (product == null) return true;
-
             return product.Category == m_category;
+        }
+
+        private void Refresh()
+        {
+            ProductList.Clear();
+            foreach(Product product in m_products.List)
+            {
+                if(Filter(product))
+                {
+                    ProductList.Add(product);
+                }
+            }
         }
     }
 }
