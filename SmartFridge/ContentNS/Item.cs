@@ -15,11 +15,11 @@ namespace SmartFridge.ProductNS
         }
         internal string ID { get; set; }
 
-        private string ProductID { get; set; }
+        internal string ProductID { get; set; }
 
-        public DateTime ExpiryDate { get; set; }
+        public DateTime ExpiryDate { get; internal set; }
 
-        public UInt32 Amount { get; set; }
+        public UInt32 Amount { get;  internal set; }
 
         public Product Product { get; internal set; } 
 
