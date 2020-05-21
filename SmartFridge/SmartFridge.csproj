@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
+    <Compile Include="ContentNS\Item.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="ProductNS\Image\ImageRepository.cs" />
     <Compile Include="ProductNS\Image\LocalImageRepository.cs" />
