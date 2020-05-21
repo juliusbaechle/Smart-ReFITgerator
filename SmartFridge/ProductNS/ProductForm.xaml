@@ -47,8 +47,8 @@
                 <Label Content="Energie" Grid.Column="0"/>
 
                 <UniformGrid Rows="2">
-                    <Slider Value="{Binding Energy, Mode=TwoWay}" Grid.Row="0" x:Name="SliderEnergy" Minimum="10" Maximum="2000" Interval="10" VerticalAlignment="Bottom"/>
-                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderEnergy, StringFormat={}{0:#} KCal, Mode=TwoWay}"  IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
+                    <Slider Value="{Binding Energy, Mode=TwoWay}" Grid.Row="0" x:Name="SliderEnergy" Minimum="0" Maximum="2000" Interval="10" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderEnergy, StringFormat={}{0:0} KCal, Mode=TwoWay}"  IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
                 </UniformGrid>
             </DockPanel>
 
@@ -56,7 +56,7 @@
                 <Label Content="Haltbarkeit" Grid.Column="0"/>
 
                 <UniformGrid Rows="2">
-                    <Slider Value="{Binding Durability, Mode=TwoWay}" Grid.Row="0" x:Name="SliderDuration" Minimum="1" Maximum="100" VerticalAlignment="Bottom"/>
+                    <Slider Value="{Binding Durability, Mode=TwoWay}" Grid.Row="0" x:Name="SliderDuration" Minimum="1" Maximum="365" VerticalAlignment="Bottom"/>
                     <TextBox Grid.Row="1" Text="{Binding Value, ElementName=SliderDuration, StringFormat={}{0:0} Tage, Mode=TwoWay}" IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="25"/>
                 </UniformGrid>
             </DockPanel>
