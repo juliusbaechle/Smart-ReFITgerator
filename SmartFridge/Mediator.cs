@@ -34,17 +34,21 @@ namespace SmartFridge
             m_window.OpenPage += ShowPage;
 
             m_products = products;
+
+
+            m_productOverview = CreateProductOverview(products);
+            m_productForm = CreateProductForm();            
         }
 
         public void ShowPage(EPage page) {
             switch (page)
             {
-                case EPage.Products: 
-                    ShowProductOverview(); 
+                case EPage.Products:
+                    m_window.SetContent(m_productOverview);
                     break;
 
-                case EPage.ProductForm: 
-                    ShowProductForm(new Product()); 
+                case EPage.ProductForm:
+                    m_window.SetContent(m_productForm);
                     break;
 
                 default: 
@@ -58,28 +62,43 @@ namespace SmartFridge
             m_window.SetContent(new Page());
         }
 
-        private void ShowProductOverview()
+        private ProductOverview CreateProductOverview(Products products)
         {
-            var productOverview = new ProductOverview(m_products);
+            var productOverview = new ProductOverview(products);
             productOverview.Edit += ShowProductForm;
             productOverview.Delete += m_products.Delete;
             productOverview.Selected += m_products.Selected;
-            productOverview.Add += () => { ShowPage(EPage.ProductForm); };
-            m_window.SetContent(productOverview);
+            productOverview.Add += () => { ShowProductForm(null); };
+            return productOverview;
+        }
+        
+        private ProductForm CreateProductForm()
+        {
+            var productForm = new ProductForm();
+            m_window.SetContent(productForm);
+
+            productForm.Finished += (Product) => {
+                m_products.AddOrEdit(Product);
+                ShowPage(EPage.Products);
+            };
+
+            return productForm;
         }
 
         private void ShowProductForm(Product product)
         {
-            var productForm = new ProductForm(product);
-            m_window.SetContent(productForm);
+            if(product != null)
+                m_productForm.DataContext = new Product(product);
+            else
+                m_productForm.DataContext = new Product();
 
-            productForm.Finished += (Product) => {
-                m_products.AddOrEdit(Product); 
-                ShowPage(EPage.Products); 
-            };
+            ShowPage(EPage.ProductForm);
         }
 
         MainWindow m_window;
         Products m_products;
+
+        ProductForm m_productForm;
+        ProductOverview m_productOverview;
     }
 }
