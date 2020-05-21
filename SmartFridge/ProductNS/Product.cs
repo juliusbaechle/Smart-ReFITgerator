@@ -1,12 +1,6 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace SmartFridge.ProductNS
 {
@@ -14,11 +8,9 @@ namespace SmartFridge.ProductNS
     {
         Drinks,
         Vegetable_Fruit,
-        Cereal_Product,
         Dairy_Product,
         Meat_Fish_Eggs,
-        Fat_Oil,
-        Confectionery
+        Other
     }
 
     public enum EQuantity
@@ -79,12 +71,10 @@ namespace SmartFridge.ProductNS
             new Dictionary<ECategory, string>()
             {
                 {ECategory.Drinks,          "Getränk" },
-                {ECategory.Vegetable_Fruit, "Obst & Gemüse" },
-                {ECategory.Cereal_Product,  "Getreideprodukt" },
-                {ECategory.Dairy_Product,   "Milchprodukt" },
-                {ECategory.Meat_Fish_Eggs,  "Fleisch & Fisch & Eier" },
-                {ECategory.Fat_Oil,         "Fett & Öl" },
-                {ECategory.Confectionery,   "Genussmittel" }
+                {ECategory.Vegetable_Fruit, "Obst und Gemüse" },
+                {ECategory.Dairy_Product,   "Milchprodukte" },
+                {ECategory.Meat_Fish_Eggs,  "Fleisch, Fisch und Eier" },
+                {ECategory.Other,           "Anderes" }
             };
 
         public static Dictionary<EQuantity, string> QuantityCaptions { get; } =

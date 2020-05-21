@@ -60,8 +60,7 @@ namespace SmartFridge
 
         private void ShowProductOverview()
         {
-            var productOverview = new ProductOverview();
-            productOverview.DataContext = m_products;
+            var productOverview = new ProductOverview(m_products);
             productOverview.Edit += ShowProductForm;
             productOverview.Delete += m_products.Delete;
             productOverview.Selected += m_products.Selected;
