@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SmartFridge.ProductNS;
 
-namespace SmartFridge.ProductNS
+namespace SmartFridge.ContentNS
 {
     class Item
     {
@@ -19,10 +16,7 @@ namespace SmartFridge.ProductNS
 
         public DateTime ExpiryDate { get; internal set; }
 
-        public UInt32 Amount { get;  internal set; }
-
-        public Product Product { get; internal set; } 
-
-        
+        public UInt32 Amount { get; internal set; }
+        public Product Product { get; internal set; }
     }
 }

@@ -255,9 +255,7 @@
     <Resource Include="icons\home.png" />
     <Resource Include="icons\select.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ContentNS\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="smartfridge.png" />
   </ItemGroup>
