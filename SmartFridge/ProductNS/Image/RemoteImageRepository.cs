@@ -31,33 +31,30 @@ namespace SmartFridge.ProductNS
             }
         }
 
-        public override async Task DeleteAsync(Image image)
+        public override void Delete(Image image)
         {
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
             request.Credentials = m_credentials;
             request.Method = WebRequestMethods.Ftp.DeleteFile;
-            await request.GetResponseAsync();
         }
 
-        public override async Task LoadAsync(Image image)
+        public override void Load(Image image)
         {
-            await Task.Run(() => {
-                using (var client = new WebClient { Credentials = m_credentials })
+            using (var client = new WebClient { Credentials = m_credentials })
+            {
+                try
                 {
-                    try
-                    {
-                        byte[] data = client.DownloadData(new Uri(CreateAddress(image.ID)));
-                        image.Bitmap = Convert(data);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Not able to download: " + image.ID);
-                    }
+                    byte[] data = client.DownloadData(new Uri(CreateAddress(image.ID)));
+                    image.Bitmap = Convert(data);
                 }
-            });
+                catch
+                {
+                    Console.WriteLine("Not able to download: " + image.ID);
+                }
+            }
         }
 
-        internal override async Task SaveAsync(Image image)
+        internal override void Save(Image image)
         {
             if (image.Bitmap == null) return;
             
@@ -67,10 +64,15 @@ namespace SmartFridge.ProductNS
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
                 encoder.Save(ms);
-                
-                await Task.Run(() => { 
-                    client.UploadData(new Uri(CreateAddress(image.ID)), ms.ToArray()); 
-                });
+
+                try
+                {
+                    client.UploadData(new Uri(CreateAddress(image.ID)), ms.ToArray());
+                }
+                catch
+                {
+                    Console.WriteLine("Not able to save: " + image.ID);
+                }
             }
         }
 

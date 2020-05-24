@@ -6,9 +6,9 @@ namespace SmartFridge.ProductNS
 {
     public abstract class ImageRepository
     {
-        internal abstract Task SaveAsync(Image image);
-        public abstract Task LoadAsync(Image image);
-        public abstract Task DeleteAsync(Image image);
+        internal abstract void Save(Image image);
+        public abstract void Load(Image image);
+        public abstract void Delete(Image image);
         public abstract bool Contains(Image image);
     }
 }
