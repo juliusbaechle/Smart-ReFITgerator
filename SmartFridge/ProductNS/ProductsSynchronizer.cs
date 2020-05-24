@@ -77,14 +77,6 @@ namespace SmartFridge.ProductNS
             var deletedProducts = currentProducts.Except(remoteProducts, new IdEqual());
             var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
 
-            //Bilder herunterladen
-            foreach (Product product in changedOrCreatedProducts) {
-                Task.Run(() => {
-                    m_remote.ImageRepository.Load(product.Image);
-                    m_local.ImageRepository.Save(product.Image);
-                });
-            }
-
             Application.Current.Dispatcher.Invoke(() => {
                 foreach (Product product in deletedProducts)
                     m_products.Delete(product);
