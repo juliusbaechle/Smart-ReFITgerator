@@ -38,7 +38,7 @@ namespace SmartFridge.ProductNS
 
             cmd.ExecuteNonQuery();
 
-            ImageRepository.SaveAsync(product.Image);       
+            ImageRepository.Save(product.Image);       
         }
 
         internal List<Product> LoadAll()
@@ -57,7 +57,7 @@ namespace SmartFridge.ProductNS
                 product.Energy      = (UInt16)reader.GetInt32(3);
                 product.Category    = (ECategory)reader.GetInt16(4);
                 product.Image.ID    = reader.GetString(5);
-                ImageRepository.LoadAsync(product.Image);
+                ImageRepository.Load(product.Image);
                 products.Add(product);
             }
 
@@ -78,7 +78,7 @@ namespace SmartFridge.ProductNS
             cmd.CommandText = $"DELETE FROM tblProducts WHERE Id='{product.ID}'";
             cmd.ExecuteNonQuery();
 
-            ImageRepository.DeleteAsync(product.Image);
+            ImageRepository.Delete(product.Image);
         }
 
         private bool Contains(string productId)

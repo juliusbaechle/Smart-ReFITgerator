@@ -4,6 +4,7 @@ using System.Windows;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace SmartFridge.ProductNS
 {
@@ -19,6 +20,7 @@ namespace SmartFridge.ProductNS
 
         private const double INTERVAL = 5000;
         private readonly System.Threading.Mutex m_mutex = new System.Threading.Mutex();
+        private List<Image> m_downloadQueue = new List<Image>();
 
         internal ProductsSynchronizer(Products products, DBProducts local, DBProducts remote)
         {
@@ -80,15 +82,7 @@ namespace SmartFridge.ProductNS
                     m_products.Delete(product);
 
                 foreach (Product product in changedOrCreatedProducts)
-                {
                     m_products.AddOrEdit(product);
-
-                    Task.Run(() => {
-                        // Bild herunterladen
-                        m_remote.ImageRepository.LoadAsync(product.Image).Wait();
-                        m_local.ImageRepository.SaveAsync(product.Image);
-                    });
-                }
             });
         }
 
