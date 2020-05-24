@@ -4,7 +4,6 @@ using System.Windows;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Net;
-using System;
 
 namespace SmartFridge.ProductNS
 {
@@ -20,7 +19,6 @@ namespace SmartFridge.ProductNS
 
         private const double INTERVAL = 5000;
         private readonly System.Threading.Mutex m_mutex = new System.Threading.Mutex();
-        private List<Image> m_downloadQueue = new List<Image>();
 
         internal ProductsSynchronizer(Products products, DBProducts local, DBProducts remote)
         {
@@ -64,10 +62,8 @@ namespace SmartFridge.ProductNS
 
         private void Push()
         {
-            Application.Current.Dispatcher.Invoke(() => {
-                m_deletedProducts.ForEach(m_remote.Delete);
-                m_savedProducts.ForEach(m_remote.Save);
-            });
+            m_deletedProducts.ForEach(m_remote.Delete);
+            m_savedProducts.ForEach(m_remote.Save);
         }
 
         private void Pull()
@@ -76,6 +72,9 @@ namespace SmartFridge.ProductNS
             var currentProducts = new List<Product>(m_products.List);
             var deletedProducts = currentProducts.Except(remoteProducts, new IdEqual());
             var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
+
+            foreach(Product product in changedOrCreatedProducts)
+                m_remote.ImageRepository.LoadAsync(product.Image).Wait();
 
             Application.Current.Dispatcher.Invoke(() => {
                 foreach (Product product in deletedProducts)

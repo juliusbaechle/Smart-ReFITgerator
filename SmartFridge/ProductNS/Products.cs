@@ -12,7 +12,9 @@ namespace SmartFridge.ProductNS
         internal Products(DBProducts db)
         {
             m_db = db;
-            List = new BindingList<Product>(m_db.LoadAll());
+            List = new BindingList<Product>(m_db.LoadAll());            
+            foreach (Product product in List) 
+                m_db.ImageRepository.LoadAsync(product.Image);
         }
          
         internal void AddOrEdit(Product newProduct)

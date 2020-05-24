@@ -20,7 +20,7 @@ namespace SmartFridge.ProductNS
             return File.Exists(CreatePath(image.ID));
         }
 
-        public override void Load(Image image)
+        public override async Task LoadAsync(Image image)
         {
             if (!Contains(image)) return;
             BitmapImage img = new BitmapImage();
@@ -31,13 +31,13 @@ namespace SmartFridge.ProductNS
             image.Bitmap = img;
         }
 
-        public override void Delete(Image image)
+        public override async Task DeleteAsync(Image image)
         {
             if (Contains(image))
                 File.Delete(CreatePath(image.ID));
         }
 
-        internal override void Save(Image image)
+        internal override async Task SaveAsync(Image image)
         {
             if (image.Bitmap == null) return;
 

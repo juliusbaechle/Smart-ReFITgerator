@@ -59,8 +59,10 @@ namespace SmartFridge.ProductNS
         private Product CurrentItem()
         {
             int index = listBoxProducts.SelectedIndex;
-            var product = ProductList.ElementAt(index);
-            return product;
+            if (index < 0 || index >= ProductList.Count) 
+                return null;
+            
+            return ProductList.ElementAt(index);
         }
 
 
