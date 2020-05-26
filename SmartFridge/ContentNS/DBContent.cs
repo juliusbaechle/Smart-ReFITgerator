@@ -38,8 +38,8 @@ namespace SmartFridge.ContentNS
                 Item items = new Item();
                 items.ID = reader.GetString(0);
                 items.ProductID = reader.GetString(1);
-                items.Amount = (UInt16)reader.GetInt32(2);
-                items.ExpiryDate = (DateTime)reader.GetDateTime(3);
+                items.Amount = (UInt32)reader.GetInt32(2);
+                items.ExpiryDate = DateTime.Parse(reader.GetString(3));
                 Items.Add(items);
             }
 
@@ -62,12 +62,12 @@ namespace SmartFridge.ContentNS
             if (!Contains(items.ID))
             {
                 cmd.CommandText = $"INSERT INTO tblContent (Id,ProductID, Amount, ExpiryDate) " +
-                    $"VALUES ('{items.ID}', '{items.ProductID}',{(UInt16)items.Amount} , {(DateTime)items.ExpiryDate})";
+                    $"VALUES ('{items.ID}', '{items.ProductID}',{(UInt16)items.Amount} , '{items.ExpiryDate.ToShortDateString()}')";
             }
             else
             {
                 cmd.CommandText = $"UPDATE tblContent SET " +
-                    $"ID = '{items.ID}', ProductID = {items.ProductID}, Amount ={(UInt16)items.Amount} , ExpiryDate ={(DateTime)items.ExpiryDate} " +
+                    $"ID = '{items.ID}', ProductID = '{items.ProductID}', Amount ={(UInt16)items.Amount} , ExpiryDate = '{items.ExpiryDate.ToShortDateString()}' " +
                     $"WHERE Id = '{items.ID}'";
             }
 
