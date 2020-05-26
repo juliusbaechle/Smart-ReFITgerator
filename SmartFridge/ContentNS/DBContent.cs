@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartFridge.ContentNS
-{// Clear, Create Table, bool Cointains, list<Item>, DBContent  <--- gemacht \\\///fehlen --->  Delete, Save 
+{
     class DBContent
     {
+
+        public DbConnection DbConnection { get; private set; }
         public DBContent(DbConnection dbConnection)
         {
-            DbConnection = dbConnection;//db durch dbconnection ersetzen
+            DbConnection = dbConnection;
             if (dbConnection.State == ConnectionState.Open)
             {
                 CreateTable();
@@ -23,10 +25,6 @@ namespace SmartFridge.ContentNS
                 dbConnection.StateChange += (object sender, StateChangeEventArgs e) => { if (e.CurrentState == ConnectionState.Open) CreateTable(); };
             }
         }
-
-    
-
-        public DbConnection DbConnection { get; private set; }
 
         internal List<Item> LoadAll()
         {
@@ -48,6 +46,35 @@ namespace SmartFridge.ContentNS
             reader.Close();
             return Items;
         }
+
+        internal void Delete(Item items)
+        {
+            DbCommand cmd = DbConnection.CreateCommand();
+            cmd.CommandText = $"DELETE FROM tblContent WHERE Id='{items.ID}'";
+            cmd.ExecuteNonQuery();
+           
+        }
+
+        internal void Save(Item items)
+        {
+            DbCommand cmd = DbConnection.CreateCommand();
+
+            if (!Contains(items.ID))
+            {
+                cmd.CommandText = $"INSERT INTO tblContent (Id,ProductID, Amount, ExpiryDate) " +
+                    $"VALUES ('{items.ID}', '{items.ProductID}',{(UInt16)items.Amount} , {(DateTime)items.ExpiryDate})";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE tblContent SET " +
+                    $"ID = '{items.ID}', ProductID = {items.ProductID}, Amount ={(UInt16)items.Amount} , ExpiryDate ={(DateTime)items.ExpiryDate} " +
+                    $"WHERE Id = '{items.ID}'";
+            }
+
+            cmd.ExecuteNonQuery();
+
+        }
+
         internal void Clear()
         {
             DbCommand cmd = DbConnection.CreateCommand();
