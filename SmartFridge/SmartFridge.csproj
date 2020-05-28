@@ -161,6 +161,7 @@
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
     <Compile Include="ContentNS\DBContent.cs" />
     <Compile Include="ContentNS\Item.cs" />
+    <Compile Include="ContentNS\Content.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="ProductNS\Image\ImageRepository.cs" />
     <Compile Include="ProductNS\Image\LocalImageRepository.cs" />

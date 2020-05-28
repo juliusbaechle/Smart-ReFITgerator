@@ -3,7 +3,7 @@ using SmartFridge.ProductNS;
 
 namespace SmartFridge.ContentNS
 {
-    class Item
+     public class Item
     {
         public Item()
         {
@@ -14,9 +14,14 @@ namespace SmartFridge.ContentNS
 
         internal string ProductID { get; set; }
 
-        public DateTime ExpiryDate { get; internal set; }
+        public DateTime m  { get; internal set; }
 
         public UInt32 Amount { get; internal set; }
         public Product Product { get; internal set; }
+        internal bool IsValid()
+        {
+            if (Amount <= 0) return false;
+            return true;
+        }
     }
 }
