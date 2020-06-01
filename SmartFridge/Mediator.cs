@@ -79,7 +79,7 @@ namespace SmartFridge
             if (product == null) 
                 productForm.DataContext = new Product();
             else 
-                productForm.DataContext = product;
+                productForm.DataContext = new Product(product);
 
             productForm.Finished += (Product) => {
                 Products.AddOrEdit(Product);
