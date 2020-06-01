@@ -21,9 +21,15 @@ namespace SmartFridge.ContentNS
             InitializeComponent();
 
             txtInputDate.LostFocus += OnDateInputFinished;
-            txtInputDate.Text = DateTime.Now.AddDays(item.Product.Durability).Date.ToString("dd.MM.yyyy");
+            var initDT = DateTime.Now.AddDays(item.Product.Durability).Date;
+            txtInputDate.Text = initDT.ToString("dd.MM.yyyy");
+            Item.ExpiryDate = initDT;
 
             sliderAmount.ValueChanged += OnSliderChanged;
+            if (item.Product.Quantity == EQuantity.Count) 
+                sliderAmount.Value = sliderAmount.Maximum;
+            else 
+                sliderAmount.Value = 500;
         }
 
         private void OnConfirm(object o, RoutedEventArgs e)
@@ -51,7 +57,7 @@ namespace SmartFridge.ContentNS
             switch (Item.Product.Quantity)
             {
                 case EQuantity.Count:
-                    Item.Amount = (UInt32)sliderAmount.Value / 20;
+                    Item.Amount = (UInt32)(sliderAmount.Value * 100 / sliderAmount.Maximum);
                     txtAmount.Text = $"{Item.Amount} %";
                     break;
 
