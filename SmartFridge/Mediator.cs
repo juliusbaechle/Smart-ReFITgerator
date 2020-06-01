@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.IO;
+using SmartFridge.ContentNS;
+using System.Windows.Forms;
 
 namespace SmartFridge
 {
@@ -22,83 +24,84 @@ namespace SmartFridge
         Content,
         Nutrition,
         Messages,
-        Shopping,
-        ProductForm
+        Shopping
     }
 
     class Mediator
     {
-        public Mediator(MainWindow window, Products products)
+        public Action UserChangedPage;
+
+        public Mediator(MainWindow window, Products products, Content content)
         {
-            m_window = window;
-            m_window.OpenPage += ShowPage;
+            MainWindow = window;
+            MainWindow.OpenPage += ShowPage;
 
-            m_products = products;
+            Products = products;
+            ProductOverview = CreateProductOverview(products);
 
-
-            m_productOverview = CreateProductOverview(products);
-            m_productForm = CreateProductForm();            
+            Content = content;            
+            ContentOverview = CreateContentOverview(content);
         }
 
         public void ShowPage(EPage page) {
             switch (page)
             {
                 case EPage.Products:
-                    m_window.SetContent(m_productOverview);
+                    MainWindow.SetContent(ProductOverview);
                     break;
 
-                case EPage.ProductForm:
-                    m_window.SetContent(m_productForm);
+                case EPage.Content:
+                    MainWindow.SetContent(ContentOverview);
                     break;
 
-                default: 
-                    ShowEmptyPage(); 
-                    break;                    
+                default:
+                    MainWindow.SetContent(new Page());
+                    break;
             }
-        }
 
-        private void ShowEmptyPage()
-        {
-            m_window.SetContent(new Page());
+            UserChangedPage?.Invoke();
         }
 
         private ProductOverview CreateProductOverview(Products products)
         {
             var productOverview = new ProductOverview(products);
-            productOverview.Edit += ShowProductForm;
-            productOverview.Delete += m_products.Delete;
-            productOverview.Selected += m_products.Selected;
-            productOverview.Add += () => { ShowProductForm(null); };
+            productOverview.Edit += (Product product) => { MainWindow.SetContent(CreateProductForm(product)); };
+            productOverview.Delete += Products.Delete;
+            productOverview.Selected += Products.Selected;
+            productOverview.Add += () => { MainWindow.SetContent(CreateProductForm(null)); };
             return productOverview;
         }
-        
-        private ProductForm CreateProductForm()
+
+        private ProductForm CreateProductForm(Product product)
         {
             var productForm = new ProductForm();
-            m_window.SetContent(productForm);
+
+            if (product == null) 
+                productForm.DataContext = new Product();
+            else 
+                productForm.DataContext = product;
 
             productForm.Finished += (Product) => {
-                m_products.AddOrEdit(Product);
+                Products.AddOrEdit(Product);
                 ShowPage(EPage.Products);
             };
 
             return productForm;
         }
 
-        private void ShowProductForm(Product product)
+        private ContentOverview CreateContentOverview(Content content)
         {
-            if(product != null)
-                m_productForm.DataContext = new Product(product);
-            else
-                m_productForm.DataContext = new Product();
-
-            ShowPage(EPage.ProductForm);
+            var contentOverview = new ContentOverview(content);
+            contentOverview.Add += () => { new PutInNewItemCmd(this); };
+            contentOverview.Delete += Content.Delete;
+            return contentOverview;
         }
+        
+        public Products Products { get; private set; }
+        public Content Content { get; private set; }
 
-        MainWindow m_window;
-        Products m_products;
-
-        ProductForm m_productForm;
-        ProductOverview m_productOverview;
+        public MainWindow MainWindow { get; private set; }
+        public ProductOverview ProductOverview { get; private set; }
+        public ContentOverview ContentOverview { get; private set; }
     }
 }
