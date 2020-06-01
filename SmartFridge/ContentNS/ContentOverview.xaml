@@ -22,7 +22,7 @@
                 </Button>
 
                 <Button Click="btnDelete_Click" Name="btnDelete" Height="100" Margin="10, 0, 0, 0">
-                    <Image Height="80" Width="80" Source="../icons/delete.png" OpacityMask="Black" />
+                    <Image Height="80" Width="80" Source="../icons/minus.png"/>
                 </Button>
             </UniformGrid>
 
