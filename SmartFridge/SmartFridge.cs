@@ -1,4 +1,5 @@
-﻿using SmartFridge.ProductNS;
+﻿using SmartFridge.ContentNS;
+using SmartFridge.ProductNS;
 using SmartFridgeWPF;
 using System;
 using System.Windows;
@@ -27,10 +28,12 @@ namespace SmartFridge
             var products = new Products(localDbProducts);
             new ProductsSynchronizer(products, localDbProducts, remoteDbProducts);
 
-            // var content = new Contents(new DBContents(db));
-            // ...
+            var localDbContent = new DBContent(DB.CreateLocalConnection());
+            var remoteDbContent = new DBContent(DB.CreateRemoteConnection());
+            var content = new Content(localDbContent, products);
+            //new ContentSynchronizer(content, localDbContent, remoteDbContent);
 
-            var mediator = new Mediator(mainWindow, products);
+            var mediator = new Mediator(mainWindow, products, content);
             mediator.ShowPage(EPage.Home);
             
             app.Run(mainWindow);
