@@ -20,32 +20,40 @@ namespace SmartFridge.ProductNS
             return File.Exists(CreatePath(image.ID));
         }
 
-        public override async Task LoadAsync(Image image)
+        public override Task LoadAsync(Image image)
         {
-            if (!Contains(image)) return;
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(CreatePath(image.ID), UriKind.Relative);
-            img.EndInit();
-            image.Bitmap = img;
+            if (Contains(image)) {
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.UriSource = new Uri(CreatePath(image.ID), UriKind.Relative);
+                img.EndInit();
+                image.Bitmap = img;
+            }
+
+            return Task.Run(() => { });
         }
 
-        public override async Task DeleteAsync(Image image)
+        public override Task DeleteAsync(Image image)
         {
             if (Contains(image))
                 File.Delete(CreatePath(image.ID));
+
+            return Task.Run(() => { });           
         }
 
-        internal override async Task SaveAsync(Image image)
+        internal override Task SaveAsync(Image image)
         {
-            if (image.Bitmap == null) return;
+            if (image.Bitmap != null)
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
 
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
+                using (var filestream = new FileStream(CreatePath(image.ID), FileMode.Create))
+                    encoder.Save(filestream);
+            }
 
-            using (var filestream = new FileStream(CreatePath(image.ID), FileMode.Create))
-                encoder.Save(filestream);
+            return Task.Run(() => { });
         }
 
 
