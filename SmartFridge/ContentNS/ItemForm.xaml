@@ -23,7 +23,7 @@
             </DockPanel>
 
             <UniformGrid Rows="2">
-                <Slider Name="sliderAmount" Margin="50, 0, 50, 0" Value="{Binding Amount, Mode=TwoWay}" Grid.Row="0" Minimum="0" Maximum="1000" Interval="10" VerticalAlignment="Bottom"/>
+                <Slider Name="sliderAmount" Margin="50, 0, 50, 0" Grid.Row="0" Minimum="0" Maximum="2000" Interval="10" VerticalAlignment="Bottom"/>
                 <TextBox Name="txtAmount" IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="35"/>
             </UniformGrid>
         </StackPanel>
