@@ -14,10 +14,10 @@ namespace SmartFridge.ContentNS
 
         internal string ProductID { get; set; }
 
-        public DateTime ExpiryDate  { get; set; }
+        public DateTime ExpiryDate  { get; internal set; }
 
-        public UInt32 Amount { get; set; }
-        public Product Product { get; set; }
+        public UInt32 Amount { get; internal set; }
+        public Product Product { get; internal set; }
 
         public int Durability { 
             get { return (ExpiryDate - DateTime.Now).Days; } 
@@ -31,7 +31,7 @@ namespace SmartFridge.ContentNS
                     return Amount * Product.Energy / 100; 
             } 
         }
-
+        
         internal bool IsValid()
         {
             if (Amount <= 0) return false;
