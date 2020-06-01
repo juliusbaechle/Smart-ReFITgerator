@@ -38,6 +38,7 @@ namespace SmartFridge
             if (!m_item.IsValid()) return;
 
             m_mediator.Content.Add(m_item);
+            m_mediator.MainWindow.SetContent(m_mediator.ContentOverview);
             Dispose();
         }
 
