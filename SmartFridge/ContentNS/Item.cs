@@ -19,17 +19,25 @@ namespace SmartFridge.ContentNS
         public UInt32 Amount { get; internal set; }
         public Product Product { get; internal set; }
 
+        public string AmountText {
+            get {
+                switch (Product.Quantity) {
+                    case EQuantity.Count:
+                        return Amount + " %";
+                    case EQuantity.Milliliters:
+                        return Amount + " ml";
+                    default:
+                        return Amount + " g";
+                }            
+            }
+        }
+
         public int Durability { 
-            get { return (ExpiryDate - DateTime.Now).Days; } 
+            get { return (ExpiryDate - DateTime.Now).Days + 1; } 
         }
 
         public uint Energy { 
-            get {
-                if (Product.Quantity == EQuantity.Count)
-                    return Amount * Product.Energy;
-                else
-                    return Amount * Product.Energy / 100; 
-            } 
+            get { return Amount * Product.Energy / 100; } 
         }
         
         internal bool IsValid()
