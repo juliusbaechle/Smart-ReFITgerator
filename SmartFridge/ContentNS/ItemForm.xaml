@@ -1,0 +1,31 @@
+﻿<Page x:Class="SmartFridge.ContentNS.ItemForm"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SmartFridge.ContentNS"
+      mc:Ignorable="d" 
+      d:DesignHeight="893" 
+      d:DesignWidth="1920"
+      Title="ItemForm">
+
+    <DockPanel LastChildFill="True">
+        <Button DockPanel.Dock="Bottom" Click="OnConfirm" Height="70" Width ="400" Margin ="20" Content="Bestätigen" FontSize="35"/>
+
+        <Border DockPanel.Dock="Right" Background="Transparent" Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
+            <Image Name="ImageFrame" Source="{Binding Product.Image.Bitmap}"/>
+        </Border>
+
+        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+            <DockPanel Margin="20">
+                <TextBox IsEnabled="False" Background="Transparent" Height="70" FontSize="35" VerticalContentAlignment="Center" Text="Ablaufdatum (dd.MM.yyyy): "/>
+                <TextBox Height="70" Margin="20, 0, 0, 0" FontSize="35" VerticalContentAlignment="Center" Name="txtInputDate"/>
+            </DockPanel>
+
+            <UniformGrid Rows="2">
+                <Slider Name="sliderAmount" Margin="50, 0, 50, 0" Value="{Binding Amount, Mode=TwoWay}" Grid.Row="0" Minimum="0" Maximum="1000" Interval="10" VerticalAlignment="Bottom"/>
+                <TextBox Name="txtAmount" IsEnabled="False" Background="#00000000" Foreground="{StaticResource Brush_ForegroundLight}" BorderBrush="#00000000" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="35"/>
+            </UniformGrid>
+        </StackPanel>
+    </DockPanel>
+</Page>
