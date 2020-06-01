@@ -11,23 +11,29 @@ namespace SmartFridge.ProductNS
     {
         private readonly Timer m_timer;
         private readonly Products m_products;
-        private readonly DBProducts m_local;
-        private readonly DBProducts m_remote;
+        
+        private readonly DBProducts m_db;
+        private readonly ImageRepository m_imgRepo;
 
         private readonly List<Product> m_deletedProducts = new List<Product>();
         private readonly List<Product> m_savedProducts = new List<Product>();
+        private readonly List<Image> m_deletedImages = new List<Image>();
+        private readonly List<Image> m_savedImages = new List<Image>();
 
         private const double INTERVAL = 5000;
         private readonly System.Threading.Mutex m_mutex = new System.Threading.Mutex();
 
-        internal ProductsSynchronizer(Products products, DBProducts local, DBProducts remote)
+        internal ProductsSynchronizer(Products products, DBProducts db, ImageRepository imgRepo)
         {
-            m_local = local;
-            m_remote = remote;
+            m_db = db;
+            m_imgRepo = imgRepo;
 
             m_products = products;
-            m_products.Added += Save;
-            m_products.Deleted += Delete;
+            m_products.Added   += m_savedProducts.Add;
+            m_products.Updated += m_savedProducts.Add;
+            m_products.Deleted += m_deletedProducts.Add;            
+            m_products.SavedImg += image => m_savedImages.Add(image);
+            m_products.DeletedImg += image => m_deletedImages.Add(image);
 
             m_timer = new Timer();
             m_timer.Interval = INTERVAL;
@@ -48,33 +54,38 @@ namespace SmartFridge.ProductNS
 
             m_deletedProducts.Clear();
             m_savedProducts.Clear();
+            m_deletedImages.Clear();
+            m_savedImages.Clear();
 
             m_mutex.ReleaseMutex();
         }
 
         private void OpenConnection()
         {
-            if (m_remote.DbConnection.State != System.Data.ConnectionState.Open)
+            if (m_db.DbConnection.State != System.Data.ConnectionState.Open)
             {
-                m_remote.DbConnection.Open();
+                m_db.DbConnection.Open();
             }
         }
 
         private void Push()
         {
-            m_deletedProducts.ForEach(m_remote.Delete);
-            m_savedProducts.ForEach(m_remote.Save);
+            m_deletedProducts.ForEach(m_db.Delete);
+            m_savedProducts.ForEach(m_db.Save);
+
+            m_deletedImages.ForEach(image => m_imgRepo.DeleteAsync(image).Wait());
+            m_savedImages.ForEach(image => m_imgRepo.SaveAsync(image).Wait());
         }
 
         private void Pull()
         {
-            var remoteProducts = m_remote.LoadAll();
+            var remoteProducts = m_db.LoadAll();
             var currentProducts = new List<Product>(m_products.List);
             var deletedProducts = currentProducts.Except(remoteProducts, new IdEqual());
             var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
 
             foreach(Product product in changedOrCreatedProducts)
-                m_remote.ImageRepository.LoadAsync(product.Image).Wait();
+                m_imgRepo.LoadAsync(product.Image).Wait();
 
             Application.Current.Dispatcher.Invoke(() => {
                 foreach (Product product in deletedProducts)
@@ -97,16 +108,6 @@ namespace SmartFridge.ProductNS
             {
                 return false;
             }
-        }
-
-        private void Save(Product product)
-        {
-            m_savedProducts.Add(product);
-        }
-
-        private void Delete(Product product)
-        {
-            m_deletedProducts.Add(product);
         }
 
         class IdEqual : IEqualityComparer<Product>

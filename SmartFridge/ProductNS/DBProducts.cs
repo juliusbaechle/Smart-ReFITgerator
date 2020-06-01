@@ -8,10 +8,9 @@ namespace SmartFridge.ProductNS
 {
     class DBProducts
     {
-        internal DBProducts(DbConnection db, ImageRepository imageRepository)
+        internal DBProducts(DbConnection db)
         {
             DbConnection = db;
-            ImageRepository = imageRepository;
 
             if(db.State == ConnectionState.Open) {
                 CreateTable();
@@ -27,18 +26,16 @@ namespace SmartFridge.ProductNS
             if (!Contains(product.ID))
             {                
                 cmd.CommandText = $"INSERT INTO tblProducts (Id, Name, Durability, Energy, Category, Quantity, ImageId) " +
-                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, {(UInt16)product.Quantity}, '{product.Image.ID}')";    
+                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, {(UInt16)product.Quantity}, '{product.Image.ID}')";
             }
             else
             {
                 cmd.CommandText = $"UPDATE tblProducts SET " +
                     $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, Quantity = {(UInt16)product.Quantity}, ImageId = '{product.Image.ID}' " +
-                    $"WHERE Id = '{product.ID}'";
+                    $"WHERE Id = '{product.ID}'";                
             }
 
             cmd.ExecuteNonQuery();
-
-            ImageRepository.SaveAsync(product.Image);       
         }
 
         internal List<Product> LoadAll()
@@ -77,8 +74,6 @@ namespace SmartFridge.ProductNS
             DbCommand cmd = DbConnection.CreateCommand();
             cmd.CommandText = $"DELETE FROM tblProducts WHERE Id='{product.ID}'";
             cmd.ExecuteNonQuery();
-
-            ImageRepository.DeleteAsync(product.Image);
         }
 
         private bool Contains(string productId)
@@ -97,6 +92,5 @@ namespace SmartFridge.ProductNS
         }
 
         internal DbConnection DbConnection { get; private set; }
-        internal ImageRepository ImageRepository { get; private set; }
     }
 }

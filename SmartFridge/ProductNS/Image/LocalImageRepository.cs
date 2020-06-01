@@ -28,6 +28,7 @@ namespace SmartFridge.ProductNS
                 img.CacheOption = BitmapCacheOption.OnLoad;
                 img.UriSource = new Uri(CreatePath(image.ID), UriKind.Relative);
                 img.EndInit();
+                img.Freeze();
                 image.Bitmap = img;
             }
 

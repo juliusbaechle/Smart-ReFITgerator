@@ -33,10 +33,17 @@ namespace SmartFridge.ProductNS
 
         public override async Task DeleteAsync(Image image)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
-            request.Credentials = m_credentials;
-            request.Method = WebRequestMethods.Ftp.DeleteFile;
-            await request.GetResponseAsync();
+            try
+            {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(CreateAddress(image.ID));
+                request.Credentials = m_credentials;
+                request.Method = WebRequestMethods.Ftp.DeleteFile;
+                await request.GetResponseAsync();
+            }
+            catch
+            {
+                Console.WriteLine("Not able to delete: " + image.ID);
+            }
         }
 
         public override async Task LoadAsync(Image image)

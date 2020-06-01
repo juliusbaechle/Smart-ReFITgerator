@@ -19,6 +19,7 @@ namespace SmartFridge.ProductNS
         {
             if(copy.Bitmap != null) {
                 Bitmap = copy.Bitmap.Clone();
+                Bitmap.Freeze();
             }            
             ID = copy.ID;
         }
@@ -32,6 +33,7 @@ namespace SmartFridge.ProductNS
             var uri = new Uri(path, UriKind.Absolute);
             var image = new BitmapImage(uri);
             Bitmap = Resize(Crop(image));
+            Bitmap.Freeze();
         }
 
         private BitmapSource Crop(BitmapSource image)
