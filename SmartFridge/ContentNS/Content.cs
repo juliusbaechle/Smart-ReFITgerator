@@ -12,19 +12,15 @@ namespace SmartFridge.ContentNS
         private Products m_products;
         internal Content(DBContent db1, Products products)
         {
-
-           
             m_products = products;
             m_db = db1;
             List = new BindingList<Item>(m_db.LoadAll());
             foreach (Item item in List)
-                item.Product = products.Get(item.ProductID);         
-                
-            
+                item.Product = products.Get(item.ProductID);  
         }
 
 
-        internal void Add(Item newItem)
+        internal void AddOrEdit(Item newItem)
         {
             if (!newItem.IsValid()) return;
 
@@ -34,6 +30,7 @@ namespace SmartFridge.ContentNS
 
             Add(newItem);
         }
+
         public Item Get(string ItemID)
         {
             Item oldItem = null;
@@ -43,6 +40,13 @@ namespace SmartFridge.ContentNS
                     oldItem = item;
             }
             return oldItem;
+        }
+
+        internal void Add(Item item)
+        {
+            List.Add(item);
+            m_db.Save(item);
+            Added?.Invoke(item);
         }
 
         internal void Delete(Item item)
