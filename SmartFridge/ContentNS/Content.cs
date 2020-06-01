@@ -1,6 +1,7 @@
 ﻿using SmartFridge.ContentNS;
 using SmartFridge.ProductNS;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace SmartFridge.ContentNS
@@ -13,6 +14,9 @@ namespace SmartFridge.ContentNS
         internal Content(DBContent db1, Products products)
         {
             m_products = products;
+            m_products.Deleted += OnProductDeleted;
+            m_products.Updated += OnProductUpdated;
+
             m_db = db1;
             List = new BindingList<Item>(m_db.LoadAll());
             foreach (Item item in List)
@@ -54,6 +58,34 @@ namespace SmartFridge.ContentNS
             List.Remove(item);
             m_db.Delete(item);
             Deleted?.Invoke(item);
+        }
+
+        private void OnProductDeleted(Product product)
+        {
+            foreach(Item item in List)
+                if (item.Product == product) 
+                    Delete(item);
+        }
+
+        private void OnProductUpdated(Product product)
+        {
+            List<Item> updatedItems = new List<Item>();
+            foreach (Item item in List) {
+                if (item.Product.ID == product.ID) {
+                    updatedItems.Add(item);
+                }
+            }
+
+            updatedItems.ForEach(item => {
+                item.Product = product;
+
+                m_db.Save(item);
+                Added?.Invoke(item);
+
+                // Refresh UI
+                List.Remove(item);
+                List.Add(item);
+            });
         }
 
         public BindingList<Item> List { get; private set; }
