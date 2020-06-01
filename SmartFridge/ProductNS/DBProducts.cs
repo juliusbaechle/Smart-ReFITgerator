@@ -26,13 +26,13 @@ namespace SmartFridge.ProductNS
 
             if (!Contains(product.ID))
             {                
-                cmd.CommandText = $"INSERT INTO tblProducts (Id, Name, Durability, Energy, Category, ImageId) " +
-                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, '{product.Image.ID}')";    
+                cmd.CommandText = $"INSERT INTO tblProducts (Id, Name, Durability, Energy, Category, Quantity, ImageId) " +
+                    $"VALUES ('{product.ID}', '{product.Name}', {product.Durability}, {product.Energy}, {(UInt16)product.Category}, {(UInt16)product.Quantity}, '{product.Image.ID}')";    
             }
             else
             {
                 cmd.CommandText = $"UPDATE tblProducts SET " +
-                    $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, ImageId = '{product.Image.ID}' " +
+                    $"Name = '{product.Name}', Durability = {product.Durability}, Energy = {product.Energy}, Category = {(UInt16)product.Category}, Quantity = {(UInt16)product.Quantity}, ImageId = '{product.Image.ID}' " +
                     $"WHERE Id = '{product.ID}'";
             }
 
@@ -56,7 +56,8 @@ namespace SmartFridge.ProductNS
                 product.Durability  = (UInt16)reader.GetInt32(2);
                 product.Energy      = (UInt16)reader.GetInt32(3);
                 product.Category    = (ECategory)reader.GetInt16(4);
-                product.Image.ID    = reader.GetString(5);
+                product.Quantity    = (EQuantity)reader.GetInt16(5);
+                product.Image.ID    = reader.GetString(6);
                 products.Add(product);
             }
 
@@ -91,7 +92,7 @@ namespace SmartFridge.ProductNS
         private void CreateTable()
         {
             DbCommand cmd = DbConnection.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(50) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, ImageId VARCHAR(50) )";
+            cmd.CommandText = "CREATE TABLE IF NOT EXISTS tblProducts (Id VARCHAR(50) PRIMARY KEY, Name TEXT, Durability INT, Energy INT, Category INT, Quantity INT, ImageId VARCHAR(50) )";
             cmd.ExecuteNonQuery();
         }
 

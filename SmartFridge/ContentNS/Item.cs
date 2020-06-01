@@ -14,7 +14,7 @@ namespace SmartFridge.ContentNS
 
         internal string ProductID { get; set; }
 
-        public DateTime m  { get; internal set; }
+        public DateTime ExpiryDate { get; internal set; }
 
         public UInt32 Amount { get; internal set; }
         public Product Product { get; internal set; }
