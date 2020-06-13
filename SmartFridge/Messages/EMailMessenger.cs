@@ -30,6 +30,7 @@ namespace SmartFridge.Messages
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 return false;
             }
         }
