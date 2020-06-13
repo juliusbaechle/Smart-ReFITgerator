@@ -9,10 +9,10 @@ namespace SmartFridge.ProductNS
 {
     public partial class ProductOverview : Page
     {
-        public event Action Add;
-        public event Action<Product> Edit;
-        public event Action<Product> Delete;
-        public event Action<Product> Selected;
+        public event Action AddProduct;
+        public event Action<Product> EditProduct;
+        public event Action<Product> DeleteProduct;
+        public event Action<Product> SelectedProduct;
 
         private BindingList<Product> ProductList;
         private Products m_products;
@@ -35,25 +35,25 @@ namespace SmartFridge.ProductNS
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            Add?.Invoke();
+            AddProduct?.Invoke();
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentItem() == null) return;
-            Edit?.Invoke(CurrentItem());
+            EditProduct?.Invoke(CurrentItem());
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentItem() == null) return;
-            Delete?.Invoke(CurrentItem());
+            DeleteProduct?.Invoke(CurrentItem());
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentItem() == null) return;
-            Selected?.Invoke(CurrentItem());
+            SelectedProduct?.Invoke(CurrentItem());
         }
 
         private Product CurrentItem()

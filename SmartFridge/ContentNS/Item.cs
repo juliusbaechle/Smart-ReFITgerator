@@ -10,6 +10,16 @@ namespace SmartFridge.ContentNS
             ID = Guid.NewGuid().ToString("N").ToUpper();
             Product = null;
         }
+
+        public Item(Item copyFrom)
+        {
+            ID          = copyFrom.ID;
+            ExpiryDate  = copyFrom.ExpiryDate;
+            Amount      = copyFrom.Amount;
+            Product     = copyFrom.Product;
+            ProductID   = copyFrom.ProductID;
+        }
+
         internal string ID { get; set; }
 
         internal string ProductID { get; set; }

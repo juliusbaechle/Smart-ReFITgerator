@@ -7,33 +7,33 @@ namespace SmartFridge
     {
         public PutInNewItemCmd(Mediator mediator)
         {
-            mediator.UserChangedPage += Dispose;
-            mediator.ProductOverview.Selected += OnSelected;
-
             m_mediator = mediator;            
             m_item = new Item();
-            
+
+            mediator.UserChangedPage += Dispose;
+
             m_mediator.MainWindow.SetContent(m_mediator.ProductOverview);
+            mediator.ProductOverview.SelectedProduct += OnProductSelected;
         }
 
         private void Dispose()
         {
             m_mediator.UserChangedPage -= Dispose;
-            m_mediator.ProductOverview.Selected -= OnSelected;
-            if (m_itemForm != null) m_itemForm.Finished -= OnFinish;
+            m_mediator.ProductOverview.SelectedProduct -= OnProductSelected;
+            if (m_itemForm != null) m_itemForm.Finished -= OnItemFinished;
         }
 
-        private void OnSelected(Product product)
+        private void OnProductSelected(Product product)
         {
             m_item.Product = product;
             m_item.ProductID = product.ID;
 
             m_itemForm = new ItemForm(m_item);
-            m_itemForm.Finished += OnFinish;
+            m_itemForm.Finished += OnItemFinished;
             m_mediator.MainWindow.SetContent(m_itemForm);
         }
 
-        private void OnFinish()
+        private void OnItemFinished()
         {
             if (!m_item.IsValid()) return;
 

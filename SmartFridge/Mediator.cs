@@ -65,10 +65,10 @@ namespace SmartFridge
         private ProductOverview CreateProductOverview(Products products)
         {
             var productOverview = new ProductOverview(products);
-            productOverview.Edit += (Product product) => { MainWindow.SetContent(CreateProductForm(product)); };
-            productOverview.Delete += Products.Delete;
-            productOverview.Selected += Products.Selected;
-            productOverview.Add += () => { MainWindow.SetContent(CreateProductForm(null)); };
+            productOverview.EditProduct += (Product product) => { MainWindow.SetContent(CreateProductForm(product)); };
+            productOverview.DeleteProduct += Products.Delete;
+            productOverview.SelectedProduct += Products.Selected;
+            productOverview.AddProduct += () => { MainWindow.SetContent(CreateProductForm(null)); };
             return productOverview;
         }
 
@@ -93,6 +93,7 @@ namespace SmartFridge
         {
             var contentOverview = new ContentOverview(content);
             contentOverview.Add += () => { new PutInNewItemCmd(this); };
+            contentOverview.Edit += (Item) => { new EditItemCmd(Item, this); };
             contentOverview.Delete += Content.Delete;
             return contentOverview;
         }

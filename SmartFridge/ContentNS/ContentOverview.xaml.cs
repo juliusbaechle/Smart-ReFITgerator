@@ -14,6 +14,7 @@ namespace SmartFridge.ContentNS
     {
         public event Action Add;
         public event Action<Item> Delete;
+        public event Action<Item> Edit;
 
         private BindingList<Item> ItemList;
         private Content m_content;
@@ -37,6 +38,12 @@ namespace SmartFridge.ContentNS
         private void btnAdd_Click(object o, RoutedEventArgs e)
         {
             Add?.Invoke();
+        }
+
+        private void btnEdit_Click(object o, RoutedEventArgs e)
+        {
+            if (CurrentItem() == null) return;
+            Edit?.Invoke(CurrentItem());
         }
 
         private void btnDelete_Click(object o, RoutedEventArgs e)

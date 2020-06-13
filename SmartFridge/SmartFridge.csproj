@@ -191,6 +191,7 @@
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB.cs" />
+    <Compile Include="EditItemCmd.cs" />
     <Compile Include="ProductNS\Image\ImageRepository.cs" />
     <Compile Include="ProductNS\Image\LocalImageRepository.cs" />
     <Compile Include="ProductNS\Image\Image.cs" />
