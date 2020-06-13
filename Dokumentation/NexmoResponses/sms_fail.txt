@@ -1,0 +1,8 @@
+{
+    "message-count": "1",
+    "messages": [{
+        "to": "4915902608068",
+        "status": "29",
+        "error-text": "Non White-listed Destination - rejected"
+    }]
+}

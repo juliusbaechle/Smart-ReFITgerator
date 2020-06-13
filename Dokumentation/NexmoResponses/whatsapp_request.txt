@@ -1,0 +1,7 @@
+{ 
+	"from": { "type": "whatsapp", "number": "14157386170" }, 
+	"to": { "type": "whatsapp", "number": "YOUR_NUMBER" }, 
+	"message": { 
+		"content": { "type": "text", "text": "Test succeeded. Congrats" }
+	}
+}
