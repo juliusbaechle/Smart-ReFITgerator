@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace SmartFridge.Messages
 {
@@ -9,10 +10,17 @@ namespace SmartFridge.Messages
         public SMSMessenger(string connectionData)
         {
             // In DEMO only numbers on whitelist: http://dashboard.nexmo.com
-            ConnectionData = connectionData;  
-        }        
+            ConnectionData = connectionData;
+        }
 
         public bool Send(Message msg)
+        {
+            var task = SendAsync(msg);
+            task.Wait();
+            return task.Result;
+        }
+
+        private async Task<bool> SendAsync(Message msg)
         {
             var client = new HttpClient();
 
@@ -27,15 +35,9 @@ namespace SmartFridge.Messages
 
             try
             {
-                var task = client.PostAsync("https://rest.nexmo.com/sms/json", requestContent);
-                task.Wait();
-                HttpContent responseContent = task.Result.Content;
-
-                using (var output = File.OpenWrite("file.dat")) {
-                    responseContent.CopyToAsync(output);
-                }
-
-                return MessageDelivered(responseContent);
+                HttpResponseMessage response = await client.PostAsync("https://rest.nexmo.com/sms/json", requestContent);
+                string json = await response.Content.ReadAsStringAsync();
+                return MessageSucceeded(json);
             }
             catch
             {
@@ -43,9 +45,13 @@ namespace SmartFridge.Messages
             }
         }
 
-        private bool MessageDelivered(HttpContent response)
+        public static bool MessageSucceeded(string json)
         {
-            return false;
+            JObject obj = JObject.Parse(json);
+            var messages = obj.Value<JArray>("messages");
+            var message = messages[0].ToObject<JObject>();
+            var status = message.Value<int>("status");
+            return status == 0;
         }
 
         public string ConnectionData { get; set; }
