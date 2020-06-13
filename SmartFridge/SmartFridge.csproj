@@ -326,6 +326,7 @@
     <Compile Include="Messages\EMailMessenger.cs" />
     <Compile Include="Messages\IMessenger.cs" />
     <Compile Include="Messages\SMSMessenger.cs" />
+    <Compile Include="Messages\WhatsAppMessenger.cs" />
     <Compile Include="ProductNS\Image\ImageRepository.cs" />
     <Compile Include="ProductNS\Image\LocalImageRepository.cs" />
     <Compile Include="ProductNS\Image\Image.cs" />
