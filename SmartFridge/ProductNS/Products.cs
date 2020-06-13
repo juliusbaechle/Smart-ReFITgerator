@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data.Entity.Migrations.Model;
 
 namespace SmartFridge.ProductNS
 {
