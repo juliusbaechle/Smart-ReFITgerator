@@ -4,14 +4,14 @@ using System.Net.Mail;
 
 namespace SmartFridge.Messages
 {
-    class EMailMessenger : IMessenger
+    class EMailMessenger : Messenger
     {
         public EMailMessenger(string emailAddress)
         {
             ConnectionData = emailAddress;
         }
 
-        public bool Send(Message msg)
+        public bool Send(IMessage msg)
         {            
             string from = "smart.refitgerator@gmail.com";
             string to = ConnectionData;
@@ -36,5 +36,7 @@ namespace SmartFridge.Messages
         }
 
         public string ConnectionData { get; set; }
+        public string Type { get { return "EMail"; } }
+        public string ChannelID { get; set; }
     }
 }

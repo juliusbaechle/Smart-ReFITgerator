@@ -5,22 +5,22 @@ using Newtonsoft.Json.Linq;
 
 namespace SmartFridge.Messages
 {
-    class SMSMessenger : IMessenger
+    class SMSMessenger : Messenger
     {
-        public SMSMessenger(string connectionData)
+        public SMSMessenger(string phoneNumber)
         {
             // In DEMO only numbers on whitelist: http://dashboard.nexmo.com
-            ConnectionData = connectionData;
+            ConnectionData = phoneNumber;
         }
 
-        public bool Send(Message msg)
+        public bool Send(IMessage msg)
         {
             var task = SendAsync(msg);
             task.Wait();
             return task.Result;
         }
 
-        private async Task<bool> SendAsync(Message msg)
+        private async Task<bool> SendAsync(IMessage msg)
         {
             var client = new HttpClient();
 
@@ -55,5 +55,7 @@ namespace SmartFridge.Messages
         }
 
         public string ConnectionData { get; set; }
+        public string Type { get { return "SMS"; } }
+        public string ChannelID { get; set; }
     }
 }

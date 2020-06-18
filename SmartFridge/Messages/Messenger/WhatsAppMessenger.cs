@@ -1,30 +1,26 @@
-﻿
-
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartFridge.Messages
 {
-    class WhatsAppMessenger : IMessenger
+    class WhatsAppMessenger : Messenger
     {
-        public WhatsAppMessenger(string connectionData)
+        public WhatsAppMessenger(string phoneNumber)
         {
-            ConnectionData = connectionData;
+            // In DEMO only numbers on whitelist: https://dashboard.nexmo.com/messages/sandbox
+            ConnectionData = phoneNumber;
         }
 
-        public bool Send(Message msg)
+        public bool Send(IMessage msg)
         {
             var task = SendAsync(msg);
             task.Wait();
             return task.Result;
         }
 
-        public async Task<bool> SendAsync(Message msg)
+        public async Task<bool> SendAsync(IMessage msg)
         {
             var requestJson = CreateJson(msg);
             var content = new StringContent(requestJson);
@@ -43,7 +39,7 @@ namespace SmartFridge.Messages
             }
         }
 
-        private string CreateJson(Message msg)
+        private string CreateJson(IMessage msg)
         {
             JObject request = new JObject();
                 JObject from = new JObject();
@@ -74,5 +70,7 @@ namespace SmartFridge.Messages
         }
 
         public string ConnectionData { get; set; }
+        public string Type { get { return "WhatsApp"; } }
+        public string ChannelID { get; set; }
     }
 }
