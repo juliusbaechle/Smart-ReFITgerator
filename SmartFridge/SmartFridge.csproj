@@ -327,7 +327,6 @@
     <Compile Include="Messages\Channels\FridgeOpenChannel.cs" />
     <Compile Include="Messages\Channels\IChannel.cs" />
     <Compile Include="Messages\Channels\ItemExpiresChannel.cs" />
-    <Compile Include="Messages\MessageService.cs" />
     <Compile Include="Messages\Message\FridgeOpenMessage.cs" />
     <Compile Include="Messages\Message\ItemExpiredMessage.cs" />
     <Compile Include="Messages\Message\ItemExpiresMessage.cs" />
