@@ -309,6 +309,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arduino\Door.cs" />
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
     <Compile Include="ContentNS\ContentOverview.xaml.cs">
       <DependentUpon>ContentOverview.xaml</DependentUpon>
@@ -323,16 +324,26 @@
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB.cs" />
-    <Compile Include="Messages\EMailMessenger.cs" />
-    <Compile Include="Messages\IMessenger.cs" />
-    <Compile Include="Messages\SMSMessenger.cs" />
-    <Compile Include="Messages\WhatsAppMessenger.cs" />
+    <Compile Include="Messages\Channels\FridgeOpenChannel.cs" />
+    <Compile Include="Messages\Channels\IChannel.cs" />
+    <Compile Include="Messages\Channels\ItemExpiresChannel.cs" />
+    <Compile Include="Messages\MessageService.cs" />
+    <Compile Include="Messages\Message\FridgeOpenMessage.cs" />
+    <Compile Include="Messages\Message\ItemExpiredMessage.cs" />
+    <Compile Include="Messages\Message\ItemExpiresMessage.cs" />
+    <Compile Include="Messages\Message\IMessage.cs" />
+    <Compile Include="Messages\Messenger\EMailMessenger.cs" />
+    <Compile Include="Messages\Messenger\IMessenger.cs" />
+    <Compile Include="Messages\Messenger\SMSMessenger.cs" />
+    <Compile Include="Messages\MessageList.cs" />
+    <Compile Include="Messages\Messenger\WhatsAppMessenger.cs" />
     <Compile Include="ProductNS\Image\ImageRepository.cs" />
     <Compile Include="ProductNS\Image\LocalImageRepository.cs" />
     <Compile Include="ProductNS\Image\Image.cs" />
     <Compile Include="ProductNS\Image\RemoteImageRepository.cs" />
     <Compile Include="ProductNS\ProductsSynchronizer.cs" />
     <Compile Include="PutInNewItemCmd.cs" />
+    <Compile Include="Arduino\IDoor.cs" />
     <Compile Include="SmartFridge.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="ProductNS\DBProducts.cs" />
@@ -347,8 +358,8 @@
       <DependentUpon>ProductOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProductNS\Products.cs" />
-    <Compile Include="Scale\IScale.cs" />
-    <Compile Include="Scale\Scale.cs" />
+    <Compile Include="Arduino\IScale.cs" />
+    <Compile Include="Arduino\Scale.cs" />
     <Page Include="ContentNS\ContentOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
