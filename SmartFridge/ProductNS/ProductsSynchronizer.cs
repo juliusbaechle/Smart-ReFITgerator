@@ -4,14 +4,16 @@ using System.Windows;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Net;
+using System;
+using System.Linq.Expressions;
 
 namespace SmartFridge.ProductNS
 {
     internal class ProductsSynchronizer
     {
         private readonly Timer m_timer;
-        private readonly Products m_products;
-        
+
+        private readonly Products m_products;        
         private readonly DBProducts m_db;
         private readonly ImageRepository m_imgRepo;
 
@@ -28,6 +30,7 @@ namespace SmartFridge.ProductNS
             m_db = db;
             m_imgRepo = imgRepo;
 
+            // Wird Event emittiert, so wird das Produkt / Bild direkt in der Liste hinzugefügt
             m_products = products;
             m_products.Added   += m_savedProducts.Add;
             m_products.Updated += m_savedProducts.Add;
@@ -35,6 +38,7 @@ namespace SmartFridge.ProductNS
             m_products.SavedImg += image => m_savedImages.Add(image);
             m_products.DeletedImg += image => m_deletedImages.Add(image);
 
+            // Timer started neuen Thread
             m_timer = new Timer();
             m_timer.Interval = INTERVAL;
             m_timer.Elapsed += (object o, ElapsedEventArgs e) => { Synchronize(); };
@@ -43,15 +47,23 @@ namespace SmartFridge.ProductNS
 
         private void Synchronize()
         {
+            // Maximal ein Thread im nachfolgenden Code
             if (!m_mutex.WaitOne(100)) return;
 
-            if (IsConnected())
+            try
             {
                 OpenConnection();
                 Push();
                 Pull();
             }
+            catch
+            {
+                Console.WriteLine("Internet Connection Failure");
+                // TODO: Offline in Statuszeile anzeigen
+            }
 
+            // Werden auch im Offline - Fall gelöscht 
+            //    -> Offline Änderungen werden überschrieben
             m_deletedProducts.Clear();
             m_savedProducts.Clear();
             m_deletedImages.Clear();
@@ -70,6 +82,7 @@ namespace SmartFridge.ProductNS
 
         private void Push()
         {
+            // Jedes gelöschte / gespeicherte Produkt in der Remote Datenbank löschen / speichern
             m_deletedProducts.ForEach(m_db.Delete);
             m_savedProducts.ForEach(m_db.Save);
 
@@ -80,13 +93,15 @@ namespace SmartFridge.ProductNS
         private void Pull()
         {
             var remoteProducts = m_db.LoadAll();
-            var currentProducts = new List<Product>(m_products.List);
-            var deletedProducts = currentProducts.Except(remoteProducts, new IdEqual());
-            var changedOrCreatedProducts = remoteProducts.FindAll(remote => !remote.ValueEqual(currentProducts.Find(current => current.ID == remote.ID)));
+            var localProducts = new List<Product>(m_products.List);
+            var deletedProducts = GetDeletedProducts(localProducts, remoteProducts);
+            var changedOrCreatedProducts = GetCreatedOrChangedProducts(localProducts, remoteProducts);
 
+            // Alle Bilder vollständig herunterladen
             foreach(Product product in changedOrCreatedProducts)
                 m_imgRepo.LoadAsync(product.Image).Wait();
 
+            // Oberfläche darf nur im Main-Thread (GUI Thread) verändert werden
             Application.Current.Dispatcher.Invoke(() => {
                 foreach (Product product in deletedProducts)
                     m_products.Delete(product);
@@ -96,31 +111,44 @@ namespace SmartFridge.ProductNS
             });
         }
 
-        private bool IsConnected()
+        List<Product> GetDeletedProducts(List<Product> localProducts, List<Product> remoteProducts)
         {
-            try
+            List<Product> deletedProducts = new List<Product>();
+            
+            foreach(Product localProduct in localProducts)
             {
-                using (var client = new WebClient())
-                using (client.OpenRead("http://google.com/generate_204"))
-                    return true;
+                // Findet Produkt aus remoteProducts, welches dieselbe ID wie localProduct hat
+                // Gibt null zurück wenn kein zugehöriges Remote-Produkt gefunden wurde
+                var congruentRemoteProduct = remoteProducts.Find(product => product.ID == localProduct.ID);               
+                
+                // remoteProduct wurde gelöscht
+                if (congruentRemoteProduct == null) 
+                    deletedProducts.Add(localProduct);
             }
-            catch
-            {
-                return false;
-            }
+
+            return deletedProducts;
         }
 
-        class IdEqual : IEqualityComparer<Product>
+        List<Product> GetCreatedOrChangedProducts(List<Product> localProducts, List<Product> remoteProducts)
         {
-            public bool Equals(Product x, Product y)
+            List<Product> changedOrCreatedProducts = new List<Product>();
+
+            foreach(Product remoteProduct in remoteProducts)
             {
-                return x.ID == y.ID;
+                // Findet Produkt aus localProducts, welches dieselbe ID wie remoteProduct hat
+                // Gibt null zurück wenn kein zugehöriges, lokales Produkt gefunden wurde
+                var congruentLocalProduct = localProducts.Find(product => product.ID == remoteProduct.ID);                
+                
+                // remoteProdukt wurde neu erstellt
+                if (congruentLocalProduct == null) 
+                    changedOrCreatedProducts.Add(remoteProduct);
+
+                // remoteProduct verändert
+                if (!congruentLocalProduct.ValueEqual(remoteProduct)) 
+                    changedOrCreatedProducts.Add(remoteProduct);
             }
 
-            public int GetHashCode(Product obj)
-            {
-                return obj.ID.GetHashCode();
-            }
+            return changedOrCreatedProducts;
         }
     }
 }

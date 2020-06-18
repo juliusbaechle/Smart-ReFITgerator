@@ -16,9 +16,13 @@
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="1" Margin="20, 0, 20, 20" DockPanel.Dock="Right" MinWidth="400" LastChildFill="True">
-            <UniformGrid Rows="1" Columns="2" DockPanel.Dock="Top" Margin="0, 20, 0, 20">
+            <UniformGrid Rows="1" Columns="3" DockPanel.Dock="Top" Margin="0, 20, 0, 20">
                 <Button Click="btnAdd_Click" Name="btnAdd" Height="100" Margin="0, 0, 10, 0">
                     <Image Height="80" Width="80" Source="../icons/add.png"/>
+                </Button>
+
+                <Button Click="btnEdit_Click" Name="btnEdit" Height="100" Margin="10, 0, 10, 0">
+                    <Image Height="80" Width="80" Source="../icons/edit.png"/>
                 </Button>
 
                 <Button Click="btnDelete_Click" Name="btnDelete" Height="100" Margin="10, 0, 0, 0">

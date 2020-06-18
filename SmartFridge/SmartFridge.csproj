@@ -324,6 +324,7 @@
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB.cs" />
+    <Compile Include="EditItemCmd.cs" />
     <Compile Include="Messages\Channels\FridgeOpenChannel.cs" />
     <Compile Include="Messages\Channels\IChannel.cs" />
     <Compile Include="Messages\Channels\ItemExpiresChannel.cs" />
