@@ -11,8 +11,6 @@ namespace SmartFridge.Messages.Channels
 
         public FridgeOpenChannel(IDoor door)
         {
-            OnOpened();
-
             door.Opened += OnOpened;
             door.Closed += OnClosed;
             m_timer.Elapsed += OnTimeout;
