@@ -1,4 +1,7 @@
-﻿using SmartFridge.ContentNS;
+﻿using SmartFridge.Arduino;
+using SmartFridge.ContentNS;
+using SmartFridge.Messages;
+using SmartFridge.Messages.Channels;
 using SmartFridge.ProductNS;
 using SmartFridgeWPF;
 using System;
@@ -24,19 +27,35 @@ namespace SmartFridge
             var mainWindow = new MainWindow(app.Resources);
 
             var localDbProducts = new DBProducts(DB.CreateLocalConnection());
-            var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection());
             var products = new Products(localDbProducts, new LocalImageRepository());
+            var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection());            
             new ProductsSynchronizer(products, remoteDbProducts, new RemoteImageRepository());
 
-            var localDbContent = new DBContent(DB.CreateLocalConnection());
-            var remoteDbContent = new DBContent(DB.CreateRemoteConnection());
+            var localDbContent = new DBContent(DB.CreateLocalConnection());            
             var content = new Content(localDbContent, products);
-            //new ContentSynchronizer(content, localDbContent, remoteDbContent);
+            var remoteDbContent = new DBContent(DB.CreateRemoteConnection());
+            //new ContentSynchronizer(content, remoteDbContent);
+
+            SetupMessaging(new Door());            
 
             var mediator = new Mediator(mainWindow, products, content);
             mediator.ShowPage(EPage.Home);
             
             app.Run(mainWindow);
+        }
+
+        private static void SetupMessaging(IDoor door)
+        {
+            var fridgeOpenChannel = new FridgeOpenChannel(door);
+            var whatsAppMessenger = new WhatsAppMessenger("4915902600345");
+            var smsMessenger      = new SMSMessenger("4915902600345");
+            var emailMessenger    = new EMailMessenger("julius.baechle@yahoo.de");
+
+            fridgeOpenChannel.Send += (IMessage msg) => {
+                whatsAppMessenger.Send(msg);
+                smsMessenger.Send(msg);
+                emailMessenger.Send(msg);
+            };
         }
     }
 }
