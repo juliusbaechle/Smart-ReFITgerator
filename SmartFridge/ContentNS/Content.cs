@@ -71,7 +71,7 @@ namespace SmartFridge.ContentNS
         {
             List<Item> updatedItems = new List<Item>();
             foreach (Item item in List) {
-                if (item.Product.ID == product.ID) {
+                if (item.ProductID == product.ID) {
                     updatedItems.Add(item);
                 }
             }
@@ -90,6 +90,5 @@ namespace SmartFridge.ContentNS
 
         public BindingList<Item> List { get; private set; }
         private readonly DBContent m_db;
-
     }   
 }

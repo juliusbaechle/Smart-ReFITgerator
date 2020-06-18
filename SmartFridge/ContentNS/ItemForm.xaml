@@ -13,7 +13,7 @@
         <Button DockPanel.Dock="Bottom" Click="OnConfirm" Height="70" Width ="400" Margin ="20" Content="Bestätigen" FontSize="35"/>
 
         <Border DockPanel.Dock="Right" Background="Transparent" Grid.Column="1" Style="{StaticResource SquareBorder}"  Margin ="50" BorderBrush="{StaticResource Brush_ForegroundDark}" BorderThickness="5" MaxWidth="600">
-            <Image Name="ImageFrame" Source="{Binding Product.Image.Bitmap}"/>
+            <Image Name="ImageFrame" Source="{Binding Image}"/>
         </Border>
 
         <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">

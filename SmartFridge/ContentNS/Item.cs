@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media.Imaging;
 using SmartFridge.ProductNS;
 
 namespace SmartFridge.ContentNS
@@ -11,13 +12,14 @@ namespace SmartFridge.ContentNS
             Product = null;
         }
         internal string ID { get; set; }
-
-        internal string ProductID { get; set; }
-
         public DateTime ExpiryDate  { get; internal set; }
-
         public UInt32 Amount { get; internal set; }
+
         public Product Product { get; internal set; }
+        public string ProductID { get; set; }
+        public BitmapSource Image { get { return Product.Image.Bitmap; } }
+        public string Name { get { return Product.Name; } }
+        public ECategory Category { get { return Product.Category; } }
 
         public string AmountText {
             get {
