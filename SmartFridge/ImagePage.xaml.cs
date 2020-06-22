@@ -19,13 +19,20 @@ namespace SmartFridge
                 imagePath = "pageImages/" + imagePath;
             #endif
 
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(imagePath, UriKind.Relative);
-            img.EndInit();
-            img.Freeze();
-            BackgroundImage.Source = img;
+            try
+            {
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.UriSource = new Uri(imagePath, UriKind.Relative);
+                img.EndInit();
+                img.Freeze();
+                BackgroundImage.Source = img;
+            }
+            catch
+            {
+                BackgroundImage.Source = null;
+            }
         }
     }
 }
