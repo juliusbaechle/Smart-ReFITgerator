@@ -54,6 +54,22 @@ namespace SmartFridge
                     MainWindow.SetContent(ContentOverview);
                     break;
 
+                case EPage.Home:
+                    MainWindow.SetContent(new ImagePage("home.jpg"));
+                    break;
+
+                case EPage.Nutrition:
+                    MainWindow.SetContent(new ImagePage("nutrition.jpg"));
+                    break;
+
+                case EPage.Messages:
+                    MainWindow.SetContent(new ImagePage("messages.jpg"));
+                    break;
+
+                case EPage.Shopping:
+                    MainWindow.SetContent(new ImagePage("shopping.jpg"));
+                    break;
+
                 default:
                     MainWindow.SetContent(new Page());
                     break;
