@@ -56,7 +56,8 @@
     <StartupObject>SmartFridge.SmartFridge</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>smartfridge.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -314,6 +315,7 @@
     <Compile Include="ContentNS\ContentOverview.xaml.cs">
       <DependentUpon>ContentOverview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ContentNS\ContentSynchronizer.cs" />
     <Compile Include="ContentNS\DBContent.cs" />
     <Compile Include="ContentNS\Item.cs" />
     <Compile Include="ContentNS\Content.cs" />
@@ -324,6 +326,7 @@
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB.cs" />
+    <Compile Include="Synchronizer.cs" />
     <Compile Include="EditItemCmd.cs" />
     <Compile Include="ImagePage.xaml.cs">
       <DependentUpon>ImagePage.xaml</DependentUpon>
@@ -454,12 +457,6 @@
     <Resource Include="icons\select.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="smartfridge.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="smartfridge.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 und x64%29</ProductName>
@@ -473,6 +470,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="smartfridge.ico" />
+    <Resource Include="smartfridge.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

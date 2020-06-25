@@ -29,18 +29,22 @@ namespace SmartFridge
             var localDbProducts = new DBProducts(DB.CreateLocalConnection());
             var products = new Products(localDbProducts, new LocalImageRepository());
             var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection());            
-            new ProductsSynchronizer(products, remoteDbProducts, new RemoteImageRepository());
+            var productSynchronizer = new ProductsSynchronizer(products, remoteDbProducts, new RemoteImageRepository());
 
             var localDbContent = new DBContent(DB.CreateLocalConnection());            
             var content = new Content(localDbContent, products);
             var remoteDbContent = new DBContent(DB.CreateRemoteConnection());
-            //new ContentSynchronizer(content, remoteDbContent);
+            var contentSynchronizer = new ContentSynchronizer(content, remoteDbContent);
+
+            var synchronizer = new Synchronizer();
+            synchronizer.Add(productSynchronizer);
+            synchronizer.Add(contentSynchronizer);
+            synchronizer.ConnectionState += mainWindow.SetConnectionState;
 
             SetupMessaging(new Door());            
 
             var mediator = new Mediator(mainWindow, products, content);
-            mediator.ShowPage(EPage.Home);
-            
+            mediator.ShowPage(EPage.Home);            
             app.Run(mainWindow);
         }
 
