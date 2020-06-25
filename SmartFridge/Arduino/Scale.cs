@@ -4,7 +4,12 @@ namespace SmartFridge.Arduino
 {
     class Scale : IScale
     {
-        public ulong getWeightInGrams()
+        public ulong GetWeightInGrams()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Connected()
         {
             throw new NotImplementedException();
         }

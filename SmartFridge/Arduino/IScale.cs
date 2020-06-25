@@ -2,6 +2,7 @@
 {
     public interface IScale 
     {
-        ulong getWeightInGrams();
+        ulong GetWeightInGrams();
+        bool Connected();
     }
 }
