@@ -1,18 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Timers;
-using System.Threading.Tasks;
-using System.Net;
-using System;
-using System.Linq.Expressions;
 
 namespace SmartFridge.ProductNS
 {
-    internal class ProductsSynchronizer
+    internal class ProductsSynchronizer : ISynchronizer
     {
-        private readonly Timer m_timer;
-
         private readonly Products m_products;        
         private readonly DBProducts m_db;
         private readonly ImageRepository m_imgRepo;
@@ -20,10 +12,7 @@ namespace SmartFridge.ProductNS
         private readonly List<Product> m_deletedProducts = new List<Product>();
         private readonly List<Product> m_savedProducts = new List<Product>();
         private readonly List<Image> m_deletedImages = new List<Image>();
-        private readonly List<Image> m_savedImages = new List<Image>();
-
-        private const double INTERVAL = 5000;
-        private readonly System.Threading.Mutex m_mutex = new System.Threading.Mutex();
+        private readonly List<Image> m_savedImages = new List<Image>();        
 
         internal ProductsSynchronizer(Products products, DBProducts db, ImageRepository imgRepo)
         {
@@ -33,43 +22,29 @@ namespace SmartFridge.ProductNS
             // Wird Event emittiert, so wird das Produkt / Bild direkt in der Liste hinzugefügt
             m_products = products;
             m_products.Added   += m_savedProducts.Add;
-            m_products.Updated += m_savedProducts.Add;
+            m_products.Changed += m_savedProducts.Add;
             m_products.Deleted += m_deletedProducts.Add;            
             m_products.SavedImg += image => m_savedImages.Add(image);
             m_products.DeletedImg += image => m_deletedImages.Add(image);
-
-            // Timer started neuen Thread
-            m_timer = new Timer();
-            m_timer.Interval = INTERVAL;
-            m_timer.Elapsed += (object o, ElapsedEventArgs e) => { Synchronize(); };
-            m_timer.Start();
         }
 
-        private void Synchronize()
+        public void Synchronize()
         {
-            // Maximal ein Thread im nachfolgenden Code
-            if (!m_mutex.WaitOne(100)) return;
-
             try
             {
                 OpenConnection();
                 Push();
                 Pull();
             }
-            catch
+            finally
             {
-                Console.WriteLine("Internet Connection Failure");
-                // TODO: Offline in Statuszeile anzeigen
+                // werden auch im Offline Fall zurückgesetzt
+                //   -> Änderungen werden zurückgesetzt
+                m_deletedProducts.Clear();
+                m_savedProducts.Clear();
+                m_deletedImages.Clear();
+                m_savedImages.Clear();
             }
-
-            // Werden auch im Offline - Fall gelöscht 
-            //    -> Offline Änderungen werden überschrieben
-            m_deletedProducts.Clear();
-            m_savedProducts.Clear();
-            m_deletedImages.Clear();
-            m_savedImages.Clear();
-
-            m_mutex.ReleaseMutex();
         }
 
         private void OpenConnection()
