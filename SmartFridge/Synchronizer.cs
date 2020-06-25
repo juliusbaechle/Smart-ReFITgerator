@@ -39,7 +39,6 @@ namespace SmartFridge
         {
             // Maximal ein Thread im nachfolgenden Code
             if (!m_mutex.WaitOne(100)) return;
-            Console.WriteLine("Start: " + System.DateTime.Now.TimeOfDay.ToString());
 
             bool online = CheckForInternetConnection();
 
@@ -59,7 +58,6 @@ namespace SmartFridge
                 m_connectionState = online;
             }
 
-            Console.WriteLine("End: " + System.DateTime.Now.TimeOfDay.ToString());
             m_mutex.ReleaseMutex();
         }
 
