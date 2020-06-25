@@ -21,6 +21,16 @@ namespace SmartFridge.ContentNS
             ProductID   = copyFrom.ProductID;
         }
 
+        internal bool ValueEqual(Item item)
+        {
+            if (item == null) return false;
+            if (ID          != item.ID) return false;
+            if (ExpiryDate  != item.ExpiryDate) return false;
+            if (Amount      != item.Amount) return false;
+            if (ProductID   != item.ProductID) return false;
+            return true;
+        }
+
         internal string ID { get; set; }
         public DateTime ExpiryDate  { get; internal set; }
         public UInt32 Amount { get; internal set; }
