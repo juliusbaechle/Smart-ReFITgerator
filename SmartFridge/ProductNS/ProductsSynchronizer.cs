@@ -40,11 +40,16 @@ namespace SmartFridge.ProductNS
             {
                 // werden auch im Offline Fall zurückgesetzt
                 //   -> Änderungen werden zurückgesetzt
-                m_deletedProducts.Clear();
-                m_savedProducts.Clear();
-                m_deletedImages.Clear();
-                m_savedImages.Clear();
+                Reset();
             }
+        }
+
+        public void Reset()
+        {
+            m_deletedProducts.Clear();
+            m_savedProducts.Clear();
+            m_deletedImages.Clear();
+            m_savedImages.Clear();
         }
 
         private void OpenConnection()
@@ -112,14 +117,13 @@ namespace SmartFridge.ProductNS
             {
                 // Findet Produkt aus localProducts, welches dieselbe ID wie remoteProduct hat
                 // Gibt null zurück wenn kein zugehöriges, lokales Produkt gefunden wurde
-                var congruentLocalProduct = localProducts.Find(product => product.ID == remoteProduct.ID);                
-                
+                var congruentLocalProduct = localProducts.Find(product => product.ID == remoteProduct.ID);
+
                 // remoteProdukt wurde neu erstellt
+                // oder verändert
                 if (congruentLocalProduct == null) 
                     changedOrCreatedProducts.Add(remoteProduct);
-
-                // remoteProduct verändert
-                if (!congruentLocalProduct.ValueEqual(remoteProduct)) 
+                else if (!congruentLocalProduct.ValueEqual(remoteProduct))
                     changedOrCreatedProducts.Add(remoteProduct);
             }
 

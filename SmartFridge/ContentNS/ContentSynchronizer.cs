@@ -32,9 +32,14 @@ namespace SmartFridge.ContentNS
             {
                 // werden auch im Offline Fall zurückgesetzt
                 //   -> Änderungen werden zurückgesetzt
-                m_deletedItems.Clear();
-                m_savedItems.Clear();
+                Reset();
             }
+        }
+
+        public void Reset()
+        {
+            m_deletedItems.Clear();
+            m_savedItems.Clear();
         }
 
         private void OpenConnection()
@@ -98,11 +103,10 @@ namespace SmartFridge.ContentNS
                 var congruentLocalItem = localItems.Find(item => item.ID == remoteItem.ID);
 
                 // remoteItem wurde neu erstellt
+                // oder verändert
                 if (congruentLocalItem == null)
                     changedOrCreatedItems.Add(remoteItem);
-
-                // remoteItem verändert
-                if (!congruentLocalItem.ValueEqual(remoteItem))
+                else if (!congruentLocalItem.ValueEqual(remoteItem))
                     changedOrCreatedItems.Add(remoteItem);
             }
 

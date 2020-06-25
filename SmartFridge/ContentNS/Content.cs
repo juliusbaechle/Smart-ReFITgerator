@@ -28,6 +28,7 @@ namespace SmartFridge.ContentNS
         internal void AddOrEdit(Item newItem)
         {
             if (!newItem.IsValid()) return;
+            if (m_products.Get(newItem.ProductID) == null) return;
 
             var oldProduct = Get(newItem.ID);
             if (oldProduct != null)
@@ -49,6 +50,7 @@ namespace SmartFridge.ContentNS
 
         internal void Add(Item item)
         {
+            item.Product = m_products.Get(item.ProductID);
             List.Add(item);
             m_db.Save(item);
             Added?.Invoke(item);
