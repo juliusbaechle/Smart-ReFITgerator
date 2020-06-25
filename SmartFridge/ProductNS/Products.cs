@@ -8,7 +8,7 @@ namespace SmartFridge.ProductNS
         public Action<Product> Selected;
         public Action<Product> Deleted;
         public Action<Product> Added;
-        public Action<Product> Updated;
+        public Action<Product> Changed;
 
         public Action<Image> DeletedImg;
         public Action<Image> SavedImg;
@@ -56,7 +56,7 @@ namespace SmartFridge.ProductNS
             }
 
             m_db.Save(newProduct);
-            Updated?.Invoke(newProduct);
+            Changed?.Invoke(newProduct);
         }
 
         internal void Add(Product product)

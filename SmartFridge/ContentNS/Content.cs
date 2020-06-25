@@ -11,11 +11,12 @@ namespace SmartFridge.ContentNS
         public event Action<Item> Added;
         public event Action<Item> Deleted;
         private Products m_products;
+
         internal Content(DBContent db1, Products products)
         {
             m_products = products;
             m_products.Deleted += OnProductDeleted;
-            m_products.Updated += OnProductUpdated;
+            m_products.Changed += OnProductUpdated;
 
             m_db = db1;
             List = new BindingList<Item>(m_db.LoadAll());
@@ -89,6 +90,7 @@ namespace SmartFridge.ContentNS
         }
 
         public BindingList<Item> List { get; private set; }
+
         private readonly DBContent m_db;
     }   
 }
