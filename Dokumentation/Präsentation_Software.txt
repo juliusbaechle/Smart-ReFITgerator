@@ -1,0 +1,6 @@
+Präsentation Software
+------------------------------------------------------------
+Übersicht, Produktverzeichnis & Inhalt   : Ugur Arpa
+Waage, Tür und Kommunikation mit Arduino : Nils Althuon
+Nachrichten und Datenbanksynchronisation : Julius Bächle
+Ausblick (Ernährungsplan & Einkaufsplan) : Ioannis Catselas
