@@ -3,7 +3,6 @@ using SmartFridge.ContentNS;
 using SmartFridge.Messages;
 using SmartFridge.Messages.Channels;
 using SmartFridge.ProductNS;
-using SmartFridgeWPF;
 using System;
 using System.Windows;
 
@@ -41,10 +40,10 @@ namespace SmartFridge
             synchronizer.Add(contentSynchronizer);
             synchronizer.ConnectionState += mainWindow.SetConnectionState;
 
-            SetupMessaging(new Door());            
+            SetupMessaging(new Door());
 
-            var mediator = new Mediator(mainWindow, products, content);
-            mediator.ShowPage(EPage.Home);            
+            var mediator = new Mediator(mainWindow, products, content, new ScaleMoc());
+            mediator.ShowPage(EPage.Home);
             app.Run(mainWindow);
         }
 

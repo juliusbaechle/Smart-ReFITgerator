@@ -1,10 +1,9 @@
-﻿using SmartFridge.ProductNS;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System;
 using Microsoft.Win32;
 
-namespace SmartFridgeWPF.ProductNS
+namespace SmartFridge.ProductNS
 {
     public partial class ProductForm : Page
     {

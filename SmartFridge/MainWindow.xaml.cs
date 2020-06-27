@@ -1,8 +1,7 @@
-﻿using SmartFridge;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace SmartFridgeWPF
+namespace SmartFridge
 {
     public partial class MainWindow : Window
     {

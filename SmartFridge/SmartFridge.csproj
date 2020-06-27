@@ -311,16 +311,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arduino\Door.cs" />
+    <Compile Include="Arduino\ScalePollingHelper.cs" />
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />
     <Compile Include="ContentNS\ContentOverview.xaml.cs">
       <DependentUpon>ContentOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContentNS\ContentSynchronizer.cs" />
     <Compile Include="ContentNS\DBContent.cs" />
+    <Compile Include="ContentNS\IItemForm.cs" />
     <Compile Include="ContentNS\Item.cs" />
     <Compile Include="ContentNS\Content.cs" />
-    <Compile Include="ContentNS\ItemForm.xaml.cs">
-      <DependentUpon>ItemForm.xaml</DependentUpon>
+    <Compile Include="ContentNS\ItemFormScale.xaml.cs">
+      <DependentUpon>ItemFormScale.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContentNS\ItemFormManual.xaml.cs">
+      <DependentUpon>ItemFormManual.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContentNS\ItemView.xaml.cs">
       <DependentUpon>ItemView.xaml</DependentUpon>
@@ -365,12 +370,16 @@
     </Compile>
     <Compile Include="ProductNS\Products.cs" />
     <Compile Include="Arduino\IScale.cs" />
-    <Compile Include="Arduino\Scale.cs" />
+    <Compile Include="Arduino\ScaleMoc.cs" />
     <Page Include="ContentNS\ContentOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContentNS\ItemForm.xaml">
+    <Page Include="ContentNS\ItemFormScale.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ContentNS\ItemFormManual.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

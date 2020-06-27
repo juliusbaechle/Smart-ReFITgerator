@@ -1,11 +1,8 @@
-﻿<Page
+﻿<Page   x:Class="SmartFridge.ProductNS.ProductForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ProductNS="clr-namespace:SmartFridge.ProductNS" 
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" 
-        x:Class="SmartFridgeWPF.ProductNS.ProductForm"
         mc:Ignorable="d"
         d:DesignHeight="893" 
         d:DesignWidth="1920">
