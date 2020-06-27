@@ -41,17 +41,19 @@ namespace SmartFridge.ContentNS
         public string Name { get { return Product.Name; } }
         public ECategory Category { get { return Product.Category; } }
 
-        public string AmountText {
+
+        public string Unit {
             get {
                 switch (Product.Quantity) {
-                    case EQuantity.Count:
-                        return Amount + " %";
-                    case EQuantity.Milliliters:
-                        return Amount + " ml";
-                    default:
-                        return Amount + " g";
-                }            
+                    case EQuantity.Count: return "%";
+                    case EQuantity.Milliliters: return "ml";
+                    default: return "g";
+                }
             }
+        }
+
+        public string AmountText {
+            get { return Amount + " " + Unit; }
         }
 
         public int Durability { 
