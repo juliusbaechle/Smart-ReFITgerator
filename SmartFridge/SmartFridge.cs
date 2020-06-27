@@ -26,9 +26,10 @@ namespace SmartFridge
             var mainWindow = new MainWindow(app.Resources);
 
             var localDbProducts = new DBProducts(DB.CreateLocalConnection());
-            var products = new Products(localDbProducts, new LocalImageRepository());
+            var localImgRepo = new LocalImageRepository();
+            var products = new Products(localDbProducts, localImgRepo);
             var remoteDbProducts = new DBProducts(DB.CreateRemoteConnection());            
-            var productSynchronizer = new ProductsSynchronizer(products, remoteDbProducts, new RemoteImageRepository());
+            var productSynchronizer = new ProductsSynchronizer(products, remoteDbProducts, localImgRepo, new RemoteImageRepository());
 
             var localDbContent = new DBContent(DB.CreateLocalConnection());            
             var content = new Content(localDbContent, products);
@@ -40,7 +41,7 @@ namespace SmartFridge
             synchronizer.Add(contentSynchronizer);
             synchronizer.ConnectionState += mainWindow.SetConnectionState;
 
-            SetupMessaging(new Door());
+            SetupMessaging(new DoorMoc());
 
             var mediator = new Mediator(mainWindow, products, content, new ScaleMoc());
             mediator.ShowPage(EPage.Home);

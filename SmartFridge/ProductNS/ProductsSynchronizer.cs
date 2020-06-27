@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace SmartFridge.ProductNS
@@ -7,17 +8,19 @@ namespace SmartFridge.ProductNS
     {
         private readonly Products m_products;        
         private readonly DBProducts m_db;
-        private readonly ImageRepository m_imgRepo;
+        private readonly ImageRepository m_localImgRepo;
+        private readonly RemoteImageRepository m_remoteImgRepo;
 
         private readonly List<Product> m_deletedProducts = new List<Product>();
         private readonly List<Product> m_savedProducts = new List<Product>();
         private readonly List<Image> m_deletedImages = new List<Image>();
         private readonly List<Image> m_savedImages = new List<Image>();        
 
-        internal ProductsSynchronizer(Products products, DBProducts db, ImageRepository imgRepo)
+        internal ProductsSynchronizer(Products products, DBProducts db, ImageRepository localImgRepo, RemoteImageRepository remoteImgRepo)
         {
             m_db = db;
-            m_imgRepo = imgRepo;
+            m_localImgRepo = localImgRepo;
+            m_remoteImgRepo = remoteImgRepo;
 
             // Wird Event emittiert, so wird das Produkt / Bild direkt in der Liste hinzugefügt
             m_products = products;
@@ -66,8 +69,8 @@ namespace SmartFridge.ProductNS
             m_deletedProducts.ForEach(m_db.Delete);
             m_savedProducts.ForEach(m_db.Save);
 
-            m_deletedImages.ForEach(image => m_imgRepo.DeleteAsync(image).Wait());
-            m_savedImages.ForEach(image => m_imgRepo.SaveAsync(image).Wait());
+            m_deletedImages.ForEach(image => _ = m_remoteImgRepo.DeleteAsync(image));
+            m_savedImages.ForEach(image => _ = m_remoteImgRepo.SaveAsync(image));
         }
 
         private void Pull()
@@ -77,9 +80,11 @@ namespace SmartFridge.ProductNS
             var deletedProducts = GetDeletedProducts(localProducts, remoteProducts);
             var changedOrCreatedProducts = GetCreatedOrChangedProducts(localProducts, remoteProducts);
 
-            // Alle Bilder der geänderten Produkte asynchron herunterladen
-            foreach (Product product in changedOrCreatedProducts)
-                m_imgRepo.LoadAsync(product.Image);
+            foreach (Product product in changedOrCreatedProducts) {
+                // Bilder asynchron herunterladen und dann speichern
+                _ = m_remoteImgRepo.LoadAsync(product.Image);
+                m_remoteImgRepo.DownloadCompleted += image => m_localImgRepo.SaveAsync(image);
+            }
 
             // Oberfläche darf nur im Main-Thread (GUI Thread) verändert werden
             Application.Current.Dispatcher.Invoke(() => {

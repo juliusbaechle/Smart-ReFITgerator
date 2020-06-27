@@ -2,9 +2,6 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -12,7 +9,7 @@ namespace SmartFridge.ProductNS
 {
     class RemoteImageRepository : ImageRepository
     {
-        internal Action<Image> DownloadCompleted;
+        public Action<Image> DownloadCompleted;
 
         public override bool Contains(Image image)
         {
@@ -55,6 +52,7 @@ namespace SmartFridge.ProductNS
                     {
                         byte[] data = client.DownloadData(new Uri(CreateAddress(image.ID)));
                         image.Bitmap = Convert(data);
+                        DownloadCompleted?.Invoke(image);
                     }
                     catch
                     {
@@ -74,10 +72,9 @@ namespace SmartFridge.ProductNS
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
                 encoder.Save(ms);
-                
-                await Task.Run(() => { 
-                    client.UploadData(new Uri(CreateAddress(image.ID)), ms.ToArray()); 
-                });
+                await Task.Run(() => {
+                    client.UploadData(new Uri(CreateAddress(image.ID)), ms.ToArray());
+                }); 
             }
         }
 

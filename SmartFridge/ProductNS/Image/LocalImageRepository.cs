@@ -40,12 +40,12 @@ namespace SmartFridge.ProductNS
             if (Contains(image))
                 File.Delete(CreatePath(image.ID));
 
-            return Task.Run(() => { });           
+            return Task.Run(() => { });
         }
 
         internal override Task SaveAsync(Image image)
         {
-            if (image.Bitmap != null)
+            if (image.Bitmap != null && image.Bitmap.IsFrozen)
             {
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(image.Bitmap));
