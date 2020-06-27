@@ -1,0 +1,7 @@
+{
+  "api_key": "XXXXXXXX",
+  "api_secret": "XXXXXXXXXXXXXX",
+  "from": "SmartFIT",
+  "to": "49XXXXXXXX345",  
+  "text": "Sie haben Ihre Kühlschranktür offen gelassen"
+}
