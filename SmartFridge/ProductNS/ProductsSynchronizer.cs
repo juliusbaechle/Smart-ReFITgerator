@@ -77,9 +77,9 @@ namespace SmartFridge.ProductNS
             var deletedProducts = GetDeletedProducts(localProducts, remoteProducts);
             var changedOrCreatedProducts = GetCreatedOrChangedProducts(localProducts, remoteProducts);
 
-            // Alle Bilder vollständig herunterladen
-            foreach(Product product in changedOrCreatedProducts)
-                m_imgRepo.LoadAsync(product.Image).Wait();
+            // Alle Bilder der geänderten Produkte vollständig herunterladen
+            foreach (Product product in changedOrCreatedProducts)
+                m_imgRepo.LoadAsync(product.Image);
 
             // Oberfläche darf nur im Main-Thread (GUI Thread) verändert werden
             Application.Current.Dispatcher.Invoke(() => {
