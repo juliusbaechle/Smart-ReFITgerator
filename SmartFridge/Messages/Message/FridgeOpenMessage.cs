@@ -16,7 +16,7 @@ namespace SmartFridge.Messages.Message
 
         public string Text
         {
-            get { return "Ihr Smart ReFITgerator ist seit ueber 30 Sekunden geoeffnet"; }
+            get { return "Sie haben Ihre Kühlschranktür offen gelassen"; }
         }
 
         public BitmapSource Image {
