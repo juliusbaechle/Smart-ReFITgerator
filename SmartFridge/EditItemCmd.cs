@@ -1,4 +1,5 @@
 ﻿using SmartFridge.ContentNS;
+using System.Windows.Controls;
 
 namespace SmartFridge
 {
@@ -11,9 +12,9 @@ namespace SmartFridge
 
             mediator.UserChangedPage += Dispose;
 
-            m_itemForm = new ItemForm(m_item);
+            m_itemForm = m_mediator.CreateItemForm(m_item);
             m_itemForm.Finished += OnItemFinished;
-            m_mediator.MainWindow.SetContent(m_itemForm);
+            m_mediator.MainWindow.SetContent((Page)m_itemForm);
         }
 
         private void Dispose()
@@ -22,17 +23,17 @@ namespace SmartFridge
             if (m_itemForm != null) m_itemForm.Finished -= OnItemFinished;
         }
 
-        private void OnItemFinished()
+        private void OnItemFinished(Item item)
         {
-            if (!m_item.IsValid()) return;
+            if (!item.IsValid()) return;
 
-            m_mediator.Content.AddOrEdit(m_item);
+            m_mediator.Content.AddOrEdit(item);
             m_mediator.MainWindow.SetContent(m_mediator.ContentOverview);
             Dispose();
         }
                 
         private Item m_item;
-        private ItemForm m_itemForm;
+        private IItemForm m_itemForm;
         private Mediator m_mediator;
     }
 }

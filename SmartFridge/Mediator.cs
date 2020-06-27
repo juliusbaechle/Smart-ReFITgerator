@@ -1,15 +1,8 @@
-﻿using SmartFridge.ProductNS;
-using SmartFridgeWPF;
-using SmartFridgeWPF.ProductNS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Controls;
-using System.IO;
 using SmartFridge.ContentNS;
-using System.Windows.Forms;
+using SmartFridge.ProductNS;
+using SmartFridge.Arduino;
 
 namespace SmartFridge
 {
@@ -31,7 +24,7 @@ namespace SmartFridge
     {
         public Action UserChangedPage;
 
-        public Mediator(MainWindow window, Products products, Content content)
+        public Mediator(MainWindow window, Products products, Content content, IScale scale)
         {
             MainWindow = window;
             MainWindow.OpenPage += ShowPage;
@@ -41,6 +34,8 @@ namespace SmartFridge
 
             Content = content;            
             ContentOverview = CreateContentOverview(content);
+
+            m_scale = scale;
         }
 
         public void ShowPage(EPage page) {
@@ -105,6 +100,14 @@ namespace SmartFridge
             return productForm;
         }
 
+        public IItemForm CreateItemForm(Item item)
+        {
+            if(m_scale.Connected() && item.Product.Quantity != EQuantity.Count)
+                return new ItemFormScale(item, m_scale);
+            else
+                return new ItemFormManual(item);
+        }
+
         private ContentOverview CreateContentOverview(Content content)
         {
             var contentOverview = new ContentOverview(content);
@@ -120,5 +123,7 @@ namespace SmartFridge
         public MainWindow MainWindow { get; private set; }
         public ProductOverview ProductOverview { get; private set; }
         public ContentOverview ContentOverview { get; private set; }
+
+        public IScale m_scale;
     }
 }
