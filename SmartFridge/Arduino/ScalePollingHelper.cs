@@ -14,7 +14,7 @@ namespace SmartFridge.Arduino
         private ulong m_weight;
 
         private System.Timers.Timer m_timer = new System.Timers.Timer(INTERVAL);
-        private const int INTERVAL = 500;
+        private const int INTERVAL = 1500;
         private Mutex m_mutex = new Mutex();
 
         public ScalePollingHelper(IScale scale)
@@ -29,7 +29,9 @@ namespace SmartFridge.Arduino
         {
             if (!m_mutex.WaitOne(100)) return;
 
-            ulong weigth = m_scale.GetWeightInGrams();
+            Task<ulong> task = m_scale.GetWeightAsync();
+            task.Wait();
+            ulong weigth = task.Result; 
             if (m_weight != weigth) {
                 m_weight = weigth;
                 Application.Current.Dispatcher.Invoke(() => { WeightChanged?.Invoke(m_weight); });
