@@ -6,5 +6,6 @@ namespace SmartFridge.Arduino
     {
         event Action Opened;
         event Action Closed;
+        bool DoorOpen { get; set; }
     }
 }

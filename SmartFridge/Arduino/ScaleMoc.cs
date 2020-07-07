@@ -1,15 +1,17 @@
-﻿namespace SmartFridge.Arduino
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+
+namespace SmartFridge.Arduino
 {
     class ScaleMoc : IScale
     {
-        public ulong GetWeightInGrams()
+        public ulong Weight { get; set; } = 250;
+
+        public Task<ulong> GetWeightAsync()
         {
-            return 250;
+            return Task.Run(() => { return Weight; });
         }
 
-        public bool Connected()
-        {
-            return false;
-        }
+        public bool Connected() { return true; }
     }
 }

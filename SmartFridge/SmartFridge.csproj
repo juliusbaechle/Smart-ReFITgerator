@@ -310,7 +310,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arduino\Door.cs" />
     <Compile Include="Arduino\DoorMoc.cs" />
     <Compile Include="Arduino\ScalePollingHelper.cs" />
     <Compile Include="BarcodeScanner\IBarcodeScanner.cs" />

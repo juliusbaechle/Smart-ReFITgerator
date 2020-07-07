@@ -1,8 +1,11 @@
-﻿namespace SmartFridge.Arduino
+﻿using System.Threading.Tasks;
+
+namespace SmartFridge.Arduino
 {
-    public interface IScale 
+    public interface IScale
     {
-        ulong GetWeightInGrams();
+        Task<ulong> GetWeightAsync();
         bool Connected();
+        ulong Weight { get; set; }
     }
 }

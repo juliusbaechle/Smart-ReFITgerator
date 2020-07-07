@@ -2,14 +2,25 @@
 
 namespace SmartFridge.Arduino
 {
-    class DoorMoc : IDoor
+    public class DoorMoc : IDoor
     {
         public event Action Opened;
         public event Action Closed;
 
-        public DoorMoc()
+        public bool DoorOpen
         {
-            // Opened?.Invoke();
+            get { return m_doorOpen; }
+            set
+            {
+                if (value != m_doorOpen)
+                {
+                    m_doorOpen = value;
+
+                    if (value) Opened?.Invoke();
+                    else Closed.Invoke();
+                }
+            }
         }
+        private bool m_doorOpen = false;
     }
 }
