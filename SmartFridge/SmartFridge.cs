@@ -41,9 +41,10 @@ namespace SmartFridge
             synchronizer.Add(contentSynchronizer);
             synchronizer.ConnectionState += mainWindow.SetConnectionState;
 
-            SetupMessaging(new DoorMoc());
+            var arduino = new ArduinoDevice();
+            SetupMessaging(arduino);
+            var mediator = new Mediator(mainWindow, products, content, arduino);
 
-            var mediator = new Mediator(mainWindow, products, content, new ScaleMoc());
             mediator.ShowPage(EPage.Home);
             app.Run(mainWindow);
         }
