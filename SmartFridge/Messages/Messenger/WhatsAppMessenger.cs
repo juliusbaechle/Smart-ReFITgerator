@@ -35,7 +35,7 @@ namespace SmartFridge.Messages
                     var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("9f1ab4a7:eYFtJwfSRE76zgd7"));
                     request.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64authorization}");
 
-                    request.Content = new StringContent("{\n    \"from\": { \"type\": \"whatsapp\", \"number\": \"14157386170\" },\n    \"to\": { \"type\": \"whatsapp\", \"number\": \"4915902600345\" },\n    \"message\": {\n      \"content\": {\n        \"type\": \"text\",\n        \"text\": \"This is a WhatsApp Message sent from the Messages API\"\n      }\n    }\n  }");
+                    request.Content = new StringContent(CreateJson(msg));
                     request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
                     var response = await httpClient.SendAsync(request);
