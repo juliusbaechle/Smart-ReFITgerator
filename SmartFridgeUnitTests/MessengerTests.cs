@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SmartFridge.Messages;
+using SmartFridge.Messages.Message;
 
 namespace SmartFridgeUnitTests
 {
@@ -6,18 +8,27 @@ namespace SmartFridgeUnitTests
     public class MessengerTests
     {
         [TestMethod]
-        public void SendSMS()
+        public void SendWhatsApp()
         {
+            var msg = new FridgeOpenMessage();
+            var messenger = new WhatsAppMessenger("4915902600345");
+            Assert.IsTrue(messenger.Send(msg));
         }
 
         [TestMethod]
-        public void SendWhatsApp()
+        public void SendSMS()
         {
+            var msg = new FridgeOpenMessage();
+            var messenger = new SMSMessenger("4915902600345");
+            Assert.IsTrue(messenger.Send(msg));
         }
 
         [TestMethod]
         public void SendEMail()
         {
+            var msg = new FridgeOpenMessage();
+            var messenger = new EMailMessenger("julius.baechle@yahoo.de");
+            Assert.IsTrue(messenger.Send(msg));
         }
     }
 }
