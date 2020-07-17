@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartFridge.Messages
@@ -22,16 +25,23 @@ namespace SmartFridge.Messages
 
         public async Task<bool> SendAsync(IMessage msg)
         {
-            var requestJson = CreateJson(msg);
-            var content = new StringContent(requestJson);
-            content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
-            var client = new HttpClient();            
-
             try
             {
-                HttpResponseMessage response = await client.PostAsync("https://messages-sandbox.nexmo.com/v0.1/messages", content);
-                string responseJson = await response.Content.ReadAsStringAsync();
-                return MessageSucceeded(responseJson);
+                using (var httpClient = new HttpClient())
+                using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://messages-sandbox.nexmo.com/v0.1/messages"))
+                {
+                    request.Headers.TryAddWithoutValidation("Accept", "application/json");
+
+                    var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("9f1ab4a7:eYFtJwfSRE76zgd7"));
+                    request.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64authorization}");
+
+                    request.Content = new StringContent("{\n    \"from\": { \"type\": \"whatsapp\", \"number\": \"14157386170\" },\n    \"to\": { \"type\": \"whatsapp\", \"number\": \"4915902600345\" },\n    \"message\": {\n      \"content\": {\n        \"type\": \"text\",\n        \"text\": \"This is a WhatsApp Message sent from the Messages API\"\n      }\n    }\n  }");
+                    request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+
+                    var response = await httpClient.SendAsync(request);
+                    string responseJson = await response.Content.ReadAsStringAsync();
+                    return MessageSucceeded(responseJson);
+                }
             }
             catch
             {

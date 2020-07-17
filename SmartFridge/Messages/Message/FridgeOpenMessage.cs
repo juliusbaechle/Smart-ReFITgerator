@@ -4,11 +4,6 @@ namespace SmartFridge.Messages.Message
 {
     class FridgeOpenMessage : IMessage
     {
-        public FridgeOpenMessage()
-        {
-            Image = new BitmapImage();
-        }
-
         public string Title
         {
             get { return "Ihr Kühlschrank ist offen"; }
@@ -23,6 +18,6 @@ namespace SmartFridge.Messages.Message
             get { return m_image; }
             private set { m_image = value; }
         }
-        BitmapSource m_image = null;
+        private BitmapSource m_image = new BitmapImage();
     }
 }
