@@ -49,19 +49,9 @@ namespace SmartFridge.Arduino
             }
 
             Task.Run(() => {
-                bool connected = false;
-                foreach (string port in SerialPort.GetPortNames()) {
-                    connected |= TryConnect(port);
-                    if (connected) break;
-                }
-            });
-
-
-            /*Task.Run(() => {
                 foreach (string port in SerialPort.GetPortNames())
-                TryConnect(port);   
-            });*/
-
+                    if (TryConnect(port)) break;
+            });
         }
 
 
