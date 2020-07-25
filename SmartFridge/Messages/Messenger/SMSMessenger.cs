@@ -15,7 +15,9 @@ namespace SmartFridge.Messages
 
         public bool Send(IMessage msg)
         {
-            return false; // kostet jedes mal 7 ct
+            #if DEBUG
+                return false; // kostet jedes mal 7 ct
+            #endif
 
             var task = SendAsync(msg);
             task.Wait();
