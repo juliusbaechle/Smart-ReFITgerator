@@ -65,9 +65,11 @@ namespace SmartFridge.ContentNS
 
         private void OnProductDeleted(Product product)
         {
-            foreach(Item item in List)
-                if (item.Product == product) 
-                    Delete(item);
+            Item deleteItem = null;
+            foreach (Item item in List)
+                if (item.Product == product)
+                    deleteItem = item; 
+            Delete(deleteItem);
         }
 
         private void OnProductUpdated(Product product)
