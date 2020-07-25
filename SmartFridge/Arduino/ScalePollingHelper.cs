@@ -11,7 +11,7 @@ namespace SmartFridge.Arduino
         public event Action<ulong> WeightChanged;
 
         private IScale m_scale;
-        private ulong m_weight;
+        private ulong m_weight = UInt64.MaxValue;
 
         private System.Timers.Timer m_timer = new System.Timers.Timer(INTERVAL);
         private const int INTERVAL = 1500;
