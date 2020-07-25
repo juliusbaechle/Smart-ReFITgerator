@@ -3,8 +3,8 @@ using SmartFridge.ContentNS;
 using SmartFridge.Messages;
 using SmartFridge.Messages.Channels;
 using SmartFridge.ProductNS;
-using System;
 using System.Windows;
+using System;
 
 namespace SmartFridge
 {
@@ -23,7 +23,9 @@ namespace SmartFridge
         private static void Setup()
         {
             Application app = Application.LoadComponent(new Uri("App.xaml", UriKind.Relative)) as Application;
-            var mainWindow = new MainWindow(app.Resources);
+
+            var startupWindow = CreateStartupWindow();
+            startupWindow.Show();
 
             var localDbProducts = new DBProducts(DB.CreateLocalConnection());
             var localImgRepo = new LocalImageRepository();
@@ -39,14 +41,33 @@ namespace SmartFridge
             var synchronizer = new Synchronizer();
             synchronizer.Add(productSynchronizer);
             synchronizer.Add(contentSynchronizer);
-            synchronizer.ConnectionState += mainWindow.SetConnectionState;
 
             var arduino = new ArduinoDevice();
             SetupMessaging(arduino);
-            var mediator = new Mediator(mainWindow, products, content, arduino);
 
+            var mainWindow = new MainWindow(app.Resources);
+            synchronizer.ConnectionState += mainWindow.SetConnectionState;
+            arduino.ConnectionChanged += mainWindow.SetDoorConnectionState;
+            arduino.DoorStateChanged += mainWindow.SetDoorState;
+
+            var mediator = new Mediator(mainWindow, products, content, arduino);
             mediator.ShowPage(EPage.Home);
+            startupWindow.Close();
             app.Run(mainWindow);
+        }
+
+        private static Window CreateStartupWindow()
+        {
+            var startupWindow = new Window();
+            startupWindow.Content = new ImagePage("home.jpg");
+            startupWindow.WindowStyle = WindowStyle.None;
+
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+            startupWindow.Left = (screenWidth - startupWindow.Height) / 2;
+            startupWindow.Top = (screenHeight - startupWindow.Width) / 2;
+
+            return startupWindow;
         }
 
         private static void SetupMessaging(IDoor door)
