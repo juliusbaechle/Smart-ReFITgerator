@@ -102,7 +102,7 @@ namespace SmartFridge
 
         public IItemForm CreateItemForm(Item item)
         {
-            if(m_scale.Connected() && item.Product.Quantity != EQuantity.Count)
+            if(m_scale.Connected && item.Product.Quantity != EQuantity.Count)
                 return new ItemFormScale(item, m_scale);
             else
                 return new ItemFormManual(item);

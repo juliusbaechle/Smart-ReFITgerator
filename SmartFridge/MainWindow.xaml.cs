@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using SmartFridge.Arduino;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SmartFridge
@@ -32,16 +33,27 @@ namespace SmartFridge
             ContentFrame.Content = page;
         }
 
+
         public void SetConnectionState(bool connected)
         {
-            if (connected)
-            {
-                txtConnection.Text = "Verbunden";
-            }
-            else
-            {
-                txtConnection.Text = "Offline";
-            }
+            if (connected) txtConnection.Text = "Online";
+            else txtConnection.Text = "Offline";
+        }
+
+
+        public void SetDoorConnectionState(bool connected)
+        {
+            m_doorConnected = connected;
+            if (!connected) txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Kühlschrank nicht verbunden"; });
+            else SetDoorState(false);            
+        }
+        private bool m_doorConnected = false;
+
+        public void SetDoorState(bool open)
+        {
+            if (!m_doorConnected) return;
+            if (open) txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Tür offen"; });
+            else txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Tür geschlossen"; });
         }
     }
 }

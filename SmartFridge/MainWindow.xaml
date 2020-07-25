@@ -63,6 +63,7 @@
             <UniformGrid Rows="1">
                 <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: 09 °C</TextBlock>
                 <TextBlock Name="txtConnection" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Verbunden / Offline</TextBlock>
+                <TextBlock Name="txtDoor" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Kühlschrank nicht verbunden</TextBlock>
                 <TextBlock Name="txtHumidity" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Feuchtigkeit: 67 %</TextBlock>
             </UniformGrid>
         </DockPanel>
