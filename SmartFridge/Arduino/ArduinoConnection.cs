@@ -1,20 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.IO.Ports;
-using System.Management;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Collections.Generic;
+using System.Management;
+using System.Linq;
+using System.Windows;
 
 namespace SmartFridge.Arduino
 {
     class ArduinoConnection
     {
-        public event Action<ArduinoConnection, string> PropertyChanged;
         public event Action<string> Received;
+        public event Action<State> StateChanged;
 
-        public enum States
+        public enum State
         {
+            None,
             Connected,
             Disconnected,
             Starting
@@ -26,16 +28,17 @@ namespace SmartFridge.Arduino
             GetWeight     = '2'
         }
 
-        public States State
+        public State ConnectionState
         {
             get { return m_connectionState; }
             set
             {
+                if (m_connectionState == value) return;
                 m_connectionState = value;
-                PropertyChanged?.Invoke(this, "ConnectionState");
+                StateChanged?.Invoke(value);
             }
         }
-        private States m_connectionState = States.Disconnected;
+        private State m_connectionState = State.None;
 
 
 
@@ -49,11 +52,39 @@ namespace SmartFridge.Arduino
             }
 
             Task.Run(() => {
-                foreach (string port in SerialPort.GetPortNames())
-                    if (TryConnect(port)) break;
+                List<string> unoPorts = GetUnoPorts();
+                
+                if(unoPorts.Count > 0) {
+                    foreach (string port in unoPorts)
+                        if (TryConnect(port)) break;
+                }
+                else {
+                    foreach (string port in SerialPort.GetPortNames())
+                        if (TryConnect(port)) break;
+                }
             });
         }
 
+
+        public List<string> GetUnoPorts()
+        {
+            List<string> unoPorts = new List<string>();
+
+            using (var searcher = new ManagementObjectSearcher("SELECT * FROM WIN32_SerialPort"))
+            {
+                string[] portnames = SerialPort.GetPortNames();
+                var ports = searcher.Get().Cast<ManagementBaseObject>().ToList();
+
+                foreach (ManagementBaseObject port in ports)
+                {
+                    string description = port.Properties["Description"].Value.ToString();
+                    if (description.Contains("Arduino Uno"))
+                        unoPorts.Add(port.Properties["DeviceID"].Value.ToString());
+                }
+            }
+
+            return unoPorts;
+        }
 
 
 
@@ -63,7 +94,7 @@ namespace SmartFridge.Arduino
             {
                 m_port.PortName = port;
                 m_port.Open();
-                State = States.Starting;
+                ConnectionState = State.Starting;
 
                 Thread.Sleep(3500);
                 
@@ -74,7 +105,7 @@ namespace SmartFridge.Arduino
                 if (!DeviceName.Contains("smart refitgerator arduino")) return false;
 
                 m_port.ReadTimeout = -1;
-                State = States.Connected;
+                ConnectionState = State.Connected;
                 m_thread = new Thread(Communicate) { IsBackground = true };
                 m_thread.Start();
                 return true;
@@ -96,7 +127,7 @@ namespace SmartFridge.Arduino
                     Received?.Invoke(rxData);
                 }
             }
-            finally
+            catch (System.IO.IOException)
             {
                 Disconnect();
             }
@@ -104,11 +135,11 @@ namespace SmartFridge.Arduino
 
         public void Disconnect()
         {
-            if (State == States.Disconnected)
+            if (ConnectionState == State.Disconnected)
                 return;
 
             m_port.Close();
-            State = States.Disconnected;
+            ConnectionState = State.Disconnected;
             DeviceName = "";
         }
 
@@ -123,18 +154,9 @@ namespace SmartFridge.Arduino
             {
                 Console.WriteLine("Error when sending to " + m_port.PortName);
             }
-    }
-
-        public string DeviceName
-        {
-            get { return m_deviceName; }
-            set
-            {
-                m_deviceName = value;
-                PropertyChanged?.Invoke(this, "DeviceName");
-            }
         }
-        private string m_deviceName;
+
+        public string DeviceName { get; private set; }
 
         private SerialPort m_port;
         private Thread m_thread;        
