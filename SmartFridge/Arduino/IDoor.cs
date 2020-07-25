@@ -4,8 +4,10 @@ namespace SmartFridge.Arduino
 {
     public interface IDoor
     {
-        event Action Opened;
-        event Action Closed;
-        bool DoorOpen { get; set; }
+        event Action<bool> ConnectionChanged;
+        bool Connected { get; }
+
+        event Action<bool> DoorStateChanged;
+        bool Open { get; }
     }
 }
