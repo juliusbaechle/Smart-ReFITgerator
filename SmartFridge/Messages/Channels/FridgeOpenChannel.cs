@@ -11,21 +11,23 @@ namespace SmartFridge.Messages.Channels
 
         public FridgeOpenChannel(IDoor door)
         {
-            door.Opened += OnOpened;
-            door.Closed += OnClosed;
+            door.DoorStateChanged += OnDoorStateChanged;
+            door.ConnectionChanged += connected => { OnDoorStateChanged(false); };
             m_timer.Elapsed += OnTimeout;
         }
 
-        private void OnOpened()
+        private void OnDoorStateChanged(bool open)
         {
-            Messages?.Add(m_msg);
-            m_timer.Start();
-        }
-
-        private void OnClosed()
-        {
-            Messages?.Remove(m_msg);
-            m_timer.Stop();
+            if (open)
+            {
+                Messages?.Add(m_msg);
+                m_timer.Start();
+            }
+            else
+            {
+                Messages?.Remove(m_msg);
+                m_timer.Stop();
+            }
         }
 
         private void OnTimeout(object o, ElapsedEventArgs e)
