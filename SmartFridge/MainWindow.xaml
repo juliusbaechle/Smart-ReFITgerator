@@ -43,7 +43,7 @@
             <DockPanel DockPanel.Dock="Right">
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
                 <Button Style="{StaticResource RoundedButton}" Name="btnClose" Width="100" BorderBrush="{x:Null}">
-                    <Image Source="./icons/close.png"/>
+                    <Image Source="./icons/windows.png"/>
                 </Button>
             </DockPanel>
 
@@ -62,7 +62,7 @@
             <Rectangle DockPanel.Dock="Top" Height="7" Fill="{StaticResource Brush_Separator}"/>
             <UniformGrid Rows="1">
                 <TextBlock Name="txtTemperature" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Temperatur: 09 °C</TextBlock>
-                <TextBlock Name="txtConnection" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Verbunden / Offline</TextBlock>
+                <TextBlock Name="txtConnection" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Offline</TextBlock>
                 <TextBlock Name="txtDoor" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Kühlschrank nicht verbunden</TextBlock>
                 <TextBlock Name="txtHumidity" Margin="0, 10, 0, 10" HorizontalAlignment="Center" FontSize="25" Foreground="White">Feuchtigkeit: 67 %</TextBlock>
             </UniformGrid>

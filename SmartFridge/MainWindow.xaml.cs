@@ -1,6 +1,12 @@
-﻿using SmartFridge.Arduino;
+﻿using Renci.SshNet.Messages;
+using SmartFridge.Arduino;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.VisualBasic;
 
 namespace SmartFridge
 {
@@ -24,7 +30,7 @@ namespace SmartFridge
             btnNutrition.Click  += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Nutrition); };
             btnMessages.Click   += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Messages); };
             btnShopping.Click   += (object sender, RoutedEventArgs e) => { OpenPage?.Invoke(EPage.Shopping); };
-            btnClose.Click      += (object sender, RoutedEventArgs e) => { Close(); };
+            btnClose.Click      += (object sender, RoutedEventArgs e) => { SwitchAccount(); }; 
         }
 
         public void SetContent(Page page)
@@ -44,7 +50,7 @@ namespace SmartFridge
         public void SetDoorConnectionState(bool connected)
         {
             m_doorConnected = connected;
-            if (!connected) txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Kühlschrank nicht verbunden"; });
+            if (!connected) txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Tür nicht verbunden"; });
             else SetDoorState(false);            
         }
         private bool m_doorConnected = false;
@@ -54,6 +60,22 @@ namespace SmartFridge
             if (!m_doorConnected) return;
             if (open) txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Tür offen"; });
             else txtDoor.Dispatcher.Invoke(() => { txtDoor.Text = "Tür geschlossen"; });
+        }
+
+
+        [DllImport("wtsapi32.dll")]
+        static extern bool WTSDisconnectSession(IntPtr hServer, int sessionId, bool bWait);
+        const int WTS_CURRENT_SESSION = -1;
+        static readonly IntPtr WTS_CURRENT_SERVER_HANDLE = IntPtr.Zero;
+
+        private void SwitchAccount()
+        {
+            var dialog = new InputPassword();
+            dialog.ShowDialog();
+            if (dialog.Password != "SmartFIT") return;
+
+            if (!WTSDisconnectSession(WTS_CURRENT_SERVER_HANDLE, WTS_CURRENT_SESSION, false))
+                throw new Win32Exception();
         }
     }
 }
