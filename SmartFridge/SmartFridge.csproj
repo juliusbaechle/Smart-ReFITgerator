@@ -130,6 +130,7 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
       <Private>True</Private>
@@ -333,6 +334,9 @@
       <DependentUpon>ItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB.cs" />
+    <Compile Include="InputPassword.xaml.cs">
+      <DependentUpon>InputPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Synchronizer.cs" />
     <Compile Include="EditItemCmd.cs" />
     <Compile Include="ImagePage.xaml.cs">
@@ -398,6 +402,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ImagePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InputPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -485,6 +493,11 @@
   <ItemGroup>
     <Resource Include="smartfridge.ico" />
     <Resource Include="smartfridge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\windows.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
