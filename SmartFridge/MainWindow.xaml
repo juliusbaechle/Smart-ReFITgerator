@@ -43,7 +43,7 @@
             <DockPanel DockPanel.Dock="Right">
                 <Rectangle Margin="10,0,0,0" Width="7" Fill="#FF666667"/>
                 <Button Style="{StaticResource RoundedButton}" Name="btnClose" Width="100" BorderBrush="{x:Null}">
-                    <Image Source="./icons/windows.png"/>
+                    <Image Source="./icons/close.png"/>
                 </Button>
             </DockPanel>
 

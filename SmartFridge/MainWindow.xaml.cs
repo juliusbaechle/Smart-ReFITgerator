@@ -1,12 +1,10 @@
-﻿using Renci.SshNet.Messages;
-using SmartFridge.Arduino;
+﻿//#define ADMIN
+
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.VisualBasic;
 
 namespace SmartFridge
 {
@@ -70,12 +68,16 @@ namespace SmartFridge
 
         private void SwitchAccount()
         {
-            var dialog = new InputPassword();
-            dialog.ShowDialog();
-            if (dialog.Password != "SmartFIT") return;
+            #if ADMIN
+                Close();
+            #else
+                var dialog = new InputPassword();
+                dialog.ShowDialog();
+                if (dialog.Password != "SmartFIT") return;
 
-            if (!WTSDisconnectSession(WTS_CURRENT_SERVER_HANDLE, WTS_CURRENT_SESSION, false))
-                throw new Win32Exception();
+                if (!WTSDisconnectSession(WTS_CURRENT_SERVER_HANDLE, WTS_CURRENT_SESSION, false))
+                    throw new Win32Exception();
+            #endif
         }
     }
 }
